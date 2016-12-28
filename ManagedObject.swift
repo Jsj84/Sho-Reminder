@@ -15,6 +15,7 @@ class ManagedObject: NSObject {
     var context: NSManagedObjectContext
     var names:[NSObject] = []
     var date:[NSObject] = []
+
     
     override init() {
         
@@ -87,5 +88,32 @@ class ManagedObject: NSObject {
             print("Error with request: \(error)")
         }
     }
+    func deleteRecords() -> Void {
+        let moc = getContext()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Items")
+        
+        let result = try? moc.fetch(fetchRequest)
+        let resultData = result as! [Items]
+        
+        for object in resultData {
+            moc.delete(object)
+        }
+        
+        do {
+            try moc.save()
+            print("saved!")
+        } catch let error as NSError  {
+            print("Could not save \(error), \(error.userInfo)")
+        } catch {
+            
+        }
+        
+    }
     
+    // MARK: Get Context
+    
+    func getContext () -> NSManagedObjectContext {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.persistentContainer.viewContext
+    }
 }
