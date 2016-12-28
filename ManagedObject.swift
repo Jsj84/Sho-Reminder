@@ -10,9 +10,77 @@ import UIKit
 import CoreData
 import Foundation
 
-class ManagedObject: NSManagedObject {
-
-    @NSManaged var name: String?
+class ManagedObject: NSObject {
     
+    var context: NSManagedObjectContext
+    
+    override init() {
+        
+        // This resource is the same name as your xcdatamodeld contained in your project.
+        guard let modelURL = Bundle.main.url(forResource: "Sho_Reminder", withExtension:"momd") else {
+            fatalError("Error loading model from bundle")
+        }
+        // The managed object model for the application. It is a fatal error for the application not to be able to find and load its model.
+        guard let myfatalError = NSManagedObjectModel(contentsOf: modelURL) else {
+            fatalError("Error initializing mom from: \(modelURL)")
+        }
+        let psc = NSPersistentStoreCoordinator(managedObjectModel: myfatalError)
+        context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        context.persistentStoreCoordinator = psc
+        
+        DispatchQueue.global(qos: .background).async {
+            let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            let docURL = urls[urls.endIndex - 1]
+            let storURL = docURL.appendingPathComponent("DataModel.sqlite")
+            
+            do {
+                try psc.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storURL, options: nil)
+            } catch {
+                fatalError("Error migrating store: \(error)")
+            }
+        }
+    }
+    func writeData (Items: String, name: String) {
+        let context = self.context
+        
+        //retrieve the entity that we just created
+        let entity =  NSEntityDescription.entity(forEntityName: "Items", in: context)
+        
+        let transc = NSManagedObject(entity: entity!, insertInto: context)
+        
+        //set the entity values
+        transc.setValue(name, forKey: "name")
+        
+        //save the object
+        do {
+            try context.save()
+            print("saved!")
+        } catch let error as NSError  {
+            print("Could not save \(error), \(error.userInfo)")
+        } catch {
+            
+        }
+    }
+    func getData () {
+        //create a fetch request, telling it about the entity
+        let fetchRequest: NSFetchRequest<Items> = Items.fetchRequest()
+        
+        do {
+            //go get the results
+            let searchResults = try context.fetch(fetchRequest)
+            
+            //I like to check the size of the returned results!
+            print ("num of results = \(searchResults.count)")
+            
+            //You need to convert to NSManagedObject to use 'for' loops
+            for trans in (searchResults as [NSManagedObject]!) {
+                //get the Key Value pairs (although there may be a better way to do that...
+                print("\(trans.value(forKey: "name"))")
+                
+            }
+        } catch {
+            print("Error with request: \(error)")
+        }
+    }
     
 }

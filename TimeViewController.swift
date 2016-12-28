@@ -19,17 +19,14 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     
     var textEntered:[String] = []
     var t:NSMutableArray = NSMutableArray()
+    var fh = ManagedObject()
 
-    var context: NSManagedObjectContext?{
-        return (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
-    }
-    
     let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getTranscriptions()
+        fh.getData()
         
         timePicker.backgroundColor = UIColor.black
         timePicker.layer.cornerRadius = 10
@@ -46,51 +43,7 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         reminderDiscription.returnKeyType = UIReturnKeyType.done
         self.hideKeyboardWhenTappedAround()
         self.dismissKeyboard()
-        tableView.reloadData()
         
-    }
-    func storeTranscription (Items: String, name: String) {
-        let context = self.context
-        
-        //retrieve the entity that we just created
-        let entity =  NSEntityDescription.entity(forEntityName: "Items", in: context!)
-        
-        let transc = NSManagedObject(entity: entity!, insertInto: context)
-        
-        //set the entity values
-        transc.setValue(name, forKey: "name")
-        textEntered = [name]
-        
-        //save the object
-        do {
-            try context?.save()
-            print("saved!")
-        } catch let error as NSError  {
-            print("Could not save \(error), \(error.userInfo)")
-        } catch {
-            
-        }
-    }
-    func getTranscriptions () {
-        //create a fetch request, telling it about the entity
-        let fetchRequest: NSFetchRequest<Items> = Items.fetchRequest()
-        
-        do {
-            //go get the results
-            let searchResults = try context?.fetch(fetchRequest)
-            
-            //I like to check the size of the returned results!
-            print ("num of results = \(searchResults?.count)")
-            
-            //You need to convert to NSManagedObject to use 'for' loops
-            for trans in (searchResults as [NSManagedObject]!) {
-                //get the Key Value pairs (although there may be a better way to do that...
-                print("\(trans.value(forKey: "name"))")
-
-            }
-        } catch {
-            print("Error with request: \(error)")
-        }
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if reminderDiscription.text?.isEmpty == true {
@@ -100,8 +53,9 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
         else {
             self.view.endEditing(true)
-            storeTranscription(Items: "Items", name: textField.text!)
-            getTranscriptions()
+            fh.writeData(Items: "Items", name: textField.text!)
+            textEntered.append(textField.text!)
+            fh.getData()
             reminderDiscription.text?.removeAll()
             
           //  let dateOnPicker = timePicker.date //capture the date shown on the picker
