@@ -15,8 +15,6 @@ class ManagedObject: NSObject {
     var context: NSManagedObjectContext
     var names:[NSObject] = []
     var date:[NSObject] = []
-    var finalNames:[String] = []
-    var datePicked:[String] = []
     
     override init() {
         
@@ -83,9 +81,6 @@ class ManagedObject: NSObject {
               //  print("\(trans.value(forKey: "name"))")
                 names.append(trans.value(forKey: "name") as! NSObject)
                 date.append(trans.value(forKey: "date") as! NSObject)
-                finalNames.append(names.last! as! String)
-                datePicked.append(date.last! as! String)
-                print(finalNames)
                 
             }
         } catch {

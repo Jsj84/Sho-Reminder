@@ -12,8 +12,6 @@ import Foundation
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var fh = ManagedObject()
-    var finaltext:[String] = []
-    var finalDate:[String] = []
     
     @IBOutlet weak var way: UILabel!
     @IBOutlet weak var place: UIButton!
@@ -58,10 +56,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(_ animated: Bool) {
         fh.getData()
     }
-    override func viewDidAppear(_ animated: Bool) {
-        finaltext = fh.finalNames
-        finalDate = fh.datePicked
-    }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return "Next time reminder"
@@ -78,7 +72,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return finaltext.count
+            return fh.names.count
         }
         else {
             return tempString.count
@@ -87,8 +81,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as! HomeTableViewCell
-            cell.myLabel_1.text = finaltext[indexPath.row]
-            cell.myLabel_2.text = finalDate[indexPath.row]
+            cell.myLabel_1.text = fh.names[indexPath.row] as? String
+            cell.myLabel_2.text = fh.date[indexPath.row] as? String
             cell.backgroundColor = UIColor.white
             cell.layer.borderWidth = 5
             cell.layer.cornerRadius = 15
