@@ -7,23 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7753BBC71E13345400B78D49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBC61E13345400B78D49 /* AppDelegate.swift */; };
-		7753BBC91E13345400B78D49 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBC81E13345400B78D49 /* ViewController.swift */; };
-		7753BBCC1E13345400B78D49 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7753BBCA1E13345400B78D49 /* Main.storyboard */; };
 		7753BBCF1E13345400B78D49 /* Sho_Reminder.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBCD1E13345400B78D49 /* Sho_Reminder.xcdatamodeld */; };
 		7753BBD11E13345400B78D49 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7753BBD01E13345400B78D49 /* Assets.xcassets */; };
 		7753BBD41E13345400B78D49 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7753BBD21E13345400B78D49 /* LaunchScreen.storyboard */; };
+		7753BBDC1E13349B00B78D49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBDB1E13349B00B78D49 /* AppDelegate.swift */; };
+		7753BBE61E1334B900B78D49 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBDE1E1334B900B78D49 /* HomeTableViewCell.swift */; };
+		7753BBE71E1334B900B78D49 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBDF1E1334B900B78D49 /* HomeViewController.swift */; };
+		7753BBE91E1334B900B78D49 /* PlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBE21E1334B900B78D49 /* PlaceViewController.swift */; };
+		7753BBEA1E1334B900B78D49 /* TimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBE31E1334B900B78D49 /* TimeTableViewCell.swift */; };
+		7753BBEB1E1334B900B78D49 /* TimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBE41E1334B900B78D49 /* TimeViewController.swift */; };
+		7753BBED1E1334D300B78D49 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7753BBEC1E1334D300B78D49 /* Main.storyboard */; };
+		7753BBF11E1335D900B78D49 /* ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBF01E1335D900B78D49 /* ManagedObject.swift */; };
+		7753BBF31E1335E900B78D49 /* ItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBF21E1335E900B78D49 /* ItemController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		7753BBC31E13345400B78D49 /* Sho Reminder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sho Reminder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7753BBC61E13345400B78D49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		7753BBC81E13345400B78D49 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		7753BBCB1E13345400B78D49 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7753BBCE1E13345400B78D49 /* Sho_Reminder.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Sho_Reminder.xcdatamodel; sourceTree = "<group>"; };
 		7753BBD01E13345400B78D49 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7753BBD31E13345400B78D49 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7753BBD51E13345400B78D49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7753BBDB1E13349B00B78D49 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../AppDelegate.swift; sourceTree = "<group>"; };
+		7753BBDE1E1334B900B78D49 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
+		7753BBDF1E1334B900B78D49 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		7753BBE21E1334B900B78D49 /* PlaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlaceViewController.swift; path = ../PlaceViewController.swift; sourceTree = "<group>"; };
+		7753BBE31E1334B900B78D49 /* TimeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTableViewCell.swift; sourceTree = "<group>"; };
+		7753BBE41E1334B900B78D49 /* TimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeViewController.swift; sourceTree = "<group>"; };
+		7753BBEC1E1334D300B78D49 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		7753BBF01E1335D900B78D49 /* ManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedObject.swift; sourceTree = "<group>"; };
+		7753BBF21E1335E900B78D49 /* ItemController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +68,39 @@
 		7753BBC51E13345400B78D49 /* Sho Reminder */ = {
 			isa = PBXGroup;
 			children = (
-				7753BBC61E13345400B78D49 /* AppDelegate.swift */,
-				7753BBC81E13345400B78D49 /* ViewController.swift */,
-				7753BBCA1E13345400B78D49 /* Main.storyboard */,
+				7753BBEE1E13353200B78D49 /* Home */,
+				7753BBEF1E13355100B78D49 /* Time */,
+				7753BBE21E1334B900B78D49 /* PlaceViewController.swift */,
 				7753BBD01E13345400B78D49 /* Assets.xcassets */,
+				7753BBDB1E13349B00B78D49 /* AppDelegate.swift */,
+				7753BBEC1E1334D300B78D49 /* Main.storyboard */,
 				7753BBD21E13345400B78D49 /* LaunchScreen.storyboard */,
 				7753BBD51E13345400B78D49 /* Info.plist */,
 				7753BBCD1E13345400B78D49 /* Sho_Reminder.xcdatamodeld */,
 			);
 			path = "Sho Reminder";
+			sourceTree = "<group>";
+		};
+		7753BBEE1E13353200B78D49 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				7753BBDE1E1334B900B78D49 /* HomeTableViewCell.swift */,
+				7753BBDF1E1334B900B78D49 /* HomeViewController.swift */,
+			);
+			name = Home;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		7753BBEF1E13355100B78D49 /* Time */ = {
+			isa = PBXGroup;
+			children = (
+				7753BBF01E1335D900B78D49 /* ManagedObject.swift */,
+				7753BBE41E1334B900B78D49 /* TimeViewController.swift */,
+				7753BBF21E1335E900B78D49 /* ItemController.swift */,
+				7753BBE31E1334B900B78D49 /* TimeTableViewCell.swift */,
+			);
+			name = Time;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -100,6 +136,7 @@
 					7753BBC21E13345400B78D49 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = JN83A35T6F;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -127,9 +164,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7753BBED1E1334D300B78D49 /* Main.storyboard in Resources */,
 				7753BBD41E13345400B78D49 /* LaunchScreen.storyboard in Resources */,
 				7753BBD11E13345400B78D49 /* Assets.xcassets in Resources */,
-				7753BBCC1E13345400B78D49 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,23 +177,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7753BBC91E13345400B78D49 /* ViewController.swift in Sources */,
-				7753BBC71E13345400B78D49 /* AppDelegate.swift in Sources */,
+				7753BBE71E1334B900B78D49 /* HomeViewController.swift in Sources */,
+				7753BBF31E1335E900B78D49 /* ItemController.swift in Sources */,
+				7753BBDC1E13349B00B78D49 /* AppDelegate.swift in Sources */,
+				7753BBF11E1335D900B78D49 /* ManagedObject.swift in Sources */,
+				7753BBE91E1334B900B78D49 /* PlaceViewController.swift in Sources */,
+				7753BBEA1E1334B900B78D49 /* TimeTableViewCell.swift in Sources */,
+				7753BBE61E1334B900B78D49 /* HomeTableViewCell.swift in Sources */,
 				7753BBCF1E13345400B78D49 /* Sho_Reminder.xcdatamodeld in Sources */,
+				7753BBEB1E1334B900B78D49 /* TimeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		7753BBCA1E13345400B78D49 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				7753BBCB1E13345400B78D49 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		7753BBD21E13345400B78D49 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -263,11 +298,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = JN83A35T6F;
 				INFOPLIST_FILE = "Sho Reminder/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jnjapps.Sho-Reminder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -276,6 +313,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = JN83A35T6F;
 				INFOPLIST_FILE = "Sho Reminder/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -304,6 +342,7 @@
 				7753BBDA1E13345400B78D49 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
