@@ -68,8 +68,8 @@
 			children = (
 				7753BBEE1E13353200B78D49 /* Home */,
 				7753BBEF1E13355100B78D49 /* Time */,
-				7753BBE21E1334B900B78D49 /* PlaceViewController.swift */,
 				7753BBD01E13345400B78D49 /* Assets.xcassets */,
+				7753BBE21E1334B900B78D49 /* PlaceViewController.swift */,
 				7753BBDB1E13349B00B78D49 /* AppDelegate.swift */,
 				7753BBEC1E1334D300B78D49 /* Main.storyboard */,
 				7753BBD21E13345400B78D49 /* LaunchScreen.storyboard */,

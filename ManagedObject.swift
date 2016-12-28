@@ -13,6 +13,8 @@ import Foundation
 class ManagedObject: NSObject {
     
     var context: NSManagedObjectContext
+    var names:[NSObject] = []
+    var finalNames:[String] = []
     
     override init() {
         
@@ -75,7 +77,10 @@ class ManagedObject: NSObject {
             //You need to convert to NSManagedObject to use 'for' loops
             for trans in (searchResults as [NSManagedObject]!) {
                 //get the Key Value pairs (although there may be a better way to do that...
-                print("\(trans.value(forKey: "name"))")
+              //  print("\(trans.value(forKey: "name"))")
+                names.append(trans.value(forKey: "name") as! NSObject)
+                finalNames.append(names.last! as! String)
+                print(finalNames)
                 
             }
         } catch {

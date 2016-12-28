@@ -54,8 +54,7 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         else {
             self.view.endEditing(true)
             fh.writeData(Items: "Items", name: textField.text!)
-            textEntered.append(textField.text!)
-            fh.getData()
+            fh.finalNames.append(textField.text!)
             reminderDiscription.text?.removeAll()
             
           //  let dateOnPicker = timePicker.date //capture the date shown on the picker
@@ -76,11 +75,11 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         return 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return textEntered.count
+        return fh.finalNames.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
-        cell.myLabel_1.text = textEntered[indexPath.row]
+        cell.myLabel_1.text = fh.finalNames[indexPath.row]
       //  cell.myLabel_2.text = timeAsString[row]
         cell.backgroundColor = UIColor.white
         cell.layer.borderWidth = 5
@@ -90,7 +89,7 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            textEntered.remove(at: indexPath.row)
+            fh.finalNames.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             

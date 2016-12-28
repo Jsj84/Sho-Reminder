@@ -11,6 +11,8 @@ import Foundation
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var fh = ManagedObject()
+    
     @IBOutlet weak var way: UILabel!
     @IBOutlet weak var place: UIButton!
     @IBOutlet weak var time: UIButton!
@@ -22,9 +24,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBAction func placeAction(_ sender: Any) {
         performSegue(withIdentifier: "placeSegue", sender: self)
     }
-    var tableVeiwItems:[String] = []
     var sectionTwo:[String] = []
-    let cellSpacingHeight: CGFloat = 40
+    let cellSpacingHeight: CGFloat = 20
     
     let tempString = ["10 Clinton St. Brooklyn, N.Y", "437 Madison Avenue, New Yory, N.Y", "Port Authority Bus Terminal"]
     
@@ -46,17 +47,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         time.titleLabel?.font = UIFont (name: "HelveticaNeue-Bold", size: 18)!
         time.setTitle("Time", for: .normal)
         
-        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.clear
         tableView.backgroundView?.isOpaque = true
         tableView.allowsSelection = false
         
-        let defaults = UserDefaults.standard
-        tableVeiwItems = defaults.object(forKey: "textData") as? [String] ?? [String]()
-        sectionTwo = defaults.object(forKey: "timeData") as? [String] ?? [String]()
-        tableView.reloadData()
+        fh.getData()
         
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -75,7 +72,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return tableVeiwItems.count
+            return fh.finalNames.count
         }
         else {
             return tempString.count
@@ -84,9 +81,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as! HomeTableViewCell
-            let row = indexPath.row
-            cell.myLabel_1.text = tableVeiwItems[row]
-            cell.myLabel_2.text = sectionTwo[row]
+            cell.myLabel_1.text = fh.finalNames[indexPath.row]
+            //cell.myLabel_2.text = tempString[indexPath.row]
             cell.backgroundColor = UIColor.white
             cell.layer.borderWidth = 8
             cell.layer.cornerRadius = 15
