@@ -12,6 +12,8 @@ import Foundation
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var fh = ManagedObject()
+    var finaltext:[String] = []
+    var finalDate:[String] = []
     
     @IBOutlet weak var way: UILabel!
     @IBOutlet weak var place: UIButton!
@@ -24,9 +26,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBAction func placeAction(_ sender: Any) {
         performSegue(withIdentifier: "placeSegue", sender: self)
     }
-    var sectionTwo:[String] = []
-    let cellSpacingHeight: CGFloat = 20
     
+    let cellSpacingHeight: CGFloat = 20
     let tempString = ["10 Clinton St. Brooklyn, N.Y", "437 Madison Avenue, New Yory, N.Y", "Port Authority Bus Terminal"]
     
     override func viewDidLoad() {
@@ -53,8 +54,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.backgroundView?.isOpaque = true
         tableView.allowsSelection = false
         
+    }
+    override func viewWillAppear(_ animated: Bool) {
         fh.getData()
-        
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        finaltext = fh.finalNames
+        finalDate = fh.datePicked
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
@@ -72,7 +78,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return fh.finalNames.count
+            return finaltext.count
         }
         else {
             return tempString.count
@@ -81,10 +87,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as! HomeTableViewCell
-            cell.myLabel_1.text = fh.finalNames[indexPath.row]
-            //cell.myLabel_2.text = tempString[indexPath.row]
+            cell.myLabel_1.text = finaltext[indexPath.row]
+            cell.myLabel_2.text = finalDate[indexPath.row]
             cell.backgroundColor = UIColor.white
-            cell.layer.borderWidth = 8
+            cell.layer.borderWidth = 5
             cell.layer.cornerRadius = 15
             cell.layer.borderColor = UIColor.black.cgColor
             return cell

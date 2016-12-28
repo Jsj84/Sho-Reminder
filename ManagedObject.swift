@@ -14,7 +14,9 @@ class ManagedObject: NSObject {
     
     var context: NSManagedObjectContext
     var names:[NSObject] = []
+    var date:[NSObject] = []
     var finalNames:[String] = []
+    var datePicked:[String] = []
     
     override init() {
         
@@ -42,7 +44,7 @@ class ManagedObject: NSObject {
             }
         }
     }
-    func writeData (Items: String, name: String) {
+    func writeData (Items: String, name: String, date: String) {
         let context = self.context
         
         //retrieve the entity that we just created
@@ -52,6 +54,7 @@ class ManagedObject: NSObject {
         
         //set the entity values
         transc.setValue(name, forKey: "name")
+        transc.setValue(date, forKey: "date")
         
         //save the object
         do {
@@ -79,7 +82,9 @@ class ManagedObject: NSObject {
                 //get the Key Value pairs (although there may be a better way to do that...
               //  print("\(trans.value(forKey: "name"))")
                 names.append(trans.value(forKey: "name") as! NSObject)
+                date.append(trans.value(forKey: "date") as! NSObject)
                 finalNames.append(names.last! as! String)
+                datePicked.append(date.last! as! String)
                 print(finalNames)
                 
             }

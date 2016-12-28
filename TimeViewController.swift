@@ -18,8 +18,8 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBOutlet weak var tableView: UITableView!
     
     var textEntered:[String] = []
-    var t:NSMutableArray = NSMutableArray()
     var fh = ManagedObject()
+    var hVC = HomeViewController()
 
     let defaults = UserDefaults.standard
     
@@ -32,7 +32,6 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         timePicker.layer.cornerRadius = 10
         timePicker.setValue(UIColor.white, forKeyPath: "textColor")
         view.backgroundColor = UIColor.clear
-        
         
         reminderDiscription.delegate = self
         tableView.delegate = self
@@ -53,17 +52,20 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         }
         else {
             self.view.endEditing(true)
-            fh.writeData(Items: "Items", name: textField.text!)
+            
+            let dateOnPicker = timePicker.date //capture the date shown on the picker
+            let dateFormatter = DateFormatter() //create a date formatter
+            dateFormatter.dateStyle = DateFormatter.Style.short
+            dateFormatter.timeStyle = DateFormatter.Style.short
+            let timeString = dateFormatter.string(from: dateOnPicker)
+        
+            fh.writeData(Items: "Items", name: textField.text!, date: timeString)
             fh.finalNames.append(textField.text!)
-            reminderDiscription.text?.removeAll()
+            fh.datePicked.append(timeString)
+            hVC.finaltext.append(textField.text!)
+            hVC.finalDate.append(timeString)
+            reminderDiscription.text?.removeAll()            
             
-          //  let dateOnPicker = timePicker.date //capture the date shown on the picker
-//            let dateFormatter = DateFormatter() //create a date formatter
-//            
-//            dateFormatter.dateStyle = DateFormatter.Style.short
-//            dateFormatter.timeStyle = DateFormatter.Style.short
-            
-         //   let timeString = dateFormatter.string(from: dateOnPicker)
             tableView.reloadData()
         }
         return false
@@ -80,7 +82,7 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
         cell.myLabel_1.text = fh.finalNames[indexPath.row]
-      //  cell.myLabel_2.text = timeAsString[row]
+        cell.myLabel_2.text = fh.datePicked[indexPath.row]
         cell.backgroundColor = UIColor.white
         cell.layer.borderWidth = 5
         cell.layer.cornerRadius = 15
