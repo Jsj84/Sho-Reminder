@@ -15,7 +15,8 @@ class ManagedObject: NSObject {
     var context: NSManagedObjectContext
     var names:[NSObject] = []
     var date:[NSObject] = []
-
+    var i = 0
+    
     
     override init() {
         
@@ -87,19 +88,23 @@ class ManagedObject: NSObject {
             print("Error with request: \(error)")
         }
     }
-    func deleteRecords(indexPath: Int){
+    func deleteRecords(name: Int, date: Int){
         let moc = self.context
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Items")
         
         let result = try? moc.fetch(fetchRequest)
         let resultData = result as! [Items]
-        
-       for object in resultData {
-//            print(object.name!)
-//            print(object.date!)
-            moc.delete(object)
+
+        for _ in resultData {
+           let object = resultData.first
+            moc.delete(object!)
+            print("Inex Deleted: \(object)")
         }
-        
+//        
+//        let object = resultData.first
+//                moc.delete(object!)
+//            print(object!)
+    
         do {
             try moc.save()
             print("saved!")

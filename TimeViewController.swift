@@ -85,8 +85,9 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            
-            fh.deleteRecords(indexPath: indexPath.row)
+            let nameToDelete = indexPath.row
+            let dateToDelete = indexPath.row
+            fh.deleteRecords(name: nameToDelete, date: dateToDelete)
             fh.names.remove(at: indexPath.row)
             fh.date.remove(at: indexPath.row)
             tableView.reloadData()
