@@ -17,11 +17,7 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBOutlet weak var timePicker: UIDatePicker!
     @IBOutlet weak var tableView: UITableView!
     
-    var textEntered:[String] = []
     var fh = ManagedObject()
-    var hVC = HomeViewController()
-
-    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,8 +85,8 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-        fh.deleteRecords()
-    }
+            fh.deleteRecords()
+        }
   }
 }
 extension UIViewController {
