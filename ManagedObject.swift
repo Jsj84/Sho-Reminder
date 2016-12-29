@@ -79,7 +79,6 @@ class ManagedObject: NSObject {
             //You need to convert to NSManagedObject to use 'for' loops
             for trans in (searchResults as [NSManagedObject]!) {
                 //get the Key Value pairs (although there may be a better way to do that...
-              //  print("\(trans.value(forKey: "name"))")
                 names.append(trans.value(forKey: "name") as! NSObject)
                 date.append(trans.value(forKey: "date") as! NSObject)
                 
@@ -88,14 +87,16 @@ class ManagedObject: NSObject {
             print("Error with request: \(error)")
         }
     }
-    func deleteRecords() -> Void {
-        let moc = getContext()
+    func deleteRecords(indexPath: Int){
+        let moc = self.context
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Items")
         
         let result = try? moc.fetch(fetchRequest)
         let resultData = result as! [Items]
         
-        for object in resultData {
+       for object in resultData {
+//            print(object.name!)
+//            print(object.date!)
             moc.delete(object)
         }
         

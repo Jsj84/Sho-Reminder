@@ -54,11 +54,11 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             dateFormatter.dateStyle = DateFormatter.Style.short
             dateFormatter.timeStyle = DateFormatter.Style.short
             let timeString = dateFormatter.string(from: dateOnPicker)
-        
+            
             fh.writeData(Items: "Items", name: textField.text!, date: timeString)
             fh.names.append(textField.text! as NSObject)
             fh.date.append(timeString as NSObject)
-            reminderDiscription.text?.removeAll()            
+            reminderDiscription.text?.removeAll()
             
             tableView.reloadData()
         }
@@ -85,9 +85,15 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            fh.deleteRecords()
+            
+            fh.deleteRecords(indexPath: indexPath.row)
+            fh.names.remove(at: indexPath.row)
+            fh.date.remove(at: indexPath.row)
+            tableView.reloadData()
+            tableView.reloadData()
+            
         }
-  }
+    }
 }
 extension UIViewController {
     func hideKeyboardWhenTappedAround() {
