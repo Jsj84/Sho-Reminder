@@ -17,12 +17,6 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!
     @IBOutlet weak var tableView: UITableView!
-    @IBAction func datePickerDidSelectNewDate(_ sender: Any) {
-
-        let selectedDate = timePicker.date
-        let delegate = UIApplication.shared.delegate as? AppDelegate
-        delegate?.scheduleNotification(at: selectedDate)
-    }
     
     var fh = ManagedObject()
     
@@ -49,7 +43,7 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if reminderDiscription.text?.isEmpty == true {
-            let alert = UIAlertController(title: "Alert", message: "You cannot save this reminder without a discription", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "Alert", message: "You cannot save this reminder without a description", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
@@ -57,6 +51,10 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             self.view.endEditing(true)
             
             let dateOnPicker = timePicker.date //capture the date shown on the picker
+            let delegate = UIApplication.shared.delegate as? AppDelegate
+            delegate?.scheduleNotification(at: dateOnPicker, body: reminderDiscription.text!)
+
+            
             let dateFormatter = DateFormatter() //create a date formatter
             dateFormatter.dateStyle = DateFormatter.Style.short
             dateFormatter.timeStyle = DateFormatter.Style.short
@@ -88,12 +86,6 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         cell.layer.borderWidth = 5
         cell.layer.cornerRadius = 15
         cell.layer.borderColor = UIColor.black.cgColor
-        if checkTimeStamp(date: fh.date[indexPath.row] as! String) == true {
-    
-        }
-        else {
-            print("timeStamp is equal to false")
-        }
         return cell
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -106,21 +98,6 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             tableView.reloadData()
             tableView.reloadData()
             
-        }
-    }
-    func checkTimeStamp(date: String!) -> Bool {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .short
-        dateFormatter.locale = Locale(identifier:"en_US_POSIX")
-        let datecomponents = dateFormatter.date(from: date)
-        
-        let now = Date()
-        
-        if (datecomponents == now) {
-            return true
-        } else {
-            return false
         }
     }
 }

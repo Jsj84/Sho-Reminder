@@ -58,10 +58,10 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="61" id="lG9-BH-R7Y" customClass="HomeTableViewCell" customModule="Sho_Reminder" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="343" height="61"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="560" height="61"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lG9-BH-R7Y" id="DmG-es-w4Q">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="560" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Zw-iJ-VP0">
@@ -163,9 +163,6 @@
                                 <date key="date" timeIntervalSinceReferenceDate="504384238.14771199">
                                     <!--2016-12-25 18:43:58 +0000-->
                                 </date>
-                                <connections>
-                                    <action selector="datePickerDidSelectNewDate:" destination="fj2-Me-P1i" eventType="valueChanged" id="G2e-8i-z7W"/>
-                                </connections>
                             </datePicker>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="60" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="XWh-OA-spb">
                                 <rect key="frame" x="0.0" y="334" width="375" height="333"/>

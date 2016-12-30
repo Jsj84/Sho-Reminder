@@ -50,18 +50,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-    func scheduleNotification(at date: Date) {
+    func scheduleNotification(at date: Date, body: String) {
         let calendar = Calendar(identifier: .gregorian)
         let components = calendar.dateComponents(in: .current, from: date)
         let newComponents = DateComponents(calendar: calendar, timeZone: .current, month: components.month, day: components.day, hour: components.hour, minute: components.minute)
         let trigger = UNCalendarNotificationTrigger(dateMatching: newComponents, repeats: false)
         
         let content = UNMutableNotificationContent()
-        content.title = "This is a push Notification!"
-        content.body = "Hey Jesse, Your Fucking App is working Great!"
+        content.title = "Don't Forget To...."
+        content.body = body
         content.sound = UNNotificationSound.default()
         let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)
-        
+
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         UNUserNotificationCenter.current().add(request) {(error) in
             if let error = error {
