@@ -18,6 +18,7 @@
 		7753BBEB1E1334B900B78D49 /* TimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBE41E1334B900B78D49 /* TimeViewController.swift */; };
 		7753BBED1E1334D300B78D49 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7753BBEC1E1334D300B78D49 /* Main.storyboard */; };
 		7753BBF11E1335D900B78D49 /* ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBF01E1335D900B78D49 /* ManagedObject.swift */; };
+		77FB8BD31E16BF30005316B5 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 77FB8BD21E16BF30005316B5 /* background.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		7753BBE41E1334B900B78D49 /* TimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeViewController.swift; sourceTree = "<group>"; };
 		7753BBEC1E1334D300B78D49 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		7753BBF01E1335D900B78D49 /* ManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedObject.swift; sourceTree = "<group>"; };
+		77FB8BD21E16BF30005316B5 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				7753BBEF1E13355100B78D49 /* Time */,
 				7753BBD01E13345400B78D49 /* Assets.xcassets */,
 				7753BBE21E1334B900B78D49 /* PlaceViewController.swift */,
+				77FB8BD21E16BF30005316B5 /* background.png */,
 				7753BBDB1E13349B00B78D49 /* AppDelegate.swift */,
 				7753BBEC1E1334D300B78D49 /* Main.storyboard */,
 				7753BBD21E13345400B78D49 /* LaunchScreen.storyboard */,
@@ -162,6 +165,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7753BBED1E1334D300B78D49 /* Main.storyboard in Resources */,
+				77FB8BD31E16BF30005316B5 /* background.png in Resources */,
 				7753BBD41E13345400B78D49 /* LaunchScreen.storyboard in Resources */,
 				7753BBD11E13345400B78D49 /* Assets.xcassets in Resources */,
 			);

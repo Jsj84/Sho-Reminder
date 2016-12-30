@@ -12,6 +12,7 @@ import Foundation
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var fh = ManagedObject()
+    var color = UIColor(netHex:0x90F7A3)
     
     @IBOutlet weak var way: UILabel!
     @IBOutlet weak var place: UIButton!
@@ -32,17 +33,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.backgroundColor = UIColor.green
-        view.backgroundColor = UIColor.clear
+        
+        view.backgroundColor = UIColor(patternImage: UIImage(named: "background.png")!)
         
         way.font = UIFont (name: "HelveticaNeue-Bold", size: 19)!
         
         place.layer.cornerRadius = 8
-        place.backgroundColor = UIColor.green
+        place.backgroundColor = color
         place.titleLabel?.font = UIFont (name: "HelveticaNeue-Bold", size: 18)!
         place.setTitle("Place", for: .normal)
         
         time.layer.cornerRadius = 8
-        time.backgroundColor = UIColor.green
+        time.backgroundColor = color
         time.titleLabel?.font = UIFont (name: "HelveticaNeue-Bold", size: 18)!
         time.setTitle("Time", for: .normal)
         
@@ -51,7 +53,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.backgroundColor = UIColor.clear
         tableView.backgroundView?.isOpaque = true
         tableView.allowsSelection = false
-        
     }
     override func viewWillAppear(_ animated: Bool) {
         fh.getData()
@@ -83,21 +84,29 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as! HomeTableViewCell
             cell.myLabel_1.text = fh.names[indexPath.row] as? String
             cell.myLabel_2.text = fh.date[indexPath.row] as? String
-            cell.backgroundColor = UIColor.white
-            cell.layer.borderWidth = 5
-            cell.layer.cornerRadius = 15
-            cell.layer.borderColor = UIColor.black.cgColor
+            cell.backgroundColor = UIColor.clear
             return cell
         }
         else {
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell")
             let row = indexPath.row
             cell?.textLabel?.text = tempString[row]
-            cell?.backgroundColor = UIColor.white
-            cell?.layer.borderWidth = 5
-            cell?.layer.cornerRadius = 15
-            cell?.layer.borderColor = UIColor.black.cgColor
+            cell?.backgroundColor = UIColor.clear
             return cell!
         }
+    }
+    
+}
+extension UIColor {
+    convenience init(red: Int, green: Int, blue: Int) {
+        assert(red >= 0 && red <= 255, "Invalid red component")
+        assert(green >= 0 && green <= 255, "Invalid green component")
+        assert(blue >= 0 && blue <= 255, "Invalid blue component")
+        
+        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+    }
+    
+    convenience init(netHex:Int) {
+        self.init(red:(netHex >> 16) & 0xff, green:(netHex >> 8) & 0xff, blue:netHex & 0xff)
     }
 }
