@@ -51,6 +51,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.clear
+        tableView.separatorColor = color
         tableView.backgroundView?.isOpaque = true
         tableView.allowsSelection = false
     }

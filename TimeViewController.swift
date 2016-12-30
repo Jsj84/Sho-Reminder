@@ -19,23 +19,27 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBOutlet weak var tableView: UITableView!
     
     var fh = ManagedObject()
+    var color = HomeViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         fh.getData()
         
-        timePicker.backgroundColor = UIColor.black
-        timePicker.layer.cornerRadius = 10
-        timePicker.setValue(UIColor.white, forKeyPath: "textColor")
-        view.backgroundColor = UIColor.clear
+        view.backgroundColor = UIColor(patternImage: UIImage(named: "background.png")!)
         
+        timePicker.backgroundColor = UIColor.clear
+        
+        reminderName.textColor = UIColor.black
+
         reminderDiscription.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.clear
         tableView.isOpaque = true
         tableView.allowsSelection = false
+        tableView.separatorColor = color.color
+        
         reminderDiscription.returnKeyType = UIReturnKeyType.done
         self.hideKeyboardWhenTappedAround()
         self.dismissKeyboard()
@@ -83,9 +87,6 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         cell.myLabel_1.text = fh.names[indexPath.row] as? String
         cell.myLabel_2.text = fh.date[indexPath.row] as? String
         cell.backgroundColor = UIColor.white
-        cell.layer.borderWidth = 5
-        cell.layer.cornerRadius = 15
-        cell.layer.borderColor = UIColor.black.cgColor
         return cell
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
