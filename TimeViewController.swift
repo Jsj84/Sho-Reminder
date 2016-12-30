@@ -52,7 +52,7 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             
             let dateOnPicker = timePicker.date //capture the date shown on the picker
             let delegate = UIApplication.shared.delegate as? AppDelegate
-            delegate?.scheduleNotification(at: dateOnPicker, body: reminderDiscription.text!)
+            delegate?.scheduleNotification(atDate: dateOnPicker, body: reminderDiscription.text!)
 
             
             let dateFormatter = DateFormatter() //create a date formatter
@@ -60,7 +60,7 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             dateFormatter.timeStyle = DateFormatter.Style.short
             let timeString = dateFormatter.string(from: dateOnPicker)
             
-            fh.writeData(Items: "Items", name: textField.text!, date: timeString)
+            fh.writeData(Items: "Items", name: textField.text!, date: timePicker.date)
             fh.names.append(textField.text! as NSObject)
             fh.date.append(timeString as NSObject)
             reminderDiscription.text?.removeAll()
@@ -95,7 +95,6 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             fh.deleteRecords(name: nameToDelete, date: dateToDelete)
             fh.names.remove(at: indexPath.row)
             fh.date.remove(at: indexPath.row)
-            tableView.reloadData()
             tableView.reloadData()
             
         }

@@ -243,7 +243,7 @@
             </objects>
             <point key="canvasLocation" x="1700" y="407.0464767616192"/>
         </scene>
-        <!--Place View Controller-->
+        <!--Location Reminder-->
         <scene sceneID="Tfa-Np-7yo">
             <objects>
                 <viewController id="Wgi-C2-LqH" customClass="PlaceViewController" customModule="Sho_Reminder" customModuleProvider="target" sceneMemberID="viewController">
@@ -255,40 +255,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d6N-rA-ev7">
-                                <rect key="frame" x="213" y="76" width="146" height="30"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="LGe-WO-4d1">
-                                <rect key="frame" x="0.0" y="114" width="375" height="553"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                             </mapView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remind me whe I get to: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qae-Uh-lqi">
-                                <rect key="frame" x="16" y="76" width="189" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="qae-Uh-lqi" firstAttribute="top" secondItem="f4C-b7-j3j" secondAttribute="bottom" constant="12" id="1yi-Bn-ojq"/>
-                            <constraint firstItem="LGe-WO-4d1" firstAttribute="top" secondItem="d6N-rA-ev7" secondAttribute="bottom" constant="8" symbolic="YES" id="9KC-pH-dhP"/>
-                            <constraint firstItem="d6N-rA-ev7" firstAttribute="leading" secondItem="qae-Uh-lqi" secondAttribute="trailing" constant="8" symbolic="YES" id="EPs-uf-ztp"/>
-                            <constraint firstItem="LGe-WO-4d1" firstAttribute="top" secondItem="qae-Uh-lqi" secondAttribute="bottom" constant="8" symbolic="YES" id="FFZ-ES-jS2"/>
-                            <constraint firstItem="LGe-WO-4d1" firstAttribute="bottom" secondItem="ciF-Ms-4G6" secondAttribute="top" id="Guu-g9-aQd"/>
-                            <constraint firstItem="LGe-WO-4d1" firstAttribute="leading" secondItem="hrG-UP-K1x" secondAttribute="leading" id="I8P-zY-G9h"/>
-                            <constraint firstItem="qae-Uh-lqi" firstAttribute="top" secondItem="d6N-rA-ev7" secondAttribute="top" id="O8u-pt-rBw"/>
-                            <constraint firstAttribute="trailing" secondItem="LGe-WO-4d1" secondAttribute="trailing" id="V14-8E-1DO"/>
-                            <constraint firstItem="qae-Uh-lqi" firstAttribute="leading" secondItem="hrG-UP-K1x" secondAttribute="leadingMargin" id="XQ3-xi-NSr"/>
-                            <constraint firstItem="d6N-rA-ev7" firstAttribute="trailing" secondItem="hrG-UP-K1x" secondAttribute="trailingMargin" id="dVu-4X-Ckg"/>
+                            <constraint firstItem="LGe-WO-4d1" firstAttribute="top" secondItem="f4C-b7-j3j" secondAttribute="bottom" id="ATU-ka-woQ"/>
+                            <constraint firstItem="LGe-WO-4d1" firstAttribute="bottom" secondItem="ciF-Ms-4G6" secondAttribute="top" id="TFd-LC-HBP"/>
+                            <constraint firstItem="LGe-WO-4d1" firstAttribute="leading" secondItem="hrG-UP-K1x" secondAttribute="leading" id="h2t-gB-jmq"/>
+                            <constraint firstAttribute="trailing" secondItem="LGe-WO-4d1" secondAttribute="trailing" id="sOq-5g-gNm"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Location Reminder" id="kgo-jb-ZEq">
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="566-3p-Ndp">
+                            <connections>
+                                <action selector="searchButton:" destination="Wgi-C2-LqH" id="afd-yt-CJ2"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <outlet property="discriptionTextField" destination="d6N-rA-ev7" id="cQn-Vm-e8w"/>
                         <outlet property="myMapView" destination="LGe-WO-4d1" id="kH0-s8-Rdc"/>
-                        <outlet property="reminderLabel" destination="qae-Uh-lqi" id="CBj-sv-mBD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5bc-kA-x96" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -15,8 +15,6 @@ class ManagedObject: NSObject {
     var context: NSManagedObjectContext
     var names:[NSObject] = []
     var date:[NSObject] = []
-    var i = 0
-    
     
     override init() {
         
@@ -44,7 +42,7 @@ class ManagedObject: NSObject {
             }
         }
     }
-    func writeData (Items: String, name: String, date: String) {
+    func writeData (Items: String, name: String, date: Date) {
         let context = self.context
         
         //retrieve the entity that we just created
@@ -100,11 +98,6 @@ class ManagedObject: NSObject {
             moc.delete(object!)
             print("Inex Deleted: \(object)")
         }
-//        
-//        let object = resultData.first
-//                moc.delete(object!)
-//            print(object!)
-    
         do {
             try moc.save()
             print("saved!")

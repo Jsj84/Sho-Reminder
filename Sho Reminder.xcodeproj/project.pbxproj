@@ -68,16 +68,12 @@
 		7753BBC51E13345400B78D49 /* Sho Reminder */ = {
 			isa = PBXGroup;
 			children = (
+				77FB8BD61E16EC65005316B5 /* Core Files */,
+				77FB8BD51E16EC48005316B5 /* Images */,
+				77FB8BD41E16EC38005316B5 /* Locations */,
 				7753BBEE1E13353200B78D49 /* Home */,
 				7753BBEF1E13355100B78D49 /* Time */,
 				7753BBD01E13345400B78D49 /* Assets.xcassets */,
-				7753BBE21E1334B900B78D49 /* PlaceViewController.swift */,
-				77FB8BD21E16BF30005316B5 /* background.png */,
-				7753BBDB1E13349B00B78D49 /* AppDelegate.swift */,
-				7753BBEC1E1334D300B78D49 /* Main.storyboard */,
-				7753BBD21E13345400B78D49 /* LaunchScreen.storyboard */,
-				7753BBD51E13345400B78D49 /* Info.plist */,
-				7753BBCD1E13345400B78D49 /* Sho_Reminder.xcdatamodeld */,
 			);
 			path = "Sho Reminder";
 			sourceTree = "<group>";
@@ -101,6 +97,34 @@
 			);
 			name = Time;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		77FB8BD41E16EC38005316B5 /* Locations */ = {
+			isa = PBXGroup;
+			children = (
+				7753BBE21E1334B900B78D49 /* PlaceViewController.swift */,
+			);
+			name = Locations;
+			sourceTree = "<group>";
+		};
+		77FB8BD51E16EC48005316B5 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				77FB8BD21E16BF30005316B5 /* background.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		77FB8BD61E16EC65005316B5 /* Core Files */ = {
+			isa = PBXGroup;
+			children = (
+				7753BBDB1E13349B00B78D49 /* AppDelegate.swift */,
+				7753BBEC1E1334D300B78D49 /* Main.storyboard */,
+				7753BBD21E13345400B78D49 /* LaunchScreen.storyboard */,
+				7753BBD51E13345400B78D49 /* Info.plist */,
+				7753BBCD1E13345400B78D49 /* Sho_Reminder.xcdatamodeld */,
+			);
+			name = "Core Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

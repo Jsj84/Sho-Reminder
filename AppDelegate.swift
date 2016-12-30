@@ -50,9 +50,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-    func scheduleNotification(at date: Date, body: String) {
+    func scheduleNotification(atDate: Date, body: String) {
         let calendar = Calendar(identifier: .gregorian)
-        let components = calendar.dateComponents(in: .current, from: date)
+        let components = calendar.dateComponents(in: .current, from: atDate)
         let newComponents = DateComponents(calendar: calendar, timeZone: .current, month: components.month, day: components.day, hour: components.hour, minute: components.minute)
         let trigger = UNCalendarNotificationTrigger(dateMatching: newComponents, repeats: false)
         

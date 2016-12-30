@@ -11,13 +11,26 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class PlaceViewController: UIViewController, CLLocationManagerDelegate {
+class PlaceViewController: UIViewController, CLLocationManagerDelegate, UISearchBarDelegate {
     
-    @IBOutlet weak var reminderLabel: UILabel!
-    @IBOutlet weak var discriptionTextField: UITextField!
-    @IBOutlet weak var myMapView: MKMapView!
+    var searchController:UISearchController!
+    var annotation:MKAnnotation!
+    var localSearchRequest:MKLocalSearchRequest!
+    var localSearch:MKLocalSearch!
+    var localSearchResponse:MKLocalSearchResponse!
+    var error:NSError!
+    var pointAnnotation:MKPointAnnotation!
+    var pinAnnotationView:MKPinAnnotationView!
     
-    var resultSearchController:UISearchController? = nil
+    @IBOutlet weak var myMapView: MKMapView!    
+    @IBAction func searchButton(_ sender: Any) {
+        
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.hidesNavigationBarDuringPresentation = false
+        self.searchController.searchBar.delegate = self
+        present(searchController, animated: true, completion: nil)
+    }
+    
     
     let locationManager = CLLocationManager()
     
@@ -35,20 +48,45 @@ class PlaceViewController: UIViewController, CLLocationManagerDelegate {
         self.view.endEditing(true)
         return false
     }
-
-     func locationManager(_manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    
+    func locationManager(_manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
             locationManager.requestLocation()
         }
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.first {
-            let span = MKCoordinateSpanMake(0.05, 0.05)
-            let region = MKCoordinateRegion(center: location.coordinate, span: span)
-            myMapView.setRegion(region, animated: true)
-        }
+        
     }
     func locationManager(_manager: CLLocationManager, didFailWithError error: NSError) {
         print("error:: (error)")
+    }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar){
+        
+        searchBar.resignFirstResponder()
+        dismiss(animated: true, completion: nil)
+        if self.myMapView.annotations.count != 0{
+            annotation = self.myMapView.annotations[0]
+            self.myMapView.removeAnnotation(annotation)
+        }
+        localSearchRequest = MKLocalSearchRequest()
+        localSearchRequest.naturalLanguageQuery = searchBar.text
+        localSearch = MKLocalSearch(request: localSearchRequest)
+        localSearch.start { (localSearchResponse, error) -> Void in
+            
+            if localSearchResponse == nil{
+                let alertController = UIAlertController(title: nil, message: "Place Not Found", preferredStyle: UIAlertControllerStyle.alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
+                return
+            }
+            self.pointAnnotation = MKPointAnnotation()
+            self.pointAnnotation.title = searchBar.text
+            self.pointAnnotation.coordinate = CLLocationCoordinate2D(latitude: localSearchResponse!.boundingRegion.center.latitude, longitude:     localSearchResponse!.boundingRegion.center.longitude)
+            
+            
+            self.pinAnnotationView = MKPinAnnotationView(annotation: self.pointAnnotation, reuseIdentifier: nil)
+            self.myMapView.centerCoordinate = self.pointAnnotation.coordinate
+            self.myMapView.addAnnotation(self.pinAnnotationView.annotation!)
+        }
     }
 }
