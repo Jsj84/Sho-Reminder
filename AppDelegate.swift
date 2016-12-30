@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 import UserNotifications
 
 @UIApplicationMain
@@ -15,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     var isGrantedNotificationAccess:Bool = false
+    var locationManager = CLLocationManager()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         

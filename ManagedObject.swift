@@ -15,6 +15,7 @@ class ManagedObject: NSObject {
     var context: NSManagedObjectContext
     var names:[NSObject] = []
     var date:[NSObject] = []
+    var locations:[NSObject] = []
     
     override init() {
         
