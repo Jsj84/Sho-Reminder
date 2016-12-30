@@ -34,7 +34,7 @@
 		7753BBE31E1334B900B78D49 /* TimeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTableViewCell.swift; sourceTree = "<group>"; };
 		7753BBE41E1334B900B78D49 /* TimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeViewController.swift; sourceTree = "<group>"; };
 		7753BBEC1E1334D300B78D49 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		7753BBF01E1335D900B78D49 /* ManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedObject.swift; sourceTree = "<group>"; };
+		7753BBF01E1335D900B78D49 /* ManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ManagedObject.swift; path = ../ManagedObject.swift; sourceTree = "<group>"; };
 		77FB8BD21E16BF30005316B5 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,7 +91,6 @@
 		7753BBEF1E13355100B78D49 /* Time */ = {
 			isa = PBXGroup;
 			children = (
-				7753BBF01E1335D900B78D49 /* ManagedObject.swift */,
 				7753BBE41E1334B900B78D49 /* TimeViewController.swift */,
 				7753BBE31E1334B900B78D49 /* TimeTableViewCell.swift */,
 			);
@@ -121,6 +120,7 @@
 				7753BBDB1E13349B00B78D49 /* AppDelegate.swift */,
 				7753BBEC1E1334D300B78D49 /* Main.storyboard */,
 				7753BBD21E13345400B78D49 /* LaunchScreen.storyboard */,
+				7753BBF01E1335D900B78D49 /* ManagedObject.swift */,
 				7753BBD51E13345400B78D49 /* Info.plist */,
 				7753BBCD1E13345400B78D49 /* Sho_Reminder.xcdatamodeld */,
 			);

@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 import Foundation
 
 class ManagedObject: NSObject {
@@ -15,7 +16,6 @@ class ManagedObject: NSObject {
     var context: NSManagedObjectContext
     var names:[NSObject] = []
     var date:[NSObject] = []
-    var locations:[NSObject] = []
     
     override init() {
         
@@ -65,7 +65,7 @@ class ManagedObject: NSObject {
             
         }
     }
-    func getData () {
+     func getData () {
         //create a fetch request, telling it about the entity
         let fetchRequest: NSFetchRequest<Items> = Items.fetchRequest()
         
@@ -93,9 +93,9 @@ class ManagedObject: NSObject {
         
         let result = try? moc.fetch(fetchRequest)
         let resultData = result as! [Items]
-
+        
         for _ in resultData {
-           let object = resultData.first
+            let object = resultData.first
             moc.delete(object!)
             print("Inex Deleted: \(object)")
         }

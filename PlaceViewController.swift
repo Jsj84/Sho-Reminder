@@ -13,6 +13,8 @@ import CoreLocation
 
 class PlaceViewController: UIViewController, CLLocationManagerDelegate, UISearchBarDelegate {
     
+    var fh = ManagedObject()
+    
     var locationManager = CLLocationManager()
     var coordinate = CLLocationCoordinate2D()
     var newCorditnate:[CLLocationCoordinate2D] = []
@@ -48,7 +50,7 @@ class PlaceViewController: UIViewController, CLLocationManagerDelegate, UISearch
         
         myMapView.showsUserLocation = true
         myMapView.userTrackingMode = .follow
-
+        
         
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -57,12 +59,12 @@ class PlaceViewController: UIViewController, CLLocationManagerDelegate, UISearch
     }
     
     func locationManager(_manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-         if status != .authorizedAlways {
+        if status != .authorizedAlways {
             let alert = UIAlertController(title: "Warning", message: "You have you location status set to deny for this app! Please go to settings and grant permission to receive reminders", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-         else if status == .authorizedAlways {
+        else if status == .authorizedAlways {
             if CLLocationManager.isMonitoringAvailable(for: CLBeaconRegion.self) {
                 if CLLocationManager.isRangingAvailable() {
                     locationManager.startUpdatingLocation()
@@ -105,9 +107,8 @@ class PlaceViewController: UIViewController, CLLocationManagerDelegate, UISearch
             self.myMapView.centerCoordinate = self.pointAnnotation.coordinate
             self.myMapView.addAnnotation(self.pinAnnotationView.annotation!)
             
-           self.newCorditnate = [self.annotation.coordinate]
-            print(self.newCorditnate)
-
+            self.newCorditnate = [self.annotation.coordinate]
+            
         }
     }
 }
