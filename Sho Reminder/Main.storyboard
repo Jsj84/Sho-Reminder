@@ -14,7 +14,7 @@
         <!--Sho Remind-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="HomeViewController" customModule="Sho_Remind" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="HomeViewController" customModule="Sho_Reminder" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -57,7 +57,7 @@
                                 <rect key="frame" x="16" y="112" width="343" height="547"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="61" id="lG9-BH-R7Y" customClass="HomeTableViewCell" customModule="Sho_Remind" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="61" id="lG9-BH-R7Y" customClass="HomeTableViewCell" customModule="Sho_Reminder" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="56" width="343" height="61"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lG9-BH-R7Y" id="DmG-es-w4Q">
@@ -134,7 +134,7 @@
         <!--Time View Controller-->
         <scene sceneID="Zk6-a3-NGP">
             <objects>
-                <viewController id="fj2-Me-P1i" customClass="TimeViewController" customModule="Sho_Remind" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="fj2-Me-P1i" customClass="TimeViewController" customModule="Sho_Reminder" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ftz-wD-TIj"/>
                         <viewControllerLayoutGuide type="bottom" id="YxM-Ox-L6D"/>
@@ -163,12 +163,15 @@
                                 <date key="date" timeIntervalSinceReferenceDate="504384238.14771199">
                                     <!--2016-12-25 18:43:58 +0000-->
                                 </date>
+                                <connections>
+                                    <action selector="datePickerDidSelectNewDate:" destination="fj2-Me-P1i" eventType="valueChanged" id="G2e-8i-z7W"/>
+                                </connections>
                             </datePicker>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="60" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="XWh-OA-spb">
                                 <rect key="frame" x="0.0" y="334" width="375" height="333"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="60" id="W8m-bu-7uh" customClass="TimeTableViewCell" customModule="Sho_Remind" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="60" id="W8m-bu-7uh" customClass="TimeTableViewCell" customModule="Sho_Reminder" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="56" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="W8m-bu-7uh" id="Eqo-X2-Taj">
@@ -246,7 +249,7 @@
         <!--Place View Controller-->
         <scene sceneID="Tfa-Np-7yo">
             <objects>
-                <viewController id="Wgi-C2-LqH" customClass="PlaceViewController" customModule="Sho_Remind" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Wgi-C2-LqH" customClass="PlaceViewController" customModule="Sho_Reminder" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="f4C-b7-j3j"/>
                         <viewControllerLayoutGuide type="bottom" id="ciF-Ms-4G6"/>

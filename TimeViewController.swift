@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import CoreData
+import UserNotifications
 
 class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
@@ -16,6 +17,12 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!
     @IBOutlet weak var tableView: UITableView!
+    @IBAction func datePickerDidSelectNewDate(_ sender: Any) {
+
+        let selectedDate = timePicker.date
+        let delegate = UIApplication.shared.delegate as? AppDelegate
+        delegate?.scheduleNotification(at: selectedDate)
+    }
     
     var fh = ManagedObject()
     
@@ -81,6 +88,12 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         cell.layer.borderWidth = 5
         cell.layer.cornerRadius = 15
         cell.layer.borderColor = UIColor.black.cgColor
+        if checkTimeStamp(date: fh.date[indexPath.row] as! String) == true {
+    
+        }
+        else {
+            print("timeStamp is equal to false")
+        }
         return cell
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -93,6 +106,21 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             tableView.reloadData()
             tableView.reloadData()
             
+        }
+    }
+    func checkTimeStamp(date: String!) -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        dateFormatter.locale = Locale(identifier:"en_US_POSIX")
+        let datecomponents = dateFormatter.date(from: date)
+        
+        let now = Date()
+        
+        if (datecomponents == now) {
+            return true
+        } else {
+            return false
         }
     }
 }

@@ -35,7 +35,7 @@ class ManagedObject: NSObject {
         DispatchQueue.global(qos: .background).async {
             let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
             let docURL = urls[urls.endIndex - 1]
-            let storURL = docURL.appendingPathComponent("DataModel.sqlite")
+            let storURL = docURL.appendingPathComponent("Sho_Reminder.sqlite")
             
             do {
                 try psc.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storURL, options: nil)
