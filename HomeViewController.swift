@@ -26,7 +26,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         performSegue(withIdentifier: "placeSegue", sender: self)
     }
     
-    let cellSpacingHeight: CGFloat = 20
     let tempString = ["10 Clinton St. Brooklyn, N.Y", "437 Madison Avenue, New Yory, N.Y", "Port Authority Bus Terminal"]
     
     override func viewDidLoad() {
@@ -55,9 +54,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.backgroundView?.isOpaque = true
         tableView.allowsSelection = false
     }
-    override func viewWillAppear(_ animated: Bool) {
-        fh.getData()
-    }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return "Next time reminder"
@@ -67,7 +63,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return cellSpacingHeight
+        if section == 0 {
+            return 30
+        }
+        else  {
+            return 55
+        }
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2

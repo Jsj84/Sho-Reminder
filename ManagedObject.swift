@@ -83,6 +83,7 @@ class ManagedObject: NSObject {
                 date.append(trans.value(forKey: "date") as! NSObject)
                 
             }
+            
         } catch {
             print("Error with request: \(error)")
         }
