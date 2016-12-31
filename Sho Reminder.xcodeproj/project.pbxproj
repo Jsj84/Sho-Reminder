@@ -20,6 +20,7 @@
 		7753BBF11E1335D900B78D49 /* ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBF01E1335D900B78D49 /* ManagedObject.swift */; };
 		77FB8BD31E16BF30005316B5 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 77FB8BD21E16BF30005316B5 /* background.png */; };
 		77FB8BD81E172F24005316B5 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FB8BD71E172F24005316B5 /* LocationSearchTable.swift */; };
+		77FB8BDD1E175E70005316B5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77FB8BDC1E175E70005316B5 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,8 @@
 		7753BBF01E1335D900B78D49 /* ManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ManagedObject.swift; path = ../ManagedObject.swift; sourceTree = "<group>"; };
 		77FB8BD21E16BF30005316B5 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		77FB8BD71E172F24005316B5 /* LocationSearchTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
+		77FB8BDC1E175E70005316B5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		77FB8BDE1E175E9A005316B5 /* Sho Reminder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Sho Reminder.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77FB8BDD1E175E70005316B5 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,6 +60,7 @@
 			children = (
 				7753BBC51E13345400B78D49 /* Sho Reminder */,
 				7753BBC41E13345400B78D49 /* Products */,
+				77FB8BDB1E175E70005316B5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -70,6 +75,7 @@
 		7753BBC51E13345400B78D49 /* Sho Reminder */ = {
 			isa = PBXGroup;
 			children = (
+				77FB8BDE1E175E9A005316B5 /* Sho Reminder.entitlements */,
 				77FB8BD61E16EC65005316B5 /* Core Files */,
 				77FB8BD51E16EC48005316B5 /* Images */,
 				77FB8BD41E16EC38005316B5 /* Locations */,
@@ -130,6 +136,14 @@
 			name = "Core Files";
 			sourceTree = "<group>";
 		};
+		77FB8BDB1E175E70005316B5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				77FB8BDC1E175E70005316B5 /* MapKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -165,6 +179,17 @@
 						DevelopmentTeam = JN83A35T6F;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -327,6 +352,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "Sho Reminder/Sho Reminder.entitlements";
 				DEVELOPMENT_TEAM = JN83A35T6F;
 				INFOPLIST_FILE = "Sho Reminder/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -342,6 +368,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "Sho Reminder/Sho Reminder.entitlements";
 				DEVELOPMENT_TEAM = JN83A35T6F;
 				INFOPLIST_FILE = "Sho Reminder/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
