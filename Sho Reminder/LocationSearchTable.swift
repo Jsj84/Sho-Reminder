@@ -9,14 +9,12 @@
 import Foundation
 import UIKit
 import MapKit
-import AddressBook
 
-
-class LocationSearchTable: UITableViewController {
+class LocationSearchTable: UITableViewController, UISearchResultsUpdating {
     
     var matchingItems:[MKMapItem] = []
     var mapView: MKMapView? = nil
-
+    
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         guard let mapView = mapView,
             let searchBarText = searchController.searchBar.text else { return }
@@ -55,24 +53,19 @@ class LocationSearchTable: UITableViewController {
         )
         return addressLine
     }
-}
-extension LocationSearchTable: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         print("")
     }
-}
-extension LocationSearchTable {
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.matchingItems.count
     }
     
-     func tableView(_tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
         let selectedItem = matchingItems[indexPath.row].placemark
         cell.textLabel?.text = selectedItem.name
-
+        
         return cell
     }
 }

@@ -16,9 +16,10 @@ protocol HandleMapSearch {
     func dropPinZoomIn(placemark:MKPlacemark)
 }
 
-class PlaceViewController : UIViewController {
+class PlaceViewController : UIViewController, CLLocationManagerDelegate {
     
     var selectedPin:MKPlacemark? = nil
+    var locationManager = CLLocationManager()
     
     var resultSearchController:UISearchController? = nil
     
@@ -27,10 +28,10 @@ class PlaceViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        locationManager.delegate = self
-        //        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        //        locationManager.requestWhenInUseAuthorization()
-        //        locationManager.requestLocation()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
         
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
@@ -53,29 +54,23 @@ class PlaceViewController : UIViewController {
             mapItem.openInMaps(launchOptions: launchOptions)
         }
     }
-}
-
-//extension ViewController : CLLocationManagerDelegate {
-//    private func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-//        if status == .authorizedWhenInUse {
-//            locationManager.requestLocation()
-//        }
-//    }
-//
-//    private func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        if let location = locations.first {
-//            let span = MKCoordinateSpanMake(0.05, 0.05)
-//            let region = MKCoordinateRegion(center: location.coordinate, span: span)
-//            mapView.setRegion(region, animated: true)
-//        }
-//    }
-//
-//    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-//        print("error:: \(error)")
-//    }
-//}
-
-extension PlaceViewController: HandleMapSearch {
+    private func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
+            locationManager.requestLocation()
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            let span = MKCoordinateSpanMake(0.05, 0.05)
+            let region = MKCoordinateRegion(center: location.coordinate, span: span)
+            mapView.setRegion(region, animated: true)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("error:: \(error)")
+    }
     func dropPinZoomIn(placemark:MKPlacemark){
         // cache the pin
         selectedPin = placemark
@@ -93,9 +88,6 @@ extension PlaceViewController: HandleMapSearch {
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
     }
-}
-
-extension PlaceViewController : MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
         if annotation is MKUserLocation {
             //return nil so map view draws "blue dot" for standard user location
