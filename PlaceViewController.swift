@@ -14,12 +14,11 @@ import CoreLocation
 protocol HandleMapSearch {
     func dropPinZoomIn(placemark:MKPlacemark)
 }
-
-class PlaceViewController : UIViewController, CLLocationManagerDelegate {
+class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch {
 
     let searchRadius: CLLocationDistance = 2000
     var selectedPin:MKPlacemark? = nil
-    var locationManager = CLLocationManager()
+    let locationManager = CLLocationManager()
     var resultSearchController:UISearchController? = nil
     
     @IBOutlet weak var mapView: MKMapView!
@@ -45,8 +44,8 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate {
         resultSearchController?.dimsBackgroundDuringPresentation = true
         definesPresentationContext = true
         
-        locationSearchTable.mapView = self.mapView
-        locationSearchTable.handleMapSearchDelegate? = self as! HandleMapSearch
+        locationSearchTable.mapView = mapView
+        locationSearchTable.handleMapSearchDelegate = self
     }
     func getDirections(){
         if let selectedPin = selectedPin {
@@ -76,10 +75,10 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error:: \(error)")
     }
-    func dropPinZoomIn(placemark:MKPlacemark){
+   func dropPinZoomIn(placemark:MKPlacemark) {
         // cache the pin
         selectedPin = placemark
-        // clear existing pins
+
        // mapView.removeAnnotations(mapView.annotations)
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
@@ -88,7 +87,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate {
             let state = placemark.administrativeArea {
             annotation.subtitle = "\(city) \(state)"
         }
-        mapView.addAnnotation(annotation)
+        self.mapView.addAnnotation(annotation)
         let span = MKCoordinateSpanMake(0.05, 0.05)
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
@@ -97,7 +96,6 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate {
 extension PlaceViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
         if annotation is MKUserLocation {
-            //return nil so map view draws "blue dot" for standard user location
             return nil
         }
         let reuseId = "pin"
@@ -107,7 +105,7 @@ extension PlaceViewController: MKMapViewDelegate {
         pinView?.canShowCallout = true
         let smallSquare = CGSize(width: 30, height: 30)
         let button = UIButton(frame: CGRect(origin: .zero, size: smallSquare))
-        button.setBackgroundImage(UIImage(named: "car"), for: .normal)
+        button.setBackgroundImage(#imageLiteral(resourceName: "car"), for: .normal)
         button.addTarget(self, action: #selector(PlaceViewController.getDirections), for: .touchUpInside)
         pinView?.leftCalloutAccessoryView = button
         return pinView
