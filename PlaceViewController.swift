@@ -15,7 +15,7 @@ protocol HandleMapSearch {
     func dropPinZoomIn(placemark:MKPlacemark)
 }
 class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch {
-
+    
     let searchRadius: CLLocationDistance = 2000
     var selectedPin:MKPlacemark? = nil
     let locationManager = CLLocationManager()
@@ -47,12 +47,28 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         locationSearchTable.mapView = mapView
         locationSearchTable.handleMapSearchDelegate = self
     }
-    func getDirections(){
-        if let selectedPin = selectedPin {
-            let mapItem = MKMapItem(placemark: selectedPin)
-            let launchOptions = [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving]
-            mapItem.openInMaps(launchOptions: launchOptions)
+    
+    func presentAlert() {
+        let alertController = UIAlertController(title: "Reminder", message: "Please enter the description of this reminder you will receive upon entering this location", preferredStyle: .alert)
+        
+        let confirmAction = UIAlertAction(title: "Save", style: .default) { (_) in
+            if let field = alertController.textFields?[0] {
+                // store your data
+                print(field)
+            } else {
+                // user did not fill field
+            }
         }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "reminder description"
+        }
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true, completion: nil)
     }
     private func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .denied {
@@ -60,7 +76,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-       else if status == .authorizedAlways {
+        else if status == .authorizedAlways {
             locationManager.requestLocation()
             locationManager.startUpdatingLocation()
         }
@@ -75,11 +91,10 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error:: \(error)")
     }
-   func dropPinZoomIn(placemark:MKPlacemark) {
+    func dropPinZoomIn(placemark:MKPlacemark) {
         // cache the pin
         selectedPin = placemark
-
-       // mapView.removeAnnotations(mapView.annotations)
+        
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
         annotation.title = placemark.name
@@ -105,10 +120,10 @@ extension PlaceViewController: MKMapViewDelegate {
         pinView?.canShowCallout = true
         let smallSquare = CGSize(width: 30, height: 30)
         let button = UIButton(frame: CGRect(origin: .zero, size: smallSquare))
-        button.setBackgroundImage(#imageLiteral(resourceName: "car"), for: .normal)
-        button.addTarget(self, action: #selector(PlaceViewController.getDirections), for: .touchUpInside)
+        button.setBackgroundImage(#imageLiteral(resourceName: "checkList"), for: .normal)
+        button.addTarget(self, action: #selector(presentAlert), for: .touchUpInside)
         pinView?.leftCalloutAccessoryView = button
         return pinView
     }
-
+    
 }
