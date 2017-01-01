@@ -10,20 +10,21 @@ import Foundation
 import UIKit
 import MapKit
 import CoreLocation
-import AddressBook
 
 protocol HandleMapSearch {
     func dropPinZoomIn(placemark:MKPlacemark)
 }
 
 class PlaceViewController : UIViewController, CLLocationManagerDelegate {
+
+    let searchRadius: CLLocationDistance = 2000
     
     var selectedPin:MKPlacemark? = nil
+    
     var locationManager = CLLocationManager()
     
     var resultSearchController:UISearchController? = nil
     
-    //  let locationManager = CLLocationManager()
     @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
@@ -40,6 +41,11 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate {
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
         resultSearchController?.searchResultsUpdater = locationSearchTable
+
+        
+        locationSearchTable.mapView = mapView
+        locationSearchTable.mapView?.delegate = self
+        
         let searchBar = resultSearchController!.searchBar
         searchBar.sizeToFit()
         searchBar.placeholder = "Search for places"
@@ -47,10 +53,10 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate {
         resultSearchController?.hidesNavigationBarDuringPresentation = false
         resultSearchController?.dimsBackgroundDuringPresentation = true
         definesPresentationContext = true
+        
         locationSearchTable.mapView = mapView
-        // locationSearchTable.handleMapSearchDelegate = self
+       // locationSearchTable.handleMapSearchDelegate = self
     }
-    
     func getDirections(){
         if let selectedPin = selectedPin {
             let mapItem = MKMapItem(placemark: selectedPin)
@@ -91,6 +97,8 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate {
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
     }
+}
+extension PlaceViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
         if annotation is MKUserLocation {
             //return nil so map view draws "blue dot" for standard user location
@@ -108,4 +116,5 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate {
         pinView?.leftCalloutAccessoryView = button
         return pinView
     }
+
 }
