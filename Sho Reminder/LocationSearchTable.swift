@@ -14,12 +14,8 @@ class LocationSearchTable: UITableViewController {
     
     var matchingItems:[MKMapItem] = []
     var mapView: MKMapView? = nil
-    var handleMapSearchDelegate:HandleMapSearch? = nil
+    var handleMapSearchDelegate:HandleMapSearch?
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }    
     func parseAddress(selectedItem:MKPlacemark) -> String {
         // put a space between "4" and "Melrose Place"
         let firstSpace = (selectedItem.subThoroughfare != nil && selectedItem.thoroughfare != nil) ? " " : ""
@@ -58,15 +54,11 @@ extension LocationSearchTable : UISearchResultsUpdating {
                 return
             }
             self.matchingItems = response.mapItems
-            print(self.matchingItems)
             self.tableView.reloadData()
         }
     }
 }
 extension LocationSearchTable {
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return matchingItems.count}
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.matchingItems.count
     }
@@ -76,13 +68,12 @@ extension LocationSearchTable {
         cell.textLabel?.text = selectedItem.name
         cell.detailTextLabel?.text = parseAddress(selectedItem: selectedItem)
         return cell
-        
     }
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+}
+extension LocationSearchTable {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = matchingItems[indexPath.row].placemark
         handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
         dismiss(animated: true, completion: nil)
     }
-    
-    
 }

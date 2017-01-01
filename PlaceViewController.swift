@@ -18,19 +18,14 @@ protocol HandleMapSearch {
 class PlaceViewController : UIViewController, CLLocationManagerDelegate {
 
     let searchRadius: CLLocationDistance = 2000
-    
     var selectedPin:MKPlacemark? = nil
-    
     var locationManager = CLLocationManager()
-    
     var resultSearchController:UISearchController? = nil
     
     @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        mapView.showsUserLocation = true
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -41,10 +36,6 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate {
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
         resultSearchController?.searchResultsUpdater = locationSearchTable
-
-        
-        locationSearchTable.mapView = mapView
-        locationSearchTable.mapView?.delegate = self
         
         let searchBar = resultSearchController!.searchBar
         searchBar.sizeToFit()
@@ -54,8 +45,8 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate {
         resultSearchController?.dimsBackgroundDuringPresentation = true
         definesPresentationContext = true
         
-        locationSearchTable.mapView = mapView
-       // locationSearchTable.handleMapSearchDelegate = self
+        locationSearchTable.mapView = self.mapView
+        locationSearchTable.handleMapSearchDelegate? = self as! HandleMapSearch
     }
     func getDirections(){
         if let selectedPin = selectedPin {
@@ -65,7 +56,12 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate {
         }
     }
     private func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if status == .authorizedWhenInUse {
+        if status == .denied {
+            let alert = UIAlertController(title: "Warning", message: "Location updates are required for this app to set reminders based on location. You can configure this is settings.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+       else if status == .authorizedAlways {
             locationManager.requestLocation()
             locationManager.startUpdatingLocation()
         }
@@ -74,7 +70,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate {
         if let location = locations.first {
             let span = MKCoordinateSpanMake(0.05, 0.05)
             let region = MKCoordinateRegion(center: location.coordinate, span: span)
-            mapView.setRegion(region, animated: true)
+            self.mapView.setRegion(region, animated: true)
         }
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -84,7 +80,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate {
         // cache the pin
         selectedPin = placemark
         // clear existing pins
-        mapView.removeAnnotations(mapView.annotations)
+       // mapView.removeAnnotations(mapView.annotations)
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
         annotation.title = placemark.name
