@@ -39,8 +39,6 @@
 	</array>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Sho Reminder needs your permission to provide you with location based services</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Sho Reminder needs to be able to access your location to inform you of upcoming reminders </string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

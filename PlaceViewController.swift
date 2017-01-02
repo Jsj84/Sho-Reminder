@@ -20,6 +20,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     var selectedPin:MKPlacemark? = nil
     let locationManager = CLLocationManager()
     var resultSearchController:UISearchController? = nil
+    let fh = ManagedObject()
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -28,7 +29,6 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
         locationManager.requestAlwaysAuthorization()
         locationManager.requestLocation()
         
@@ -46,8 +46,28 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         
         locationSearchTable.mapView = mapView
         locationSearchTable.handleMapSearchDelegate = self
+        
+        fh.getLocationData()
+        
+        //setting the map region
+        if let latitude:CLLocationDegrees = fh.latitude as NSObject as? Double {
+       let longitude: CLLocationDegrees? = fh.longitude as NSObject as? Double
+        let latDelta: CLLocationDegrees = 0.01
+        let lonDelta: CLLocationDegrees = 0.01
+        let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, lonDelta)
+        let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longitude!)
+        let region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
+        mapView.setRegion(region, animated: true)
+        
+        //map annotation
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = location
+        annotation.title = ""
+        annotation.subtitle = ""
+        mapView.addAnnotation(annotation)
+        }
+        
     }
-    
     func presentAlert() {
         let alertController = UIAlertController(title: "Reminder", message: "Please enter the description of this reminder you will receive upon entering this location", preferredStyle: .alert)
         

@@ -15,6 +15,7 @@ class LocationSearchTable: UITableViewController {
     var matchingItems:[MKMapItem] = []
     var mapView: MKMapView? = nil
     var handleMapSearchDelegate:HandleMapSearch? = nil
+    let fh = ManagedObject()
     
     func parseAddress(selectedItem:MKPlacemark) -> String {
         // put a space between "4" and "Melrose Place"
@@ -73,6 +74,12 @@ extension LocationSearchTable {
 extension LocationSearchTable {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = matchingItems[indexPath.row].placemark
+        // save to coreData
+        let lat2D = selectedItem.coordinate.latitude
+        let long2D = selectedItem.coordinate.longitude
+        fh.writeLocationData(Items: "Locations", latitude: lat2D, longitude: long2D)
+        fh.getLocationData()
+        // drop pin and dismiss table view controller
         handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
         dismiss(animated: true, completion: nil)
     }

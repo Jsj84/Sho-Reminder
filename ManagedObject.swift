@@ -176,8 +176,7 @@ class ManagedObject: NSObject {
             print("Could not save \(error), \(error.userInfo)")
         } catch {
             
-        }
-        
+        }        
     }
     // MARK: Get Context
     func getContext () -> NSManagedObjectContext {
