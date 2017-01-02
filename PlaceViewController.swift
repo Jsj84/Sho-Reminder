@@ -49,24 +49,25 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         locationSearchTable.mapView = mapView
         locationSearchTable.handleMapSearchDelegate = self
         
-        //setting the map region
-//        let latitude:Double = fh.latitude as NSObject as! Double
-//        let longitude = fh.longitude as NSObject as! Double
-//        let latDelta: CLLocationDegrees = 0.01
-//        let lonDelta: CLLocationDegrees = 0.01
-//        let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, lonDelta)
-//        let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-//        let region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
-//        mapView.setRegion(region, animated: true)
-//        
-//        //map annotation
-//        let annotation = MKPointAnnotation()
-//        annotation.coordinate = location
-//        annotation.title = ""
-//        annotation.subtitle = ""
-//        mapView.addAnnotation(annotation)
+        // loop through the locations array and mention the degree one by one
+        for index in 0..<fh.latitude.count {
+            let latDelta: CLLocationDegrees = 0.01
+            let lonDelta: CLLocationDegrees = 0.01
+            let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, lonDelta)
+            let lat = Double(fh.latitude[index])
+            let long = Double(fh.longitude[index])
+            let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: lat, longitude: long)
         
-        
+            let region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
+            mapView.setRegion(region, animated: true)
+            
+            //map annotation
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = location
+            annotation.title = ""
+            annotation.subtitle = ""
+            mapView.addAnnotation(annotation)
+        }        
     }
     func presentAlert() {
         let alertController = UIAlertController(title: "Reminder", message: "Please enter the description of this reminder you will receive upon entering this location", preferredStyle: .alert)

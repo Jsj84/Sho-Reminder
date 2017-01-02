@@ -16,8 +16,8 @@ class ManagedObject: NSObject {
     var context: NSManagedObjectContext
     var names:[NSObject] = []
     var date:[NSObject] = []
-    var latitude:[NSObject] = []
-    var longitude:[NSObject] = []
+    var latitude:[Double] = []
+    var longitude:[Double] = []
     
     override init() {
         
@@ -150,8 +150,8 @@ class ManagedObject: NSObject {
             //You need to convert to NSManagedObject to use 'for' loops
             for trans in (searchResults as [NSManagedObject]!) {
                 //get the Key Value pairs (although there may be a better way to do that...
-                latitude.append(trans.value(forKey: "latitude") as! NSObject)
-                longitude.append(trans.value(forKey: "longitude") as! NSObject)
+                latitude.append(trans.value(forKey: "latitude") as! NSObject as! Double)
+                longitude.append(trans.value(forKey: "longitude") as! NSObject as! Double)
             }
             
         } catch {
