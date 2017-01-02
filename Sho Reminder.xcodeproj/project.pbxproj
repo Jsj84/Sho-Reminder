@@ -78,7 +78,6 @@
 		7753BBC51E13345400B78D49 /* Sho Reminder */ = {
 			isa = PBXGroup;
 			children = (
-				77FB8BDE1E175E9A005316B5 /* Sho Reminder.entitlements */,
 				77FB8BD61E16EC65005316B5 /* Core Files */,
 				77FB8BD51E16EC48005316B5 /* Images */,
 				77FB8BD41E16EC38005316B5 /* Locations */,
@@ -129,6 +128,7 @@
 		77FB8BD61E16EC65005316B5 /* Core Files */ = {
 			isa = PBXGroup;
 			children = (
+				77FB8BDE1E175E9A005316B5 /* Sho Reminder.entitlements */,
 				7753BBDB1E13349B00B78D49 /* AppDelegate.swift */,
 				7753BBEC1E1334D300B78D49 /* Main.storyboard */,
 				7753BBD21E13345400B78D49 /* LaunchScreen.storyboard */,
