@@ -27,6 +27,8 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        fh.getLocationData()
+        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
@@ -47,25 +49,23 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         locationSearchTable.mapView = mapView
         locationSearchTable.handleMapSearchDelegate = self
         
-        fh.getLocationData()
-        
         //setting the map region
-        if let latitude:CLLocationDegrees = fh.latitude as NSObject as? Double {
-       let longitude: CLLocationDegrees? = fh.longitude as NSObject as? Double
-        let latDelta: CLLocationDegrees = 0.01
-        let lonDelta: CLLocationDegrees = 0.01
-        let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, lonDelta)
-        let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longitude!)
-        let region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
-        mapView.setRegion(region, animated: true)
+//        let latitude:Double = fh.latitude as NSObject as! Double
+//        let longitude = fh.longitude as NSObject as! Double
+//        let latDelta: CLLocationDegrees = 0.01
+//        let lonDelta: CLLocationDegrees = 0.01
+//        let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, lonDelta)
+//        let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+//        let region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
+//        mapView.setRegion(region, animated: true)
+//        
+//        //map annotation
+//        let annotation = MKPointAnnotation()
+//        annotation.coordinate = location
+//        annotation.title = ""
+//        annotation.subtitle = ""
+//        mapView.addAnnotation(annotation)
         
-        //map annotation
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = location
-        annotation.title = ""
-        annotation.subtitle = ""
-        mapView.addAnnotation(annotation)
-        }
         
     }
     func presentAlert() {

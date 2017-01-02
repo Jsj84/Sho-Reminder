@@ -114,7 +114,7 @@ class ManagedObject: NSObject {
         
     }
     // handle read/write/delete methods for the Locations
-    func writeLocationData (Items: String, latitude: Double, longitude: Double) {
+    func writeLocationData (Items: String, latitude: String, longitude: String) {
         let context = self.context
         
         //retrieve the entity that we just created
