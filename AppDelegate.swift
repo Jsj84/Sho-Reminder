@@ -59,12 +59,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let trigger = UNCalendarNotificationTrigger(dateMatching: newComponents, repeats: false)
         
         let content = UNMutableNotificationContent()
-        content.title = "Don't Forget To...."
+        content.title = "Don't Forget:"
         content.body = body
         content.sound = UNNotificationSound.default()
         let request = UNNotificationRequest(identifier: "textNotification", content: content, trigger: trigger)
 
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        //UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         UNUserNotificationCenter.current().add(request) {(error) in
             if let error = error {
                 print("error: \(error)")

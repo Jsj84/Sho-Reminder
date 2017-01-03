@@ -101,7 +101,7 @@ class ManagedObject: NSObject {
         
         for object in [data] {
             moc.delete(object! as! NSManagedObject)
-            print("Inex Deleted: \(object)")
+            print("Object Deleted: \(object)")
         }
         do {
             try moc.save()
@@ -110,8 +110,7 @@ class ManagedObject: NSObject {
             print("Could not save \(error), \(error.userInfo)")
         } catch {
             
-        }
-        
+        }        
     }
     // handle read/write/delete methods for the Locations
     func writeLocationData (Items: String, latitude: Double, longitude: Double) {

@@ -78,7 +78,6 @@ extension LocationSearchTable {
         let lat2D = selectedItem.coordinate.latitude
         let long2D = selectedItem.coordinate.longitude
         fh.writeLocationData(Items: "Locations", latitude: lat2D, longitude: long2D)
-       // fh.getLocationData()
         // drop pin and dismiss table view controller
         handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
         dismiss(animated: true, completion: nil)
