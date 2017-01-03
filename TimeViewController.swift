@@ -11,15 +11,12 @@ import UIKit
 import CoreData
 import UserNotifications
 
-class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
+class TimeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    @IBOutlet weak var reminderName: UILabel!
-    @IBOutlet weak var reminderDiscription: UITextField!
-    @IBOutlet weak var timePicker: UIDatePicker!
     @IBOutlet weak var tableView: UITableView!
     
     var fh = ManagedObject()
-    var color = HomeViewController()
+    var color = UIColor(netHex:0x90F7A3)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,50 +25,15 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         
         view.backgroundColor = UIColor(patternImage: UIImage(named: "background.png")!)
         
-        timePicker.backgroundColor = UIColor.clear
-        
-        reminderName.textColor = UIColor.black
-
-        reminderDiscription.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.clear
-        tableView.isOpaque = true
         tableView.allowsSelection = false
-        tableView.separatorColor = color.color
+        tableView.separatorColor = color
         
-        reminderDiscription.returnKeyType = UIReturnKeyType.done
         self.hideKeyboardWhenTappedAround()
         self.dismissKeyboard()
         
-    }
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if reminderDiscription.text?.isEmpty == true {
-            let alert = UIAlertController(title: "Alert", message: "You cannot save this reminder without a description", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-        else {
-            self.view.endEditing(true)
-            
-            let dateOnPicker = timePicker.date //capture the date shown on the picker
-            let delegate = UIApplication.shared.delegate as? AppDelegate
-            delegate?.scheduleNotification(atDate: dateOnPicker, body: reminderDiscription.text!)
-
-            
-            let dateFormatter = DateFormatter() //create a date formatter
-            dateFormatter.dateStyle = DateFormatter.Style.short
-            dateFormatter.timeStyle = DateFormatter.Style.short
-            let timeString = dateFormatter.string(from: dateOnPicker)
-            
-            fh.writeData(Items: "Items", name: textField.text!, date: timePicker.date)
-            fh.names.append(textField.text! as NSObject)
-            fh.date.append(timeString as NSObject)
-            reminderDiscription.text?.removeAll()
-            
-            tableView.reloadData()
-        }
-        return false
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Saved Reminders"
@@ -82,6 +44,9 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fh.names.count
     }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+       return 15
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
         cell.myLabel_1.text = fh.names[indexPath.row] as? String
@@ -89,6 +54,7 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
         cell.backgroundColor = UIColor.white
         return cell
     }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let nameToDelete = indexPath.row
@@ -97,7 +63,6 @@ class TimeViewController: UIViewController, UITextFieldDelegate, UITableViewDele
             fh.names.remove(at: indexPath.row)
             fh.date.remove(at: indexPath.row)
             tableView.reloadData()
-            
         }
     }
 }

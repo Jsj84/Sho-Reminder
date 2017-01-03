@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		771B0EA81E1C41C800C01B4D /* TimeAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771B0EA71E1C41C800C01B4D /* TimeAddViewController.swift */; };
 		7753BBCF1E13345400B78D49 /* Sho_Reminder.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBCD1E13345400B78D49 /* Sho_Reminder.xcdatamodeld */; };
 		7753BBD11E13345400B78D49 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7753BBD01E13345400B78D49 /* Assets.xcassets */; };
 		7753BBD41E13345400B78D49 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7753BBD21E13345400B78D49 /* LaunchScreen.storyboard */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		771B0EA71E1C41C800C01B4D /* TimeAddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeAddViewController.swift; sourceTree = "<group>"; };
 		7753BBC31E13345400B78D49 /* Sho Reminder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sho Reminder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7753BBCE1E13345400B78D49 /* Sho_Reminder.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Sho_Reminder.xcdatamodel; sourceTree = "<group>"; };
 		7753BBD01E13345400B78D49 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 			children = (
 				7753BBE41E1334B900B78D49 /* TimeViewController.swift */,
 				7753BBE31E1334B900B78D49 /* TimeTableViewCell.swift */,
+				771B0EA71E1C41C800C01B4D /* TimeAddViewController.swift */,
 			);
 			name = Time;
 			path = ..;
@@ -243,6 +246,7 @@
 				7753BBE61E1334B900B78D49 /* HomeTableViewCell.swift in Sources */,
 				7753BBCF1E13345400B78D49 /* Sho_Reminder.xcdatamodeld in Sources */,
 				7753BBEB1E1334B900B78D49 /* TimeViewController.swift in Sources */,
+				771B0EA81E1C41C800C01B4D /* TimeAddViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

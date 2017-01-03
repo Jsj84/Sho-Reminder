@@ -54,6 +54,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.backgroundView?.isOpaque = true
         tableView.allowsSelection = false
     }
+    override func viewDidLayoutSubviews() {
+        fh.getData()
+    }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return "Next time reminder"
