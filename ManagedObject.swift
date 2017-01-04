@@ -14,8 +14,10 @@ import Foundation
 class ManagedObject: NSObject {
     
     var context: NSManagedObjectContext
+    
     var names:[NSObject] = []
     var date:[NSObject] = []
+    var dateString:[String] = []
     var latitude:[Double] = []
     var longitude:[Double] = []
     
@@ -47,7 +49,7 @@ class ManagedObject: NSObject {
     }
     // handle read/write/delete methods for the TimeViewController 
     
-    func writeData (Items: String, name: String, date: Date) {
+    func writeData (Items: String, name: String, date: Date, dateString: String) {
         let context = self.context
         
         //retrieve the entity that we just created
@@ -58,6 +60,7 @@ class ManagedObject: NSObject {
         //set the entity values
         transc.setValue(name, forKey: "name")
         transc.setValue(date, forKey: "date")
+        transc.setValue(dateString, forKey: "dateString")
         
         //save the object
         do {
@@ -85,6 +88,7 @@ class ManagedObject: NSObject {
                 //get the Key Value pairs (although there may be a better way to do that...
                 names.append(trans.value(forKey: "name") as! NSObject)
                 date.append(trans.value(forKey: "date") as! NSObject)
+                dateString.append(trans.value(forKey: "dateString") as! String)
                 
             }
             

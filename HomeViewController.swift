@@ -88,7 +88,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if indexPath.section == 0 {
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as! HomeTableViewCell
             cell.myLabel_1.text = fh.names[indexPath.row] as? String
-            cell.myLabel_2.text = fh.date[indexPath.row] as? String
+            cell.myLabel_2.text = fh.dateString[indexPath.row] 
             cell.backgroundColor = UIColor.clear
             return cell
         }

@@ -30,6 +30,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.backgroundColor = UIColor.clear
         tableView.allowsSelection = false
         tableView.separatorColor = color
+    
         
         self.hideKeyboardWhenTappedAround()
         self.dismissKeyboard()
@@ -45,12 +46,12 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return fh.names.count
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-       return 15
+        return 15
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
         cell.myLabel_1.text = fh.names[indexPath.row] as? String
-        cell.myLabel_2.text = fh.date[indexPath.row] as? String
+        cell.myLabel_2.text = fh.dateString[indexPath.row]
         cell.backgroundColor = UIColor.white
         return cell
     }

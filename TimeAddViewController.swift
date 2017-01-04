@@ -9,12 +9,16 @@
 import Foundation
 import UIKit
 
-class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
 
     let tableData = ["Repeat", "Time Zone"]
+    
+    var notifyDate:[Date] = []
+    var notifyBody:[String] = []
+    var dateAsString = ""
     
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!
@@ -35,17 +39,17 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.view.endEditing(true)
             
             let dateOnPicker = timePicker.date //capture the date shown on the picker
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .short
+            dateFormatter.timeStyle = .short
+            dateAsString = dateFormatter.string(from: dateOnPicker)
+            
             let delegate = UIApplication.shared.delegate as? AppDelegate
+
             delegate?.scheduleNotification(atDate: dateOnPicker, body: reminderDiscription.text!)
-            
-            let dateFormatter = DateFormatter() //create a date formatter
-            dateFormatter.dateStyle = DateFormatter.Style.short
-            dateFormatter.timeStyle = DateFormatter.Style.short
-            let timeString = dateFormatter.string(from: dateOnPicker)
-            
-            fh.writeData(Items: "Items", name: reminderDiscription.text!, date: timePicker.date)
+            fh.writeData(Items: "Items", name: reminderDiscription.text!, date: dateOnPicker, dateString: dateAsString)
             fh.names.append(reminderDiscription.text! as NSObject)
-            fh.date.append(timeString as NSObject)
+            fh.dateString.append(dateAsString)
             reminderDiscription.text?.removeAll()
             self.dismiss(animated: true, completion: nil)
             
@@ -57,9 +61,9 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         view.backgroundColor = UIColor(patternImage: UIImage(named: "background.png")!)
         
         CancelBFef.backgroundColor = color
-        CancelBFef.layer.cornerRadius = 15
+        CancelBFef.layer.cornerRadius = 8
         SaveBRef.backgroundColor = color
-        SaveBRef.layer.cornerRadius = 15
+        SaveBRef.layer.cornerRadius = 8
         
         tableView.delegate = self
         tableView.dataSource = self
