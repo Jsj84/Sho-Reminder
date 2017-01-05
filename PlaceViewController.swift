@@ -12,6 +12,7 @@ import MapKit
 import CoreLocation
 
 protocol HandleMapSearch {
+    
     func dropPinZoomIn(placemark:MKPlacemark)
 }
 class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch {
@@ -26,7 +27,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         fh.getLocationData()
         
         locationManager.delegate = self
@@ -55,9 +56,23 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         for index in 0..<fh.latitude.count {
             let lat = Double(fh.latitude[index])
             let long = Double(fh.longitude[index])
+            let t =  fh.tite[index]
             let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: lat, longitude: long)
             let placeMark:MKPlacemark = MKPlacemark(coordinate: location)
-            dropPinZoomIn(placemark: placeMark)
+            
+            selectedPin = placeMark
+            
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = (selectedPin?.coordinate)!
+            annotation.title = t
+            if let city = selectedPin?.locality,
+                let state = selectedPin?.administrativeArea {
+                annotation.subtitle = "\(city) \(state)"
+            }
+            self.mapView.addAnnotation(annotation)
+            let span = MKCoordinateSpanMake(0.05, 0.05)
+            let region = MKCoordinateRegionMake(placeMark.coordinate, span)
+            mapView.setRegion(region, animated: true)
         }
     }
     func presentAlert() {

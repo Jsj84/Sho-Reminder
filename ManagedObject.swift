@@ -20,6 +20,7 @@ class ManagedObject: NSObject {
     var dateString:[String] = []
     var latitude:[Double] = []
     var longitude:[Double] = []
+    var tite:[String] = []
     
     override init() {
         
@@ -117,7 +118,7 @@ class ManagedObject: NSObject {
         }        
     }
     // handle read/write/delete methods for the Locations
-    func writeLocationData (Items: String, latitude: Double, longitude: Double) {
+    func writeLocationData (Items: String, latitude: Double, longitude: Double, title: String) {
         let context = self.context
         
         //retrieve the entity that we just created
@@ -128,6 +129,7 @@ class ManagedObject: NSObject {
         //set the entity values
         transc.setValue(latitude, forKey: "latitude")
         transc.setValue(longitude, forKey: "longitude")
+        transc.setValue(title, forKey: "title")
         
         //save the object
         do {
@@ -155,6 +157,7 @@ class ManagedObject: NSObject {
                 //get the Key Value pairs (although there may be a better way to do that...
                 latitude.append(trans.value(forKey: "latitude") as! NSObject as! Double)
                 longitude.append(trans.value(forKey: "longitude") as! NSObject as! Double)
+                tite.append(trans.value(forKey: "title") as! String)
             }
             
         } catch {
