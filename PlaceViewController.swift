@@ -52,7 +52,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        // loop through the locations array and mention the degree one by one
+ 
         for index in 0..<fh.latitude.count {
             let lat = Double(fh.latitude[index])
             let long = Double(fh.longitude[index])
@@ -74,28 +74,6 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             let region = MKCoordinateRegionMake(placeMark.coordinate, span)
             mapView.setRegion(region, animated: true)
         }
-    }
-    func presentAlert() {
-        let alertController = UIAlertController(title: "Reminder", message: "Please enter the description of this reminder you will receive upon entering this location", preferredStyle: .alert)
-        
-        let confirmAction = UIAlertAction(title: "Save", style: .default) { (_) in
-            if let field = alertController.textFields?[0] {
-                // store your data
-                print(field)
-            } else {
-                // user did not fill field
-            }
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
-        
-        alertController.addTextField { (textField) in
-            textField.placeholder = "reminder description"
-        }
-        alertController.addAction(confirmAction)
-        alertController.addAction(cancelAction)
-        
-        self.present(alertController, animated: true, completion: nil)
     }
     private func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .denied {
@@ -134,6 +112,39 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
     }
+    func presentAlert() {
+        let alertController = UIAlertController(title: "Reminder", message: "Please enter the description of this reminder you will receive upon entering this location", preferredStyle: .alert)
+        
+        let confirmAction = UIAlertAction(title: "Save", style: .default) { (_) in
+            if let field = alertController.textFields?[0] {
+                // store your data
+                print(field)
+            } else {
+                // user did not fill field
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "reminder description"
+        }
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    func deleteAlert(){
+        let alertController = UIAlertController(title: "DELETE", message: "Are you sure you would like to delet this location?", preferredStyle: .alert)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .default) { (_) in}
+      
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+        
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
 }
 extension PlaceViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
@@ -147,9 +158,14 @@ extension PlaceViewController: MKMapViewDelegate {
         pinView?.canShowCallout = true
         let smallSquare = CGSize(width: 30, height: 30)
         let button = UIButton(frame: CGRect(origin: .zero, size: smallSquare))
+        let rightButton = UIButton(frame: CGRect(origin: .zero, size: smallSquare))
         button.setBackgroundImage(#imageLiteral(resourceName: "checkList"), for: .normal)
+        rightButton.setBackgroundImage(#imageLiteral(resourceName: "delete"), for: .normal)
+        
         button.addTarget(self, action: #selector(presentAlert), for: .touchUpInside)
+        rightButton.addTarget(self, action: #selector(presentAlert), for: .touchUpInside)
         pinView?.leftCalloutAccessoryView = button
+        pinView?.rightCalloutAccessoryView = rightButton
         return pinView
     }
     
