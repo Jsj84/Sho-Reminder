@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import MapKit
 import CoreLocation
+import UserNotifications
 
 protocol HandleMapSearch {
     
@@ -20,6 +21,8 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     let searchRadius: CLLocationDistance = 2000
     var selectedPin:MKPlacemark? = nil
     let locationManager = CLLocationManager()
+    var center = CLLocationCoordinate2D()
+    var coordinates: [CLLocationCoordinate2D] = []
     var resultSearchController:UISearchController? = nil
     let fh = ManagedObject()
     
@@ -27,7 +30,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         fh.getLocationData()
         
         locationManager.delegate = self
@@ -52,7 +55,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     }
     
     override func viewDidAppear(_ animated: Bool) {
- 
+        
         for index in 0..<fh.latitude.count {
             let lat = Double(fh.latitude[index])
             let long = Double(fh.longitude[index])
@@ -75,26 +78,55 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             mapView.setRegion(region, animated: true)
         }
     }
-    private func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .denied {
             let alert = UIAlertController(title: "Warning", message: "Location updates are required for this app to set reminders based on location. You can configure this is settings.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
         else if status == .authorizedAlways {
-            locationManager.requestLocation()
-            locationManager.startUpdatingLocation()
+            if CLLocationManager.isRangingAvailable() {
+                locationManager.startUpdatingLocation()
+                locationManager.distanceFilter = 10
+                for i in 0..<self.fh.latitude.count {
+                    let lat = fh.latitude[i]
+                    let long = fh.longitude[i]
+                    let radius = 50
+                    let coordinatesToAppend = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                    coordinates.append(coordinatesToAppend)
+                    center = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                    let region = CLCircularRegion.init(center: center, radius: CLLocationDistance(radius), identifier: "\(fh.latitude[i])")
+                    locationManager.startMonitoring(for: region)
+                }
+            }
         }
+        
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
-            let span = MKCoordinateSpanMake(0.05, 0.05)
+            let span = MKCoordinateSpanMake(0.10, 0.10)
             let region = MKCoordinateRegion(center: location.coordinate, span: span)
             self.mapView.setRegion(region, animated: true)
         }
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error:: \(error)")
+    }
+    func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
+        region.notifyOnEntry = true
+        print("Region: \(region.identifier)" + " is being monitored")
+    }
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        let content = UNMutableNotificationContent()
+        content.title = NSString.localizedUserNotificationString(forKey: "Region Entered", arguments: nil)
+        content.body = NSString.localizedUserNotificationString(forKey: "You have entered: \(region.identifier)", arguments: nil)
+        content.sound = UNNotificationSound.default()
+    }
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        let content = UNMutableNotificationContent()
+        content.title = NSString.localizedUserNotificationString(forKey: "Region Exited", arguments: nil)
+        content.body = NSString.localizedUserNotificationString(forKey: "You have Exited: \(region.identifier)", arguments: nil)
+        content.sound = UNNotificationSound.default()
     }
     func dropPinZoomIn(placemark:MKPlacemark) {
         // cache the pin
@@ -134,10 +166,13 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         self.present(alertController, animated: true, completion: nil)
     }
     func deleteAlert(){
-        let alertController = UIAlertController(title: "DELETE", message: "Are you sure you would like to delet this location?", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "DELETE", message: "Are you sure you would like to delete this location?", preferredStyle: .alert)
         
-        let deleteAction = UIAlertAction(title: "Delete", style: .default) { (_) in}
-      
+        let deleteAction = UIAlertAction(title: "Delete", style: .default) { (_) in
+            
+        }
+        
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
         
         alertController.addAction(deleteAction)
@@ -163,7 +198,7 @@ extension PlaceViewController: MKMapViewDelegate {
         rightButton.setBackgroundImage(#imageLiteral(resourceName: "delete"), for: .normal)
         
         button.addTarget(self, action: #selector(presentAlert), for: .touchUpInside)
-        rightButton.addTarget(self, action: #selector(presentAlert), for: .touchUpInside)
+        rightButton.addTarget(self, action: #selector(deleteAlert), for: .touchUpInside)
         pinView?.leftCalloutAccessoryView = button
         pinView?.rightCalloutAccessoryView = rightButton
         return pinView

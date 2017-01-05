@@ -25,11 +25,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBAction func placeAction(_ sender: Any) {
         performSegue(withIdentifier: "placeSegue", sender: self)
     }
-    
-    let tempString = ["10 Clinton St. Brooklyn, N.Y", "437 Madison Avenue, New Yory, N.Y", "Port Authority Bus Terminal"]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        fh.getData()
+        fh.getLocationData()
         
         self.navigationController?.navigationBar.backgroundColor = UIColor.green
         
@@ -54,9 +54,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.backgroundView?.isOpaque = true
         tableView.allowsSelection = false
     }
-    override func viewDidLayoutSubviews() {
-        fh.getData()
-    }
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return "Next time reminder"
@@ -67,7 +65,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
-            return 30
+            return 50
         }
         else  {
             return 55
@@ -81,7 +79,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             return fh.names.count
         }
         else {
-            return tempString.count
+            return fh.tite.count
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -95,7 +93,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         else {
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell")
             let row = indexPath.row
-            cell?.textLabel?.text = tempString[row]
+            cell?.textLabel?.text = fh.tite[row]
             cell?.backgroundColor = UIColor.clear
             return cell!
         }

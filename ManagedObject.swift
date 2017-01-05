@@ -157,7 +157,7 @@ class ManagedObject: NSObject {
                 //get the Key Value pairs (although there may be a better way to do that...
                 latitude.append(trans.value(forKey: "latitude") as! NSObject as! Double)
                 longitude.append(trans.value(forKey: "longitude") as! NSObject as! Double)
-                tite.append(trans.value(forKey: "title") as! String)
+                tite.append(trans.value(forKey: "title") as! NSObject as! String)
             }
             
         } catch {
