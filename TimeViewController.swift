@@ -81,9 +81,12 @@ extension TimeViewController: UITableViewDataSource {
             let managedContext = appDelegate.persistentContainer.viewContext
             managedContext.delete(cellTitles[indexPath.row] as NSManagedObject)
             managedContext.delete(dateCell[indexPath.row] as NSManagedObject)
-            let row = indexPath.row
-            cellTitles.remove(at: row)
-            dateCell.remove(at: row)
+            cellTitles.remove(at: indexPath.row)
+            dateCell.remove(at: indexPath.row)
+            do {
+                try managedContext.save()
+            }
+            catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
             tableView.reloadData()
         }
     }

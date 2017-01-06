@@ -75,11 +75,22 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
-            return "Next time reminder"
+            if cellTitles.isEmpty == true {
+                return "You do not have any upcoming reminders"
+            }
+            else if cellTitles.count == 1 {
+                return "You have 1 reminder scheduled"
+            }
+            else if cellTitles.count < 3 {
+                return "You have " + "\(cellTitles.count)" + " reminders scheduled"
+            }
+            else {
+                return "Your next 3 reminders are"
+            }
         }
-        else {
-            return "Next location reminder"
+        else if section == 1 {
         }
+        return "Next location reminder"
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
