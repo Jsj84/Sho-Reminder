@@ -18,7 +18,6 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var fh = ManagedObject()
     var userDefaults = UserDefaults.standard
     var color = UIColor(netHex:0x90F7A3)
-    var i = 0
     let tc = TimeTableViewCell()
     
     override func viewDidLoad() {
@@ -55,11 +54,11 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
         cell.myLabel_1.text = fh.names[indexPath.row] as? String
         cell.myLabel_2.text = fh.dateString[indexPath.row]
-        for i in [indexPath.row] {
-          cell.mySwitch.isOn = userDefaults.bool(forKey: "switch" + "\(i)")
+        for _ in [indexPath.row] {
+          cell.mySwitch.isOn = self.userDefaults.bool(forKey: "\(tc.i)")
+            tc.i = tc.i + 1
+            print(tc.i)
         }
-        tc.i += tc.i
-        i += i
         cell.backgroundColor = UIColor.white
     
         return cell

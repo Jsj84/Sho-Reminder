@@ -20,12 +20,14 @@ class TimeTableViewCell: UITableViewCell {
     
     @IBAction func switchedState(_ sender: Any) {
         if mySwitch.isOn == true {
-            userDefaults.set(true, forKey: "switch" + "\(i)")
-            print(userDefaults)
+            userDefaults.set(true, forKey: "\(i)")
+            myLabel_1.textColor = UIColor.black
+            myLabel_2.textColor = UIColor.black
         }
         else if mySwitch.isOn == false {
-            userDefaults.set(false, forKey: "switch" + "\(i)")
-            print(userDefaults)
+            userDefaults.set(false, forKey: "\(i)")
+            myLabel_1.textColor = UIColor.lightGray
+            myLabel_2.textColor = UIColor.lightGray
             
         }
     }
