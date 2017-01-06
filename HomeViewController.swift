@@ -8,11 +8,15 @@
 
 import UIKit
 import Foundation
+import CoreData
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
+    
+    var cellTitles: [NSManagedObject] = []
+    var dateCell: [NSManagedObject] = []
     
     @IBOutlet weak var way: UILabel!
     @IBOutlet weak var place: UIButton!
@@ -27,7 +31,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         fh.getLocationData()
         
         self.navigationController?.navigationBar.backgroundColor = UIColor.green
@@ -53,7 +57,22 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.backgroundView?.isOpaque = true
         tableView.allowsSelection = false
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Items")
+        
+        do {
+            cellTitles = try managedContext.fetch(fetchRequest)
+            dateCell = try managedContext.fetch(fetchRequest)
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+    }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return "Next time reminder"
@@ -75,7 +94,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return fh.names.count
+            return cellTitles.count
         }
         else {
             return fh.tite.count
@@ -84,8 +103,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as! HomeTableViewCell
-            cell.myLabel_1.text = fh.names[indexPath.row] as? String
-            cell.myLabel_2.text = fh.dateString[indexPath.row] 
+            cell.myLabel_1.text = cellTitles[indexPath.row].value(forKey: "name") as! String?
+            cell.myLabel_2.text = dateCell[indexPath.row ].value(forKey: "dateString") as! String?
             cell.backgroundColor = UIColor.clear
             return cell
         }

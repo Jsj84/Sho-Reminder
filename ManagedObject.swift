@@ -15,9 +15,6 @@ class ManagedObject: NSObject {
     
     var context: NSManagedObjectContext
     
-    var names:[NSObject] = []
-    var date:[NSObject] = []
-    var dateString:[String] = []
     var latitude:[Double] = []
     var longitude:[Double] = []
     var tite:[String] = []
@@ -54,32 +51,20 @@ class ManagedObject: NSObject {
     // handle read/write/delete methods for the TimeViewController 
     func save(name: String, date: String) {
         
-        guard let appDelegate =
-            UIApplication.shared.delegate as? AppDelegate else {
-                return
-        }
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedContext = appDelegate.persistentContainer.viewContext
         
-        // 1
-        let managedContext =
-            appDelegate.persistentContainer.viewContext
+        let entity = NSEntityDescription.entity(forEntityName: "Items", in: managedContext)!
         
-        // 2
-        let entity =
-            NSEntityDescription.entity(forEntityName: "Items",
-                                       in: managedContext)!
+        let object = NSManagedObject(entity: entity, insertInto: managedContext)
         
-        let cellTitle = NSManagedObject(entity: entity, insertInto: managedContext)
-        let dates = NSManagedObject(entity: entity, insertInto: managedContext)
+        object.setValue(name, forKeyPath: "name")
+        object.setValue(date, forKey: "dateString")
         
-        // 3
-        cellTitle.setValue(name, forKeyPath: "name")
-        dates.setValue(date, forKey: "dateString")
-        
-        // 4
         do {
             try managedContext.save()
-            cellTitles.append(cellTitle)
-            dateCell.append(dates)
+            cellTitles.append(object)
+            dateCell.append(object)
         
             print("your query has been saved")
         } catch let error as NSError {
@@ -87,53 +72,6 @@ class ManagedObject: NSObject {
         }
     }
   
-//    func writeData (Items: String, name: String, date: Date, dateString: String) {
-//        let context = self.context
-//        
-//        //retrieve the entity that we just created
-//        let entity =  NSEntityDescription.entity(forEntityName: "Items", in: context)
-//        
-//        let transc = NSManagedObject(entity: entity!, insertInto: context)
-//        
-//        //set the entity values
-//        transc.setValue(name, forKey: "name")
-//        transc.setValue(date, forKey: "date")
-//        transc.setValue(dateString, forKey: "dateString")
-//        
-//        //save the object
-//        do {
-//            try context.save()
-//            print("saved!")
-//        } catch let error as NSError  {
-//            print("Could not save \(error), \(error.userInfo)")
-//        } catch {
-//            
-//        }
-//    }
-//     func getData () {
-//        //create a fetch request, telling it about the entity
-//        let fetchRequest: NSFetchRequest<Items> = Items.fetchRequest()
-//        
-//        do {
-//            //go get the results
-//            let searchResults = try context.fetch(fetchRequest)
-//            
-//            //I like to check the size of the returned results!
-//            print ("num of results = \(searchResults.count)")
-//            
-//            //You need to convert to NSManagedObject to use 'for' loops
-//            for trans in (searchResults as [NSManagedObject]!) {
-//                //get the Key Value pairs (although there may be a better way to do that...
-//                names.append(trans.value(forKey: "name") as! NSObject)
-//                date.append(trans.value(forKey: "date") as! NSObject)
-//                dateString.append(trans.value(forKey: "dateString") as! String)
-//                
-//            }
-//            
-//        } catch {
-//            print("Error with request: \(error)")
-//        }
-//    }
 //    func deleteRecords(name: Int, date: Int){
 //        let moc = self.context
 //        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Items")
