@@ -12,6 +12,7 @@ import UIKit
 class TimeTableViewCell: UITableViewCell {
     
     var userDefaults = UserDefaults()
+    var i = 0
     
     @IBOutlet weak var myLabel_1: UILabel!
     @IBOutlet weak var myLabel_2: UILabel!
@@ -19,11 +20,11 @@ class TimeTableViewCell: UITableViewCell {
     
     @IBAction func switchedState(_ sender: Any) {
         if mySwitch.isOn == true {
-            userDefaults.set(true, forKey: "switch")
+            userDefaults.set(true, forKey: "switch" + "\(i)")
             print(userDefaults)
         }
         else if mySwitch.isOn == false {
-            userDefaults.set(false, forKey: "switch")
+            userDefaults.set(false, forKey: "switch" + "\(i)")
             print(userDefaults)
             
         }
