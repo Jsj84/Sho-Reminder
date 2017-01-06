@@ -14,10 +14,12 @@ import UserNotifications
 class TimeViewController: UIViewController, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-
+    
     var userDefaults = UserDefaults.standard
+    
     var color = UIColor(netHex:0x90F7A3)
-
+    
+    let fh = ManagedObject()
     
     var cellTitles: [NSManagedObject] = []
     var dateCell: [NSManagedObject] = []
@@ -37,7 +39,7 @@ class TimeViewController: UIViewController, UITableViewDelegate {
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
-    
+        
         view.backgroundColor = UIColor(patternImage: UIImage(named: "background.png")!)
         
         tableView.delegate = self
@@ -45,33 +47,46 @@ class TimeViewController: UIViewController, UITableViewDelegate {
         tableView.backgroundColor = UIColor.clear
         tableView.allowsSelection = false
         tableView.separatorColor = color
-    
+        
         self.hideKeyboardWhenTappedAround()
         self.dismissKeyboard()
-        
-        
     }
 }
 extension TimeViewController: UITableViewDataSource {
-     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cellTitles.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
         cell.myLabel_1.text = cellTitles[indexPath.row].value(forKey: "name") as! String?
         cell.myLabel_2.text = dateCell[indexPath.row ].value(forKey: "dateString") as! String?
-        return cell 
+        return cell
     }
-    //    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-    //        if editingStyle == .delete {
-    //            let nameToDelete = indexPath.row
-    //            let dateToDelete = indexPath.row
-    //            fh.deleteRecords(name: nameToDelete, date: dateToDelete)
-    //            fh.names.remove(at: indexPath.row)
-    //            fh.date.remove(at: indexPath.row)
-    //            tableView.reloadData()
-    //        }
-    //    }
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if cellTitles.isEmpty == true {
+            return "You Don't have any upcoming reminders"
+        } else {
+            return "Upcoming Reminders"
+        }
+    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 50
+        }
+        return 50
+    }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+            let managedContext = appDelegate.persistentContainer.viewContext
+            managedContext.delete(cellTitles[indexPath.row] as NSManagedObject)
+            managedContext.delete(dateCell[indexPath.row] as NSManagedObject)
+            let row = indexPath.row
+            cellTitles.remove(at: row)
+            dateCell.remove(at: row)
+            tableView.reloadData()
+        }
+    }
 }
 extension UIViewController {
     func hideKeyboardWhenTappedAround() {

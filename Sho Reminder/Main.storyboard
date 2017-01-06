@@ -145,14 +145,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="80" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="XWh-OA-spb">
-                                <rect key="frame" x="0.0" y="72" width="375" height="595"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="80" id="W8m-bu-7uh" customClass="TimeTableViewCell" customModule="Sho_Reminder" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="375" height="80"/>
+                                        <rect key="frame" x="0.0" y="56" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="W8m-bu-7uh" id="Eqo-X2-Taj">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vqv-dD-g6P">
@@ -200,10 +200,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="XWh-OA-spb" secondAttribute="trailing" id="Bsk-PN-YhJ"/>
-                            <constraint firstItem="XWh-OA-spb" firstAttribute="bottom" secondItem="YxM-Ox-L6D" secondAttribute="top" id="Tj7-DU-ISt"/>
-                            <constraint firstItem="XWh-OA-spb" firstAttribute="top" secondItem="ftz-wD-TIj" secondAttribute="bottom" constant="8" symbolic="YES" id="bQV-Jg-WCT"/>
-                            <constraint firstItem="XWh-OA-spb" firstAttribute="leading" secondItem="wws-jU-eNd" secondAttribute="leading" id="yg1-yo-vId"/>
+                            <constraint firstItem="XWh-OA-spb" firstAttribute="leading" secondItem="wws-jU-eNd" secondAttribute="leading" id="BBo-Fl-DbG"/>
+                            <constraint firstItem="XWh-OA-spb" firstAttribute="top" secondItem="wws-jU-eNd" secondAttribute="top" id="BdM-rl-RU7"/>
+                            <constraint firstItem="XWh-OA-spb" firstAttribute="bottom" secondItem="YxM-Ox-L6D" secondAttribute="top" id="HPz-o3-pNC"/>
+                            <constraint firstAttribute="trailing" secondItem="XWh-OA-spb" secondAttribute="trailing" id="obJ-1E-SlC"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="axt-70-s67">

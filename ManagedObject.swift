@@ -48,7 +48,7 @@ class ManagedObject: NSObject {
             }
         }
     }
-    // handle read/write/delete methods for the TimeViewController 
+
     func save(name: String, date: String) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
@@ -71,28 +71,7 @@ class ManagedObject: NSObject {
             print("Could not save. \(error), \(error.userInfo)")
         }
     }
-  
-//    func deleteRecords(name: Int, date: Int){
-//        let moc = self.context
-//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Items")
-//        
-//        let result = try? moc.fetch(fetchRequest)
-//        let data = result?[name]
-//        
-//        for object in [data] {
-//            moc.delete(object! as! NSManagedObject)
-//            print("Object Deleted: \(object)")
-//        }
-//        do {
-//            try moc.save()
-//            print("saved!")
-//        } catch let error as NSError  {
-//            print("Could not save \(error), \(error.userInfo)")
-//        } catch {
-//            
-//        }        
-//    }
-    // handle read/write/delete methods for the Locations
+
     func writeLocationData (Items: String, latitude: Double, longitude: Double, title: String) {
         let context = self.context
         
