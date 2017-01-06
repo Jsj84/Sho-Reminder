@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
@@ -16,9 +17,9 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     let tableData = ["Repeat", "Time Zone"]
     
-    var notifyDate:[Date] = []
-    var notifyBody:[String] = []
     var dateAsString = ""
+    var cellTitles: [NSManagedObject] = []
+    var dateCell: [NSManagedObject] = []
     
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!
@@ -37,19 +38,17 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         else {
             self.view.endEditing(true)
-            
-            let dateOnPicker = timePicker.date //capture the date shown on the picker
             let dateFormatter = DateFormatter()
+            let dateOnPicker = timePicker.date //capture the date shown on the picker
             dateFormatter.dateStyle = .short
             dateFormatter.timeStyle = .short
             dateAsString = dateFormatter.string(from: dateOnPicker)
             
             let delegate = UIApplication.shared.delegate as? AppDelegate
-
             delegate?.scheduleNotification(atDate: dateOnPicker, body: reminderDiscription.text!)
-            fh.writeData(Items: "Items", name: reminderDiscription.text!, date: dateOnPicker, dateString: dateAsString)
-            fh.names.append(reminderDiscription.text! as NSObject)
-            fh.dateString.append(dateAsString)
+            
+            fh.save(name: reminderDiscription.text!, date: dateAsString)
+            
             reminderDiscription.text?.removeAll()
             self.dismiss(animated: true, completion: nil)
             

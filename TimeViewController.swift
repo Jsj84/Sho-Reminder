@@ -11,19 +11,19 @@ import UIKit
 import CoreData
 import UserNotifications
 
-class TimeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TimeViewController: UIViewController, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
 
-    var fh = ManagedObject()
     var userDefaults = UserDefaults.standard
     var color = UIColor(netHex:0x90F7A3)
-    let tc = TimeTableViewCell()
+
+    
+    var cellTitles: [NSManagedObject] = []
+    var dateCell: [NSManagedObject] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        fh.getData()
         
         view.backgroundColor = UIColor(patternImage: UIImage(named: "background.png")!)
         
@@ -38,41 +38,53 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         
     }
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Saved Reminders"
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        //1
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return
+        }
+        
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
+        
+        //2
+        let fetchRequest =
+            NSFetchRequest<NSManagedObject>(entityName: "Items")
+        
+        //3
+        do {
+            cellTitles = try managedContext.fetch(fetchRequest)
+            dateCell = try managedContext.fetch(fetchRequest)
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
     }
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fh.names.count
-    }
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 15
+
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            let nameToDelete = indexPath.row
+//            let dateToDelete = indexPath.row
+//            fh.deleteRecords(name: nameToDelete, date: dateToDelete)
+//            fh.names.remove(at: indexPath.row)
+//            fh.date.remove(at: indexPath.row)
+//            tableView.reloadData()
+//        }
+//    }
+}
+extension TimeViewController: UITableViewDataSource {
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return cellTitles.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let rowTitle = cellTitles[indexPath.row]
+        let rowDate = dateCell[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
-        cell.myLabel_1.text = fh.names[indexPath.row] as? String
-        cell.myLabel_2.text = fh.dateString[indexPath.row]
-        for _ in [indexPath.row] {
-          cell.mySwitch.isOn = self.userDefaults.bool(forKey: "\(tc.i)")
-            tc.i = tc.i + 1
-            print(tc.i)
-        }
-        cell.backgroundColor = UIColor.white
-    
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let nameToDelete = indexPath.row
-            let dateToDelete = indexPath.row
-            fh.deleteRecords(name: nameToDelete, date: dateToDelete)
-            fh.names.remove(at: indexPath.row)
-            fh.date.remove(at: indexPath.row)
-            tableView.reloadData()
-        }
+        cell.myLabel_1.text = rowTitle.value(forKey: "name") as! String?
+        cell.myLabel_2.text = rowDate.value(forKey: "dateString") as! String?
+        return cell 
     }
 }
 extension UIViewController {

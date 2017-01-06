@@ -22,6 +22,9 @@ class ManagedObject: NSObject {
     var longitude:[Double] = []
     var tite:[String] = []
     
+    var cellTitles: [NSManagedObject] = []
+    var dateCell: [NSManagedObject] = []
+    
     override init() {
         
         // This resource is the same name as your xcdatamodeld contained in your project.
@@ -49,74 +52,108 @@ class ManagedObject: NSObject {
         }
     }
     // handle read/write/delete methods for the TimeViewController 
-    
-    func writeData (Items: String, name: String, date: Date, dateString: String) {
-        let context = self.context
+    func save(name: String, date: String) {
         
-        //retrieve the entity that we just created
-        let entity =  NSEntityDescription.entity(forEntityName: "Items", in: context)
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return
+        }
         
-        let transc = NSManagedObject(entity: entity!, insertInto: context)
+        // 1
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
         
-        //set the entity values
-        transc.setValue(name, forKey: "name")
-        transc.setValue(date, forKey: "date")
-        transc.setValue(dateString, forKey: "dateString")
+        // 2
+        let entity =
+            NSEntityDescription.entity(forEntityName: "Items",
+                                       in: managedContext)!
         
-        //save the object
+        let cellTitle = NSManagedObject(entity: entity, insertInto: managedContext)
+        let dates = NSManagedObject(entity: entity, insertInto: managedContext)
+        
+        // 3
+        cellTitle.setValue(name, forKeyPath: "name")
+        dates.setValue(date, forKey: "dateString")
+        
+        // 4
         do {
-            try context.save()
-            print("saved!")
-        } catch let error as NSError  {
-            print("Could not save \(error), \(error.userInfo)")
-        } catch {
-            
+            try managedContext.save()
+            cellTitles.append(cellTitle)
+            dateCell.append(dates)
+        
+            print("your query has been saved")
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
         }
     }
-     func getData () {
-        //create a fetch request, telling it about the entity
-        let fetchRequest: NSFetchRequest<Items> = Items.fetchRequest()
-        
-        do {
-            //go get the results
-            let searchResults = try context.fetch(fetchRequest)
-            
-            //I like to check the size of the returned results!
-            print ("num of results = \(searchResults.count)")
-            
-            //You need to convert to NSManagedObject to use 'for' loops
-            for trans in (searchResults as [NSManagedObject]!) {
-                //get the Key Value pairs (although there may be a better way to do that...
-                names.append(trans.value(forKey: "name") as! NSObject)
-                date.append(trans.value(forKey: "date") as! NSObject)
-                dateString.append(trans.value(forKey: "dateString") as! String)
-                
-            }
-            
-        } catch {
-            print("Error with request: \(error)")
-        }
-    }
-    func deleteRecords(name: Int, date: Int){
-        let moc = self.context
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Items")
-        
-        let result = try? moc.fetch(fetchRequest)
-        let data = result?[name]
-        
-        for object in [data] {
-            moc.delete(object! as! NSManagedObject)
-            print("Object Deleted: \(object)")
-        }
-        do {
-            try moc.save()
-            print("saved!")
-        } catch let error as NSError  {
-            print("Could not save \(error), \(error.userInfo)")
-        } catch {
-            
-        }        
-    }
+  
+//    func writeData (Items: String, name: String, date: Date, dateString: String) {
+//        let context = self.context
+//        
+//        //retrieve the entity that we just created
+//        let entity =  NSEntityDescription.entity(forEntityName: "Items", in: context)
+//        
+//        let transc = NSManagedObject(entity: entity!, insertInto: context)
+//        
+//        //set the entity values
+//        transc.setValue(name, forKey: "name")
+//        transc.setValue(date, forKey: "date")
+//        transc.setValue(dateString, forKey: "dateString")
+//        
+//        //save the object
+//        do {
+//            try context.save()
+//            print("saved!")
+//        } catch let error as NSError  {
+//            print("Could not save \(error), \(error.userInfo)")
+//        } catch {
+//            
+//        }
+//    }
+//     func getData () {
+//        //create a fetch request, telling it about the entity
+//        let fetchRequest: NSFetchRequest<Items> = Items.fetchRequest()
+//        
+//        do {
+//            //go get the results
+//            let searchResults = try context.fetch(fetchRequest)
+//            
+//            //I like to check the size of the returned results!
+//            print ("num of results = \(searchResults.count)")
+//            
+//            //You need to convert to NSManagedObject to use 'for' loops
+//            for trans in (searchResults as [NSManagedObject]!) {
+//                //get the Key Value pairs (although there may be a better way to do that...
+//                names.append(trans.value(forKey: "name") as! NSObject)
+//                date.append(trans.value(forKey: "date") as! NSObject)
+//                dateString.append(trans.value(forKey: "dateString") as! String)
+//                
+//            }
+//            
+//        } catch {
+//            print("Error with request: \(error)")
+//        }
+//    }
+//    func deleteRecords(name: Int, date: Int){
+//        let moc = self.context
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Items")
+//        
+//        let result = try? moc.fetch(fetchRequest)
+//        let data = result?[name]
+//        
+//        for object in [data] {
+//            moc.delete(object! as! NSManagedObject)
+//            print("Object Deleted: \(object)")
+//        }
+//        do {
+//            try moc.save()
+//            print("saved!")
+//        } catch let error as NSError  {
+//            print("Could not save \(error), \(error.userInfo)")
+//        } catch {
+//            
+//        }        
+//    }
     // handle read/write/delete methods for the Locations
     func writeLocationData (Items: String, latitude: Double, longitude: Double, title: String) {
         let context = self.context

@@ -27,8 +27,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        fh.getData()
+
         fh.getLocationData()
         
         self.navigationController?.navigationBar.backgroundColor = UIColor.green
