@@ -11,9 +11,24 @@ import UIKit
 
 class TimeTableViewCell: UITableViewCell {
     
+    var userDefaults = UserDefaults()
+    
     @IBOutlet weak var myLabel_1: UILabel!
     @IBOutlet weak var myLabel_2: UILabel!
     @IBOutlet weak var mySwitch: UISwitch!
+    
+    @IBAction func switchedState(_ sender: Any) {
+        if mySwitch.isOn == true {
+            userDefaults.set(true, forKey: "switch")
+            print(userDefaults)
+        }
+        else if mySwitch.isOn == false {
+            userDefaults.set(false, forKey: "switch")
+            print(userDefaults)
+            
+        }
+    }
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

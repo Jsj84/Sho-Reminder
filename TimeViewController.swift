@@ -14,8 +14,9 @@ import UserNotifications
 class TimeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
-    
+
     var fh = ManagedObject()
+    var userDefaults = UserDefaults.standard
     var color = UIColor(netHex:0x90F7A3)
     
     override func viewDidLoad() {
@@ -31,9 +32,9 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.allowsSelection = false
         tableView.separatorColor = color
     
-        
         self.hideKeyboardWhenTappedAround()
         self.dismissKeyboard()
+        
         
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -52,7 +53,9 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
         cell.myLabel_1.text = fh.names[indexPath.row] as? String
         cell.myLabel_2.text = fh.dateString[indexPath.row]
+        cell.mySwitch.isOn = userDefaults.bool(forKey: "switch")
         cell.backgroundColor = UIColor.white
+    
         return cell
     }
     
