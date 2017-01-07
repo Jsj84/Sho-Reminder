@@ -15,10 +15,9 @@ class ManagedObject: NSObject {
     
     var context: NSManagedObjectContext
     
-    var latitude:[Double] = []
-    var longitude:[Double] = []
-    var tite:[String] = []
-    
+    var lati: [NSManagedObject] = []
+    var longi: [NSManagedObject] = []
+    var mKtit: [NSManagedObject] = []
     var cellTitles: [NSManagedObject] = []
     var dateCell: [NSManagedObject] = []
     
@@ -48,7 +47,7 @@ class ManagedObject: NSObject {
             }
         }
     }
-
+    
     func save(name: String, date: String) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
@@ -65,82 +64,40 @@ class ManagedObject: NSObject {
             try managedContext.save()
             cellTitles.append(object)
             dateCell.append(object)
-        
+            
             print("your query has been saved")
         } catch let error as NSError {
             print("Could not save. \(error), \(error.userInfo)")
         }
     }
-
-    func writeLocationData (Items: String, latitude: Double, longitude: Double, title: String) {
-        let context = self.context
+    
+    func writeLocationData (latitude: Double, longitude: Double, mKtitle: String) {
         
-        //retrieve the entity that we just created
-        let entity =  NSEntityDescription.entity(forEntityName: "Locations", in: context)
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedContext = appDelegate.persistentContainer.viewContext
         
-        let transc = NSManagedObject(entity: entity!, insertInto: context)
+        let entity = NSEntityDescription.entity(forEntityName: "Locations", in: managedContext)!
         
-        //set the entity values
-        transc.setValue(latitude, forKey: "latitude")
-        transc.setValue(longitude, forKey: "longitude")
-        transc.setValue(title, forKey: "title")
+        let object = NSManagedObject(entity: entity, insertInto: managedContext)
         
-        //save the object
-        do {
-            try context.save()
-            print("saved!")
-        } catch let error as NSError  {
-            print("Could not save \(error), \(error.userInfo)")
-        } catch {
-            
-        }
-    }
-    func getLocationData () {
-        //create a fetch request, telling it about the entity
-        let fetchRequest: NSFetchRequest<Locations> = Locations.fetchRequest()
+        
+        object.setValue(latitude, forKeyPath: "latitude")
+        object.setValue(longitude, forKey: "longitude")
+        object.setValue(mKtitle, forKey: "mKtitle")
         
         do {
-            //go get the results
-            let searchResults = try context.fetch(fetchRequest)
-            
-            //I like to check the size of the returned results!
-            print ("num of results = \(searchResults.count)")
-            
-            //You need to convert to NSManagedObject to use 'for' loops
-            for trans in (searchResults as [NSManagedObject]!) {
-                //get the Key Value pairs (although there may be a better way to do that...
-                latitude.append(trans.value(forKey: "latitude") as! NSObject as! Double)
-                longitude.append(trans.value(forKey: "longitude") as! NSObject as! Double)
-                tite.append(trans.value(forKey: "title") as! NSObject as! String)
-            }
-            
-        } catch {
-            print("Error with request: \(error)")
+            try managedContext.save()
+            lati.append(object)
+            longi.append(object)
+            mKtit.append(object)            
+            print("your query has been saved")
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
         }
     }
-    func deleteLocationData(latitude: Int, longitude: Int){
-        let moc = self.context
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Locations")
-        
-        let result = try? moc.fetch(fetchRequest)
-        let data = result?[latitude]
-        
-        for object in [data] {
-            moc.delete(object! as! NSManagedObject)
-            print("Inex Deleted: \(object)")
-        }
-        do {
-            try moc.save()
-            print("saved!")
-        } catch let error as NSError  {
-            print("Could not save \(error), \(error.userInfo)")
-        } catch {
-            
-        }        
-    }
+}
     // MARK: Get Context
     func getContext () -> NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.persistentContainer.viewContext
     }
-}

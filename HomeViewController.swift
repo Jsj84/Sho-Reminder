@@ -17,6 +17,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var cellTitles: [NSManagedObject] = []
     var dateCell: [NSManagedObject] = []
+    var lati:[NSManagedObject] = []
+    var longi:[NSManagedObject] = []
+    var mKtit:[NSManagedObject] = []
     
     @IBOutlet weak var way: UILabel!
     @IBOutlet weak var place: UIButton!
@@ -32,7 +35,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        fh.getLocationData()
         
         self.navigationController?.navigationBar.backgroundColor = UIColor.green
         
@@ -65,10 +67,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let managedContext = appDelegate.persistentContainer.viewContext
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Items")
+        let locationRequest = NSFetchRequest<NSManagedObject>(entityName: "Locations")
         
         do {
             cellTitles = try managedContext.fetch(fetchRequest)
             dateCell = try managedContext.fetch(fetchRequest)
+            lati = try managedContext.fetch(locationRequest)
+            longi = try managedContext.fetch(locationRequest)
+            mKtit = try managedContext.fetch(locationRequest)
+            
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
@@ -108,7 +115,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             return cellTitles.count
         }
         else {
-            return fh.tite.count
+            return mKtit.count
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -120,14 +127,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             return cell
         }
         else {
-            let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell")
-            let row = indexPath.row
-            cell?.textLabel?.text = fh.tite[row]
-            cell?.backgroundColor = UIColor.clear
-            return cell!
+            let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell")!
+            cell.textLabel?.text = mKtit[indexPath.row].value(forKey: "mKtitle") as! String?
+            cell.backgroundColor = UIColor.clear
+            return cell
         }
-    }
-    
+    }    
 }
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {

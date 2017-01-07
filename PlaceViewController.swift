@@ -11,6 +11,7 @@ import UIKit
 import MapKit
 import CoreLocation
 import UserNotifications
+import CoreData
 
 protocol HandleMapSearch {
     
@@ -26,12 +27,16 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     var resultSearchController:UISearchController? = nil
     let fh = ManagedObject()
     
+    var lati: [NSManagedObject] = []
+    var longi: [NSManagedObject] = []
+    var mKtit: [NSManagedObject] = []
+
+    
     @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        fh.getLocationData()
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -55,19 +60,36 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         
-        for index in 0..<fh.latitude.count {
-            let lat = Double(fh.latitude[index])
-            let long = Double(fh.longitude[index])
-            let t =  fh.tite[index]
-            let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: lat, longitude: long)
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Items")
+        let locationRequest = NSFetchRequest<NSManagedObject>(entityName: "Locations")
+        
+        do {
+            
+            lati = try managedContext.fetch(locationRequest)
+            longi = try managedContext.fetch(locationRequest)
+            mKtit = try managedContext.fetch(locationRequest)
+            
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+
+        for index in 0..<lati.count {
+            let lat = lati[index].value(forKey: "latitude") as! Double?
+            let long = longi[index].value(forKey: "longitude") as! Double?
+            
+            let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
             let placeMark:MKPlacemark = MKPlacemark(coordinate: location)
             
             selectedPin = placeMark
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = (selectedPin?.coordinate)!
-            annotation.title = t
+            annotation.title = mKtit[index].value(forKey: "mKtitle") as! String?
+
             if let city = selectedPin?.locality,
                 let state = selectedPin?.administrativeArea {
                 annotation.subtitle = "\(city) \(state)"
@@ -88,14 +110,14 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             if CLLocationManager.isRangingAvailable() {
                 locationManager.startUpdatingLocation()
                 locationManager.distanceFilter = 10
-                for i in 0..<self.fh.latitude.count {
-                    let lat = fh.latitude[i]
-                    let long = fh.longitude[i]
+                for i in 0..<lati.count {
+                    let lat = lati[i].value(forKey: "latitude") as! Double?
+                    let long = longi[i].value(forKey: "longitude") as! Double?
                     let radius = 50
-                    let coordinatesToAppend = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                    let coordinatesToAppend = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
                     coordinates.append(coordinatesToAppend)
-                    center = CLLocationCoordinate2D(latitude: lat, longitude: long)
-                    let region = CLCircularRegion.init(center: center, radius: CLLocationDistance(radius), identifier: "\(fh.latitude[i])")
+                    center = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
+                    let region = CLCircularRegion.init(center: center, radius: CLLocationDistance(radius), identifier: "\(lati[i])")
                     locationManager.startMonitoring(for: region)
                 }
             }
