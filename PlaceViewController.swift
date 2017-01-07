@@ -41,7 +41,6 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
-        locationManager.requestLocation()
         
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
@@ -119,19 +118,20 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         }
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
+      //  print("locations = \(locations)")
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error:: \(error)")
     }
     func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
         region.notifyOnEntry = true
+        region.notifyOnExit = true
         print("Region: \(region.identifier)" + " is being monitored")
     }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         let content = UNMutableNotificationContent()
         content.title = "Location Reminder"
-        content.subtitle = "\(selectedPin?.title)"
+        content.subtitle = "Entered region with latitude: \(region.identifier)"
         content.body = "Configured test notifications!"
         content.sound = UNNotificationSound.default()
         
@@ -149,9 +149,22 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     }
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         let content = UNMutableNotificationContent()
-        content.title = NSString.localizedUserNotificationString(forKey: "Region Exited", arguments: nil)
-        content.body = NSString.localizedUserNotificationString(forKey: "You have Exited: \(region.identifier)", arguments: nil)
+        content.title = "Location Reminder"
+        content.subtitle = "Exit test"
+        content.body = "Configured test notifications!"
         content.sound = UNNotificationSound.default()
+        
+        // Deliver the notification in one second.
+        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 1.0, repeats: false)
+        let reqest = UNNotificationRequest(identifier: "requestIdentifier", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().add(reqest){(error) in
+            
+            if (error != nil){
+                print(error?.localizedDescription as Any)
+            }
+        }
     }
     func dropPinZoomIn(placemark:MKPlacemark) {
         // cache the pin
@@ -225,7 +238,7 @@ extension PlaceViewController: MKMapViewDelegate {
         let reuseId = "pin"
         var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
         pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-        pinView?.pinTintColor = UIColor.orange
+        pinView?.pinTintColor = UIColor.green
         pinView?.canShowCallout = true
         let smallSquare = CGSize(width: 30, height: 30)
         let button = UIButton(frame: CGRect(origin: .zero, size: smallSquare))

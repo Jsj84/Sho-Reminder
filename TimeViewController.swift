@@ -60,6 +60,7 @@ extension TimeViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
         cell.myLabel_1.text = cellTitles[indexPath.row].value(forKey: "name") as! String?
         cell.myLabel_2.text = dateCell[indexPath.row ].value(forKey: "dateString") as! String?
+        cell.accessoryView = UISwitch()
         return cell
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
