@@ -58,7 +58,8 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         locationSearchTable.handleMapSearchDelegate = self
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
         let locationRequest = NSFetchRequest<NSManagedObject>(entityName: "Locations")
@@ -95,6 +96,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             let region = MKCoordinateRegionMake(placeMark.coordinate, span)
             mapView.setRegion(region, animated: true)
         }
+        
     }
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .denied {
@@ -106,19 +108,19 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             locationManager.startUpdatingLocation()
             locationManager.distanceFilter = 10
             for i in 0..<lati.count {
-                let lat = lati[i].value(forKey: "latitude") as! Double?
-                let long = longi[i].value(forKey: "longitude") as! Double?
+                let lat = lati[i].value(forKey: "latitude") as! Double
+                let long = longi[i].value(forKey: "longitude") as! Double
                 let radius = 30
-                let coordinatesToAppend = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
-                coordinates.append(coordinatesToAppend)
-                center = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
-                let region = CLCircularRegion.init(center: center, radius: CLLocationDistance(radius), identifier: "\(lati[i])")
+//                let coordinatesToAppend = CLLocationCoordinate2D(latitude: lat, longitude: long)
+//                coordinates.append(coordinatesToAppend)
+                center = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                let region = CLCircularRegion.init(center: center, radius: CLLocationDistance(radius), identifier: "\(lat)")
                 locationManager.startMonitoring(for: region)
             }
         }
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-      //  print("locations = \(locations)")
+        //  print("locations = \(locations)")
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error:: \(error)")
@@ -130,41 +132,36 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         let content = UNMutableNotificationContent()
-        content.title = "Location Reminder"
-        content.subtitle = "Entered region with latitude: \(region.identifier)"
-        content.body = "Configured test notifications!"
+        content.title = NSString.localizedUserNotificationString(forKey:
+            "REMINDER!", arguments: nil)
+        content.body = NSString.localizedUserNotificationString(forKey:
+            "You have entered: \(region.identifier)", arguments: nil)
+        
+        // Deliver the notification in two seconds.
         content.sound = UNNotificationSound.default()
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
         
-        // Deliver the notification in one second.
-        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 1.0, repeats: false)
-        let reqest = UNNotificationRequest(identifier: "requestIdentifier", content: content, trigger: trigger)
+        // Schedule the notification.
+        let request = UNNotificationRequest(identifier: "TwoSecond", content: content, trigger: trigger)
+        let center = UNUserNotificationCenter.current()
+        center.add(request, withCompletionHandler: nil)
         
-        UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().add(reqest){(error) in
-            
-            if (error != nil){
-                print(error?.localizedDescription as Any)
-            }
-        }
     }
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         let content = UNMutableNotificationContent()
-        content.title = "Location Reminder"
-        content.subtitle = "Exit test"
-        content.body = "Configured test notifications!"
+        content.title = NSString.localizedUserNotificationString(forKey:
+            "REMINDER!", arguments: nil)
+        content.body = NSString.localizedUserNotificationString(forKey:
+            "You have Exited: \(region.identifier)", arguments: nil)
+        
+        // Deliver the notification in two seconds.
         content.sound = UNNotificationSound.default()
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
         
-        // Deliver the notification in one second.
-        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 1.0, repeats: false)
-        let reqest = UNNotificationRequest(identifier: "requestIdentifier", content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().add(reqest){(error) in
-            
-            if (error != nil){
-                print(error?.localizedDescription as Any)
-            }
-        }
+        // Schedule the notification.
+        let request = UNNotificationRequest(identifier: "TwoSecond", content: content, trigger: trigger)
+        let center = UNUserNotificationCenter.current()
+        center.add(request, withCompletionHandler: nil)
     }
     func dropPinZoomIn(placemark:MKPlacemark) {
         // cache the pin
@@ -221,7 +218,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
                 print("Could not fetch. \(error), \(error.userInfo)")
             }
             
-            }
+        }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
         
         alertController.addAction(deleteAction)
