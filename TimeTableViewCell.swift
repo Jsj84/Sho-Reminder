@@ -9,13 +9,22 @@
 import Foundation
 import UIKit
 
+protocol SwitchChangedDelegate {
+    func changeStateTo(isOn: Bool, row: Int)
+}
+
 class TimeTableViewCell: UITableViewCell {
     
-    var userDefaults = UserDefaults()
-    var i = 0
+    var delegate: SwitchChangedDelegate?
+    var row: Int?
     
     @IBOutlet weak var myLabel_1: UILabel!
     @IBOutlet weak var myLabel_2: UILabel!
+    @IBOutlet weak var cellSwitch: UISwitch!
+    
+    @IBAction func switchedState(_ sender: UISwitch) {
+        self.delegate?.changeStateTo(isOn: sender.isOn, row: row!)
+    }
     
     
     override func awakeFromNib() {
@@ -25,6 +34,5 @@ class TimeTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    
     
 }

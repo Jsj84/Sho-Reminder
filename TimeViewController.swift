@@ -11,8 +11,15 @@ import UIKit
 import CoreData
 import UserNotifications
 
-class TimeViewController: UIViewController, UITableViewDelegate {
-    
+class TimeViewController: UIViewController, UITableViewDelegate, SwitchChangedDelegate {
+    internal func changeStateTo(isOn: Bool, row: Int) {
+        if isOn == true {
+            print("on")
+        }
+        else {
+          print("off")
+        }
+    }
     @IBOutlet weak var tableView: UITableView!
     
     var userDefaults = UserDefaults.standard
@@ -60,7 +67,8 @@ extension TimeViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
         cell.myLabel_1.text = cellTitles[indexPath.row].value(forKey: "name") as! String?
         cell.myLabel_2.text = dateCell[indexPath.row ].value(forKey: "dateString") as! String?
-        cell.accessoryView = UISwitch()
+        cell.delegate = self
+        cell.row = indexPath.row
         return cell
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

@@ -110,17 +110,18 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             for i in 0..<lati.count {
                 let lat = lati[i].value(forKey: "latitude") as! Double
                 let long = longi[i].value(forKey: "longitude") as! Double
-                let radius = 30
-//                let coordinatesToAppend = CLLocationCoordinate2D(latitude: lat, longitude: long)
-//                coordinates.append(coordinatesToAppend)
+                let radius:CLLocationDistance = 30
+                let coordinatesToAppend = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                coordinates.append(coordinatesToAppend)
                 center = CLLocationCoordinate2D(latitude: lat, longitude: long)
-                let region = CLCircularRegion.init(center: center, radius: CLLocationDistance(radius), identifier: "\(lat)")
+                let region = CLCircularRegion.init(center: center, radius: radius, identifier: "\(lat)")
                 locationManager.startMonitoring(for: region)
+                print("locations = \(lat, long)")
             }
         }
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        //  print("locations = \(locations)")
+        
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error:: \(error)")
