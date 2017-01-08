@@ -15,11 +15,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     
-    var cellTitles: [NSManagedObject] = []
-    var dateCell: [NSManagedObject] = []
-    var lati:[NSManagedObject] = []
-    var longi:[NSManagedObject] = []
-    var mKtit:[NSManagedObject] = []
+    var timeObject:[NSManagedObject] = []
+    var locationObject:[NSManagedObject] = []
     
     @IBOutlet weak var way: UILabel!
     @IBOutlet weak var place: UIButton!
@@ -35,6 +32,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.register(SectionTwoCell.self, forCellReuseIdentifier: "cell")
         
         self.navigationController?.navigationBar.backgroundColor = UIColor.green
         
@@ -70,11 +68,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let locationRequest = NSFetchRequest<NSManagedObject>(entityName: "Locations")
         
         do {
-            cellTitles = try managedContext.fetch(fetchRequest)
-            dateCell = try managedContext.fetch(fetchRequest)
-            lati = try managedContext.fetch(locationRequest)
-            longi = try managedContext.fetch(locationRequest)
-            mKtit = try managedContext.fetch(locationRequest)
+            timeObject = try managedContext.fetch(fetchRequest)
+            locationObject = try managedContext.fetch(locationRequest)
             
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
@@ -82,14 +77,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
-            if cellTitles.isEmpty == true {
+            if timeObject.isEmpty == true {
                 return "You do not have any upcoming reminders"
             }
-            else if cellTitles.count == 1 {
+            else if timeObject.count == 1 {
                 return "You have 1 reminder scheduled"
             }
-            else if cellTitles.count < 3 {
-                return "You have " + "\(cellTitles.count)" + " reminders scheduled"
+            else if timeObject.count < 3 {
+                return "You have " + "\(timeObject.count)" + " reminders scheduled"
             }
             else {
                 return "Your next 3 reminders are"
@@ -112,27 +107,28 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return cellTitles.count
+            return timeObject.count
         }
         else {
-            return mKtit.count
+            return locationObject.count
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as! HomeTableViewCell
-            cell.myLabel_1.text = cellTitles[indexPath.row].value(forKey: "name") as! String?
-            cell.myLabel_2.text = dateCell[indexPath.row ].value(forKey: "dateString") as! String?
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! HomeTableViewCell
+            cell.myLabel_1.text = timeObject[indexPath.row].value(forKey: "name") as! String?
+            cell.myLabel_2.text = timeObject[indexPath.row ].value(forKey: "dateString") as! String?
             cell.backgroundColor = UIColor.clear
             return cell
         }
-        else {
-            let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell")!
-            cell.textLabel?.text = mKtit[indexPath.row].value(forKey: "mKtitle") as! String?
+            else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell
+            cell.nameLable.text = locationObject[indexPath.row].value(forKey: "mKtitle") as! String?
+            cell.subtitleLable.text = locationObject[indexPath.row].value(forKey: "mKSubTitle") as! String?
             cell.backgroundColor = UIColor.clear
             return cell
         }
-    }    
+    }
 }
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {

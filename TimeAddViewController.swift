@@ -14,12 +14,9 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
-
     let tableData = ["Repeat", "Time Zone"]
-    
     var dateAsString = ""
-    var cellTitles: [NSManagedObject] = []
-    var dateCell: [NSManagedObject] = []
+    var timeObject: [NSManagedObject] = []
     
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!

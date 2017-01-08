@@ -12,24 +12,27 @@ import CoreData
 import UserNotifications
 
 class TimeViewController: UIViewController, UITableViewDelegate, SwitchChangedDelegate {
-    internal func changeStateTo(isOn: Bool, row: Int) {
-        if isOn == true {
-            print("on")
-        }
-        else {
-          print("off")
-        }
-    }
+
     @IBOutlet weak var tableView: UITableView!
     
     var userDefaults = UserDefaults.standard
-    
     var color = UIColor(netHex:0x90F7A3)
-    
     let fh = ManagedObject()
     
-    var cellTitles: [NSManagedObject] = []
-    var dateCell: [NSManagedObject] = []
+    var timeObject: [NSManagedObject] = []
+    
+    internal func changeStateTo(isOn: Bool, row: Int) {
+        if isOn == true {
+            userDefaults.set(true, forKey: "\(row)")
+            userDefaults.synchronize()
+            print("row: \(row) switch is on")
+        }
+        else {
+            userDefaults.set(false, forKey: "\(row)")
+            userDefaults.synchronize()
+            print("row: \(row) switch is off")
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +44,8 @@ class TimeViewController: UIViewController, UITableViewDelegate, SwitchChangedDe
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Items")
         
         do {
-            cellTitles = try managedContext.fetch(fetchRequest)
-            dateCell = try managedContext.fetch(fetchRequest)
+            timeObject = try managedContext.fetch(fetchRequest)
+            
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
@@ -61,18 +64,18 @@ class TimeViewController: UIViewController, UITableViewDelegate, SwitchChangedDe
 }
 extension TimeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cellTitles.count
+        return timeObject.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
-        cell.myLabel_1.text = cellTitles[indexPath.row].value(forKey: "name") as! String?
-        cell.myLabel_2.text = dateCell[indexPath.row ].value(forKey: "dateString") as! String?
+        cell.myLabel_1.text = timeObject[indexPath.row].value(forKey: "name") as! String?
+        cell.myLabel_2.text = timeObject[indexPath.row ].value(forKey: "dateString") as! String?
         cell.delegate = self
         cell.row = indexPath.row
         return cell
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if cellTitles.isEmpty == true {
+        if timeObject.isEmpty == true {
             return "You Don't have any upcoming reminders"
         } else {
             return "Upcoming Reminders"
@@ -88,10 +91,8 @@ extension TimeViewController: UITableViewDataSource {
         if editingStyle == .delete {
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
             let managedContext = appDelegate.persistentContainer.viewContext
-            managedContext.delete(cellTitles[indexPath.row] as NSManagedObject)
-            managedContext.delete(dateCell[indexPath.row] as NSManagedObject)
-            cellTitles.remove(at: indexPath.row)
-            dateCell.remove(at: indexPath.row)
+            managedContext.delete(timeObject[indexPath.row] as NSManagedObject)
+            timeObject.remove(at: indexPath.row)
             do {
                 try managedContext.save()
             }

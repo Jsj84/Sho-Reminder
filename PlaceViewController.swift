@@ -27,10 +27,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     var resultSearchController:UISearchController? = nil
     let fh = ManagedObject()
     
-    var lati: [NSManagedObject] = []
-    var longi: [NSManagedObject] = []
-    var mKtit: [NSManagedObject] = []
-    
+    var locationObject:[NSManagedObject] = []
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -65,18 +62,15 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         let locationRequest = NSFetchRequest<NSManagedObject>(entityName: "Locations")
         
         do {
-            
-            lati = try managedContext.fetch(locationRequest)
-            longi = try managedContext.fetch(locationRequest)
-            mKtit = try managedContext.fetch(locationRequest)
+            locationObject = try managedContext.fetch(locationRequest)
             
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
         
-        for index in 0..<lati.count {
-            let lat = lati[index].value(forKey: "latitude") as! Double?
-            let long = longi[index].value(forKey: "longitude") as! Double?
+        for index in 0..<locationObject.count {
+            let lat = locationObject[index].value(forKey: "latitude") as! Double?
+            let long = locationObject[index].value(forKey: "longitude") as! Double?
             
             let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
             let placeMark:MKPlacemark = MKPlacemark(coordinate: location)
@@ -85,7 +79,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = (selectedPin?.coordinate)!
-            annotation.title = mKtit[index].value(forKey: "mKtitle") as! String?
+            annotation.title = locationObject[index].value(forKey: "mKtitle") as! String?
             
             if let city = selectedPin?.locality,
                 let state = selectedPin?.administrativeArea {
@@ -107,16 +101,14 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         else if status == .authorizedAlways {
             locationManager.startUpdatingLocation()
             locationManager.distanceFilter = 10
-            for i in 0..<lati.count {
-                let lat = lati[i].value(forKey: "latitude") as! Double
-                let long = longi[i].value(forKey: "longitude") as! Double
+            
+            for i in 0..<locationObject.count {
+                let lat = locationObject[i].value(forKey: "latitude") as! Double
+                let long = locationObject[i].value(forKey: "longitude") as! Double
                 let radius:CLLocationDistance = 30
-                let coordinatesToAppend = CLLocationCoordinate2D(latitude: lat, longitude: long)
-                coordinates.append(coordinatesToAppend)
                 center = CLLocationCoordinate2D(latitude: lat, longitude: long)
                 let region = CLCircularRegion.init(center: center, radius: radius, identifier: "\(lat)")
                 locationManager.startMonitoring(for: region)
-                print("locations = \(lat, long)")
             }
         }
     }
@@ -204,22 +196,8 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     func deleteAlert(){
         let alertController = UIAlertController(title: "DELETE", message: "Are you sure you would like to delete this location?", preferredStyle: .alert)
         
-        let deleteAction = UIAlertAction(title: "Delete", style: .default) { (_) in
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-            let managedContext = appDelegate.persistentContainer.viewContext
-            let locationRequest = NSFetchRequest<NSManagedObject>(entityName: "Locations")
-            
-            do {
-                self.lati = try managedContext.fetch(locationRequest)
-                self.longi = try managedContext.fetch(locationRequest)
-                self.mKtit = try managedContext.fetch(locationRequest)
-                print(locationRequest)
-                
-            } catch let error as NSError {
-                print("Could not fetch. \(error), \(error.userInfo)")
-            }
-            
-        }
+        let deleteAction = UIAlertAction(title: "Delete", style: .default) { (_) in }
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
         
         alertController.addAction(deleteAction)

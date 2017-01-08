@@ -15,6 +15,7 @@ protocol SwitchChangedDelegate {
 
 class TimeTableViewCell: UITableViewCell {
     
+    var userDefaults = UserDefaults.standard
     var delegate: SwitchChangedDelegate?
     var row: Int?
     
@@ -33,6 +34,7 @@ class TimeTableViewCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+        cellSwitch.isOn = userDefaults.bool(forKey: "\(row)")
     }
     
 }

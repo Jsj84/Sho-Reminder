@@ -18,6 +18,8 @@ class ManagedObject: NSObject {
     var lati: [NSManagedObject] = []
     var longi: [NSManagedObject] = []
     var mKtit: [NSManagedObject] = []
+    var mKSubTit: [NSManagedObject] = []
+    
     var cellTitles: [NSManagedObject] = []
     var dateCell: [NSManagedObject] = []
     
@@ -71,7 +73,7 @@ class ManagedObject: NSObject {
         }
     }
     
-    func writeLocationData (latitude: Double, longitude: Double, mKtitle: String) {
+    func writeLocationData (latitude: Double, longitude: Double, mKtitle: String, mKSubTitle: String) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -84,12 +86,14 @@ class ManagedObject: NSObject {
         object.setValue(latitude, forKeyPath: "latitude")
         object.setValue(longitude, forKey: "longitude")
         object.setValue(mKtitle, forKey: "mKtitle")
+        object.setValue(mKSubTitle, forKey: "mKSubTitle")
         
         do {
             try managedContext.save()
             lati.append(object)
             longi.append(object)
-            mKtit.append(object)            
+            mKtit.append(object)
+            mKSubTit.append(object)
             print("your query has been saved")
         } catch let error as NSError {
             print("Could not save. \(error), \(error.userInfo)")
