@@ -28,6 +28,8 @@ class SectionTwoCell: UITableViewCell {
         nameLable.translatesAutoresizingMaskIntoConstraints = false
         subtitleLable.translatesAutoresizingMaskIntoConstraints = false
         
+        subtitleLable.textColor = UIColor.lightGray
+        
         contentView.addSubview(nameLable)
         contentView.addSubview(subtitleLable)
     }

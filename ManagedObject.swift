@@ -15,13 +15,9 @@ class ManagedObject: NSObject {
     
     var context: NSManagedObjectContext
     
-    var lati: [NSManagedObject] = []
-    var longi: [NSManagedObject] = []
-    var mKtit: [NSManagedObject] = []
-    var mKSubTit: [NSManagedObject] = []
+    var timeObject: [NSManagedObject] = []
+    var locationObject:[NSManagedObject] = []
     
-    var cellTitles: [NSManagedObject] = []
-    var dateCell: [NSManagedObject] = []
     
     override init() {
         
@@ -64,8 +60,7 @@ class ManagedObject: NSObject {
         
         do {
             try managedContext.save()
-            cellTitles.append(object)
-            dateCell.append(object)
+            timeObject.append(object)
             
             print("your query has been saved")
         } catch let error as NSError {
@@ -90,18 +85,15 @@ class ManagedObject: NSObject {
         
         do {
             try managedContext.save()
-            lati.append(object)
-            longi.append(object)
-            mKtit.append(object)
-            mKSubTit.append(object)
+            locationObject.append(object)
             print("your query has been saved")
         } catch let error as NSError {
             print("Could not save. \(error), \(error.userInfo)")
         }
     }
 }
-    // MARK: Get Context
-    func getContext () -> NSManagedObjectContext {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        return appDelegate.persistentContainer.viewContext
-    }
+// MARK: Get Context
+func getContext () -> NSManagedObjectContext {
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    return appDelegate.persistentContainer.viewContext
+}
