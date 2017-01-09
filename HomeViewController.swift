@@ -115,10 +115,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! HomeTableViewCell
-            cell.myLabel_1.text = timeObject[indexPath.row].value(forKey: "name") as! String?
-            cell.myLabel_2.text = timeObject[indexPath.row ].value(forKey: "dateString") as! String?
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell
+            cell.nameLable.text = timeObject[indexPath.row].value(forKey: "name") as! String?
+            cell.subtitleLable.text = timeObject[indexPath.row ].value(forKey: "dateString") as! String?
             cell.backgroundColor = UIColor.clear
+            cell.subtitleLable.textColor = UIColor.black
             return cell
         }
             else {
@@ -126,6 +127,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.nameLable.text = locationObject[indexPath.row].value(forKey: "mKtitle") as! String?
             cell.subtitleLable.text = locationObject[indexPath.row].value(forKey: "mKSubTitle") as! String?
             cell.backgroundColor = UIColor.clear
+            cell.subtitleLable.textColor = UIColor.black
             return cell
         }
     }

@@ -24,7 +24,6 @@ class SectionTwoCell: UITableViewCell {
         
         nameLable = UILabel(frame: CGRect(x: 0, y: 5, width: 350, height: 20))
         subtitleLable = UILabel(frame: CGRect(x: 0, y: 35, width: 350, height: 15))
-        subtitleLable.textColor = UIColor.lightGray
         
         nameLable.translatesAutoresizingMaskIntoConstraints = false
         subtitleLable.translatesAutoresizingMaskIntoConstraints = false

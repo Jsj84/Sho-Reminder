@@ -64,37 +64,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lG9-BH-R7Y" id="DmG-es-w4Q">
                                             <rect key="frame" x="0.0" y="0.0" width="343" height="60.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Zw-iJ-VP0">
-                                                    <rect key="frame" x="8" y="8" width="243" height="45"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gzu-Tz-2Da">
-                                                    <rect key="frame" x="259" y="8" width="76" height="45"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="76" id="ziB-iY-tiV"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="8Zw-iJ-VP0" firstAttribute="centerY" secondItem="DmG-es-w4Q" secondAttribute="centerY" id="1qn-fV-NXe"/>
-                                                <constraint firstItem="Gzu-Tz-2Da" firstAttribute="trailing" secondItem="DmG-es-w4Q" secondAttribute="trailingMargin" id="B3h-dR-wwD"/>
-                                                <constraint firstItem="Gzu-Tz-2Da" firstAttribute="leading" secondItem="8Zw-iJ-VP0" secondAttribute="trailing" constant="8" symbolic="YES" id="H8R-Rc-toW"/>
-                                                <constraint firstItem="8Zw-iJ-VP0" firstAttribute="leading" secondItem="DmG-es-w4Q" secondAttribute="leadingMargin" id="b12-C8-7VG"/>
-                                                <constraint firstItem="8Zw-iJ-VP0" firstAttribute="firstBaseline" secondItem="Gzu-Tz-2Da" secondAttribute="firstBaseline" id="qZE-zS-GuY"/>
-                                                <constraint firstItem="8Zw-iJ-VP0" firstAttribute="top" secondItem="DmG-es-w4Q" secondAttribute="topMargin" id="vcp-kV-gfo"/>
-                                                <constraint firstItem="8Zw-iJ-VP0" firstAttribute="baseline" secondItem="Gzu-Tz-2Da" secondAttribute="baseline" id="vn3-Yh-fLX"/>
-                                            </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="myLabel_1" destination="8Zw-iJ-VP0" id="FRg-ib-GbA"/>
-                                            <outlet property="myLabel_2" destination="Gzu-Tz-2Da" id="ztm-xH-ro2"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
