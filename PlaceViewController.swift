@@ -17,7 +17,7 @@ protocol HandleMapSearch {
     
     func dropPinZoomIn(placemark:MKPlacemark)
 }
-class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch, UNUserNotificationCenterDelegate {
+class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch, UNUserNotificationCenterDelegate, UITableViewDelegate {
     
     let searchRadius: CLLocationDistance = 2000
     var selectedPin:MKPlacemark? = nil
@@ -45,13 +45,20 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         popUPView.isHidden = true
         popUPView.layer.cornerRadius = 10
         popUPView.layer.masksToBounds = true
+        popUPView.backgroundColor = UIColor.clear
+        popUPView.isOpaque = true
         
         tableView.isHidden = true
         tableView.layer.cornerRadius = 10
         tableView.layer.masksToBounds = true
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.backgroundColor = color
+        tableView.separatorStyle = .none
         
         cancelB.backgroundColor = color
         cancelB.layer.cornerRadius = 8
@@ -79,6 +86,9 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         
         locationSearchTable.mapView = mapView
         locationSearchTable.handleMapSearchDelegate = self
+        
+        self.hideKeyboardWhenTappedAround()
+        self.dismissKeyboard()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -273,6 +283,8 @@ extension PlaceViewController: UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! PopUpViewCell
+        cell.configure(text: "", placeholder: "Enter a reminder....")
+        cell.backgroundColor = UIColor.clear
         return cell 
     }
 }
