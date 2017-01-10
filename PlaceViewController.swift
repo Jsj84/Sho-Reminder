@@ -27,13 +27,11 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     var resultSearchController:UISearchController? = nil
     let fh = ManagedObject()
     
-    var locationObject:[NSManagedObject] = []
     
     @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -57,20 +55,12 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        let managedContext = appDelegate.persistentContainer.viewContext
-        let locationRequest = NSFetchRequest<NSManagedObject>(entityName: "Locations")
         
-        do {
-            locationObject = try managedContext.fetch(locationRequest)
-            
-        } catch let error as NSError {
-            print("Could not fetch. \(error), \(error.userInfo)")
-        }
+        fh.getLocationData()
         
-        for index in 0..<locationObject.count {
-            let lat = locationObject[index].value(forKey: "latitude") as! Double?
-            let long = locationObject[index].value(forKey: "longitude") as! Double?
+        for index in 0..<fh.locationObject.count {
+            let lat = fh.locationObject[index].value(forKey: "latitude") as! Double?
+            let long = fh.locationObject[index].value(forKey: "longitude") as! Double?
             
             let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
             let placeMark:MKPlacemark = MKPlacemark(coordinate: location)
@@ -79,7 +69,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = (selectedPin?.coordinate)!
-            annotation.title = locationObject[index].value(forKey: "mKtitle") as! String?
+            annotation.title = fh.locationObject[index].value(forKey: "mKtitle") as! String?
             
             if let city = selectedPin?.locality,
                 let state = selectedPin?.administrativeArea {
@@ -90,7 +80,6 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             let region = MKCoordinateRegionMake(placeMark.coordinate, span)
             mapView.setRegion(region, animated: true)
         }
-        
     }
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .denied {
@@ -102,9 +91,9 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             locationManager.startUpdatingLocation()
             locationManager.distanceFilter = 10
             
-            for i in 0..<locationObject.count {
-                let lat = locationObject[i].value(forKey: "latitude") as! Double
-                let long = locationObject[i].value(forKey: "longitude") as! Double
+            for i in 0..<fh.locationObject.count {
+                let lat = fh.locationObject[i].value(forKey: "latitude") as! Double
+                let long = fh.locationObject[i].value(forKey: "longitude") as! Double
                 let radius:CLLocationDistance = 30
                 center = CLLocationCoordinate2D(latitude: lat, longitude: long)
                 let region = CLCircularRegion.init(center: center, radius: radius, identifier: "\(lat)")

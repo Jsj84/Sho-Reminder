@@ -15,9 +15,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     
-    var timeObject:[NSManagedObject] = []
-    var locationObject:[NSManagedObject] = []
-    
     @IBOutlet weak var way: UILabel!
     @IBOutlet weak var place: UIButton!
     @IBOutlet weak var time: UIButton!
@@ -59,32 +56,19 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Items")
-        let locationRequest = NSFetchRequest<NSManagedObject>(entityName: "Locations")
-        
-        do {
-            timeObject = try managedContext.fetch(fetchRequest)
-            locationObject = try managedContext.fetch(locationRequest)
-            
-        } catch let error as NSError {
-            print("Could not fetch. \(error), \(error.userInfo)")
-        }
+        fh.getData()
+        fh.getLocationData()
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
-            if timeObject.isEmpty == true {
+            if fh.timeObject.isEmpty == true {
                 return "You do not have any upcoming reminders"
             }
-            else if timeObject.count == 1 {
+            else if fh.timeObject.count == 1 {
                 return "You have 1 reminder scheduled"
             }
-            else if timeObject.count < 3 {
-                return "You have " + "\(timeObject.count)" + " reminders scheduled"
+            else if fh.timeObject.count < 3 {
+                return "You have " + "\(fh.timeObject.count)" + " reminders scheduled"
             }
             else {
                 return "Your next 3 reminders are"
@@ -107,24 +91,24 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return timeObject.count
+            return fh.timeObject.count
         }
         else {
-            return locationObject.count
+            return fh.locationObject.count
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell
-            cell.nameLable.text = timeObject[indexPath.row].value(forKey: "name") as! String?
-            cell.subtitleLable.text = timeObject[indexPath.row ].value(forKey: "dateString") as! String?
+            cell.nameLable.text = fh.timeObject[indexPath.row].value(forKey: "name") as! String?
+            cell.subtitleLable.text = fh.timeObject[indexPath.row ].value(forKey: "dateString") as! String?
             cell.backgroundColor = UIColor.clear
             return cell
         }
             else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell
-            cell.nameLable.text = locationObject[indexPath.row].value(forKey: "mKtitle") as! String?
-            cell.subtitleLable.text = locationObject[indexPath.row].value(forKey: "mKSubTitle") as! String?
+            cell.nameLable.text = fh.locationObject[indexPath.row].value(forKey: "mKtitle") as! String?
+            cell.subtitleLable.text = fh.locationObject[indexPath.row].value(forKey: "mKSubTitle") as! String?
             cell.backgroundColor = UIColor.clear
             return cell
         }

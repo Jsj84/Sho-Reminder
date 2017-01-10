@@ -67,6 +67,21 @@ class ManagedObject: NSObject {
             print("Could not save. \(error), \(error.userInfo)")
         }
     }
+        func getData() {
+            
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+            
+            let managedContext = appDelegate.persistentContainer.viewContext
+            
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Items")
+            
+            do {
+                timeObject = try managedContext.fetch(fetchRequest)
+                
+            } catch let error as NSError {
+                print("Could not fetch. \(error), \(error.userInfo)")
+            }
+        }
     
     func writeLocationData (latitude: Double, longitude: Double, mKtitle: String, mKSubTitle: String) {
         
@@ -89,6 +104,19 @@ class ManagedObject: NSObject {
             print("your query has been saved")
         } catch let error as NSError {
             print("Could not save. \(error), \(error.userInfo)")
+        }
+    }
+    func getLocationData() {
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let locationRequest = NSFetchRequest<NSManagedObject>(entityName: "Locations")
+        
+        do {
+            locationObject = try managedContext.fetch(locationRequest)
+            
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
         }
     }
 }
