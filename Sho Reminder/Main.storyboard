@@ -306,23 +306,93 @@
                                     <outlet property="delegate" destination="Wgi-C2-LqH" id="HAt-ij-USX"/>
                                 </connections>
                             </mapView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cgi-hF-fiV">
+                                <rect key="frame" x="30" y="166" width="314" height="334"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qiu-Qg-43f">
+                                        <rect key="frame" x="206" y="296" width="100" height="30"/>
+                                        <state key="normal" title="Save"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aOg-Tc-XkG">
+                                        <rect key="frame" x="8" y="296" width="100" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="O9w-rA-Pm3"/>
+                                        </constraints>
+                                        <state key="normal" title="Cancel"/>
+                                        <connections>
+                                            <action selector="cancelAction:" destination="Wgi-C2-LqH" eventType="touchUpInside" id="j9e-N5-udu"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="aOg-Tc-XkG" firstAttribute="bottom" secondItem="cgi-hF-fiV" secondAttribute="bottomMargin" id="E5h-0q-dD4"/>
+                                    <constraint firstItem="aOg-Tc-XkG" firstAttribute="leading" secondItem="cgi-hF-fiV" secondAttribute="leadingMargin" id="KX9-QN-Eed"/>
+                                    <constraint firstItem="Qiu-Qg-43f" firstAttribute="leading" secondItem="aOg-Tc-XkG" secondAttribute="trailing" constant="98" id="M4r-R3-n40"/>
+                                    <constraint firstItem="aOg-Tc-XkG" firstAttribute="baseline" secondItem="Qiu-Qg-43f" secondAttribute="baseline" id="mNR-TP-mZG"/>
+                                    <constraint firstItem="Qiu-Qg-43f" firstAttribute="trailing" secondItem="cgi-hF-fiV" secondAttribute="trailingMargin" id="w3F-s7-yQT"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="54" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Tpl-md-wfo">
+                                <rect key="frame" x="30" y="166" width="314" height="288"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="54" id="Xsq-cY-oVL" customClass="PopUpViewCell" customModule="Sho_Reminder" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="314" height="54"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Xsq-cY-oVL" id="hh3-zS-p1n">
+                                            <rect key="frame" x="0.0" y="0.0" width="314" height="53"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wK0-yB-rP6">
+                                                    <rect key="frame" x="8" y="11" width="298" height="30"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="wK0-yB-rP6" firstAttribute="trailing" secondItem="hh3-zS-p1n" secondAttribute="trailingMargin" id="7zX-UL-15i"/>
+                                                <constraint firstItem="wK0-yB-rP6" firstAttribute="leading" secondItem="hh3-zS-p1n" secondAttribute="leadingMargin" id="RyV-e2-Q4K"/>
+                                                <constraint firstItem="wK0-yB-rP6" firstAttribute="centerY" secondItem="hh3-zS-p1n" secondAttribute="centerY" id="SRb-QW-eKF"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="textField" destination="wK0-yB-rP6" id="0oY-VS-Btz"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="LGe-WO-4d1" firstAttribute="top" secondItem="f4C-b7-j3j" secondAttribute="bottom" id="ATU-ka-woQ"/>
-                            <constraint firstItem="LGe-WO-4d1" firstAttribute="bottom" secondItem="ciF-Ms-4G6" secondAttribute="top" id="TFd-LC-HBP"/>
-                            <constraint firstItem="LGe-WO-4d1" firstAttribute="leading" secondItem="hrG-UP-K1x" secondAttribute="leading" id="h2t-gB-jmq"/>
-                            <constraint firstAttribute="trailing" secondItem="LGe-WO-4d1" secondAttribute="trailing" id="sOq-5g-gNm"/>
+                            <constraint firstItem="cgi-hF-fiV" firstAttribute="trailing" secondItem="Tpl-md-wfo" secondAttribute="trailing" id="0TT-dv-ZJ6"/>
+                            <constraint firstItem="cgi-hF-fiV" firstAttribute="top" secondItem="f4C-b7-j3j" secondAttribute="bottom" constant="102" id="IH2-5Z-I2G"/>
+                            <constraint firstItem="Tpl-md-wfo" firstAttribute="leading" secondItem="hrG-UP-K1x" secondAttribute="leadingMargin" constant="14" id="LPj-mb-AnD"/>
+                            <constraint firstItem="cgi-hF-fiV" firstAttribute="top" secondItem="Tpl-md-wfo" secondAttribute="top" id="MqQ-Rj-B5w"/>
+                            <constraint firstItem="LGe-WO-4d1" firstAttribute="top" secondItem="f4C-b7-j3j" secondAttribute="bottom" id="Qm5-yA-BA3"/>
+                            <constraint firstItem="LGe-WO-4d1" firstAttribute="centerX" secondItem="cgi-hF-fiV" secondAttribute="centerX" id="ZnZ-Uq-W37"/>
+                            <constraint firstItem="cgi-hF-fiV" firstAttribute="leading" secondItem="Tpl-md-wfo" secondAttribute="leading" id="mmX-Ot-pka"/>
+                            <constraint firstItem="LGe-WO-4d1" firstAttribute="leading" secondItem="hrG-UP-K1x" secondAttribute="leading" id="nPh-x8-iMc"/>
+                            <constraint firstItem="cgi-hF-fiV" firstAttribute="centerY" secondItem="hrG-UP-K1x" secondAttribute="centerY" id="ovO-BG-x8S"/>
+                            <constraint firstAttribute="trailing" secondItem="LGe-WO-4d1" secondAttribute="trailing" id="pGq-2J-iCK"/>
+                            <constraint firstItem="LGe-WO-4d1" firstAttribute="bottom" secondItem="ciF-Ms-4G6" secondAttribute="top" id="pTD-qq-t9b"/>
+                            <constraint firstItem="ciF-Ms-4G6" firstAttribute="top" secondItem="Tpl-md-wfo" secondAttribute="bottom" constant="213" id="wxN-xf-X9k"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="kgo-jb-ZEq"/>
                     <connections>
+                        <outlet property="cancelB" destination="aOg-Tc-XkG" id="wZL-hP-wmW"/>
                         <outlet property="mapView" destination="LGe-WO-4d1" id="rYP-jm-Ngj"/>
+                        <outlet property="popUPView" destination="cgi-hF-fiV" id="2b4-VR-nkf"/>
+                        <outlet property="saveAction" destination="Qiu-Qg-43f" id="GuU-la-j3n"/>
+                        <outlet property="saveB" destination="Qiu-Qg-43f" id="hrd-9n-wPR"/>
+                        <outlet property="tableView" destination="Tpl-md-wfo" id="nvD-Wa-FiZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5bc-kA-x96" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="769" y="1531"/>
+            <point key="canvasLocation" x="768.79999999999995" y="1530.5847076461771"/>
         </scene>
         <!--Location Search Table-->
         <scene sceneID="gd1-WY-aqK">

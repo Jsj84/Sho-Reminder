@@ -26,12 +26,40 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     var coordinates: [CLLocationCoordinate2D] = []
     var resultSearchController:UISearchController? = nil
     let fh = ManagedObject()
+    var color = UIColor(netHex:0x90F7A3)
     
     
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var popUPView: UIView!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var cancelB: UIButton!
+    @IBOutlet weak var saveB: UIButton!
+    @IBAction func cancelAction(_ sender: Any) {
+        tableView.isHidden = true
+        cancelB.isHidden = true
+        popUPView.isHidden = true
+        saveB.isHidden = true
+    }
+    @IBOutlet weak var saveAction: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        popUPView.isHidden = true
+        popUPView.layer.cornerRadius = 10
+        popUPView.layer.masksToBounds = true
+        
+        tableView.isHidden = true
+        tableView.layer.cornerRadius = 10
+        tableView.layer.masksToBounds = true
+        
+        cancelB.backgroundColor = color
+        cancelB.layer.cornerRadius = 8
+        cancelB.isHidden = true
+        saveB.backgroundColor = color
+        saveB.layer.cornerRadius = 8
+        saveB.isHidden = true
+        
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -194,6 +222,23 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         
         self.present(alertController, animated: true, completion: nil)
     }
+    func showPop() {
+        popUPView.isHidden = false
+        tableView.isHidden = false
+        tableView.alpha = 1.0
+        popUPView.alpha = 1.0
+        cancelB.isHidden = false
+        saveB.isHidden = false
+        //        _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(UIMenuController.update), userInfo: nil, repeats: false)
+        
+    }
+    func update() {
+        //  PopUpView.hidden = true
+        UIView.animate(withDuration: 1.0, delay: 0.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            self.popUPView.alpha = 0.0
+        }, completion: nil)
+        
+    }
 }
 extension PlaceViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
@@ -211,11 +256,23 @@ extension PlaceViewController: MKMapViewDelegate {
         button.setBackgroundImage(#imageLiteral(resourceName: "checkList"), for: .normal)
         rightButton.setBackgroundImage(#imageLiteral(resourceName: "delete"), for: .normal)
         
-        button.addTarget(self, action: #selector(presentAlert), for: .touchUpInside)
+        button.addTarget(self, action: #selector(showPop), for: .touchUpInside)
         rightButton.addTarget(self, action: #selector(deleteAlert), for: .touchUpInside)
         pinView?.leftCalloutAccessoryView = button
         pinView?.rightCalloutAccessoryView = rightButton
         return pinView
     }
     
+}
+extension PlaceViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! PopUpViewCell
+        return cell 
+    }
 }
