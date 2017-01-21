@@ -215,22 +215,11 @@ func deleteAlert(){
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
         
-        for i in 0..<self.fh.locationObject.count {
-            let lat = self.fh.locationObject[i].value(forKey: "latitude") as! Double?
-            let long = self.fh.locationObject[i].value(forKey: "longitude") as! Double?
-            
-            let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
-            let placeMark:MKPlacemark = MKPlacemark(coordinate: location)
-            
-            self.selectedPin = placeMark
-            
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = (self.selectedPin?.coordinate)!
-            annotation.title = self.fh.locationObject[i].value(forKey: "mKtitle") as! String?
-            
-            managedContext.delete(self.fh.locationObject[i] as NSManagedObject)
-            self.mapView.removeAnnotation(annotation)
+        managedContext.delete(self.fh.locationObject[0] as NSManagedObject)
+        do {
+            try managedContext.save()
         }
+        catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
 }
     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
     
