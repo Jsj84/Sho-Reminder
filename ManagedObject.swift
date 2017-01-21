@@ -17,6 +17,9 @@ class ManagedObject: NSObject {
     
     var timeObject: [NSManagedObject] = []
     var locationObject:[NSManagedObject] = []
+    var location : String = ""
+    var theLocation = CLLocation()
+    var places:[NSManagedObject] = []
     
     
     override init() {
