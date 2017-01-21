@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import CoreData
+import UserNotifications
 
 class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
@@ -16,7 +17,6 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     var color = UIColor(netHex:0x90F7A3)
     let tableData = ["Repeat", "Time Zone"]
     var dateAsString = ""
-    var timeObject: [NSManagedObject] = []
     
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!
@@ -41,11 +41,14 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             dateFormatter.timeStyle = .short
             dateAsString = dateFormatter.string(from: dateOnPicker)
             
+             // create push notifications
             let delegate = UIApplication.shared.delegate as? AppDelegate
-            delegate?.scheduleNotification(atDate: dateOnPicker, body: reminderDiscription.text!)
+            delegate?.scheduleNotification(atDate: dateOnPicker, body: reminderDiscription.text!, title: "Reminder", identifier: reminderDiscription.text!)
             
+            // save as NSObject
             fh.save(name: reminderDiscription.text!, date: dateAsString)
             
+            // clear text field
             reminderDiscription.text?.removeAll()
             self.dismiss(animated: true, completion: nil)
             

@@ -28,7 +28,6 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     
-    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var popUPView: UIView!
     @IBOutlet weak var mapView: MKMapView!
@@ -151,37 +150,30 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         print("Region: \(region.identifier)" + " is being monitored")
     }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        let content = UNMutableNotificationContent()
-        content.title = NSString.localizedUserNotificationString(forKey:
-            "REMINDER!", arguments: nil)
-        content.body = NSString.localizedUserNotificationString(forKey:
-            "You have entered: \(region.identifier)", arguments: nil)
         
-        // Deliver the notification in two seconds.
-        content.sound = UNNotificationSound.default()
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
-        
-        // Schedule the notification.
-        let request = UNNotificationRequest(identifier: "TwoSecond", content: content, trigger: trigger)
-        let center = UNUserNotificationCenter.current()
-        center.add(request, withCompletionHandler: nil)
+        let delegate = UIApplication.shared.delegate as? AppDelegate
+        delegate?.locationNotification(location: region, body: "test", identifer: region.identifier)
         
     }
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        let content = UNMutableNotificationContent()
-        content.title = NSString.localizedUserNotificationString(forKey:
-            "REMINDER!", arguments: nil)
-        content.body = NSString.localizedUserNotificationString(forKey:
-            "You have Exited: \(region.identifier)", arguments: nil)
         
-        // Deliver the notification in two seconds.
-        content.sound = UNNotificationSound.default()
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
-        
-        // Schedule the notification.
-        let request = UNNotificationRequest(identifier: "TwoSecond", content: content, trigger: trigger)
-        let center = UNUserNotificationCenter.current()
-        center.add(request, withCompletionHandler: nil)
+        let delegate = UIApplication.shared.delegate as? AppDelegate
+        delegate?.locationNotification(location: region, body: "test", identifer: region.identifier)
+       
+//        let content = UNMutableNotificationContent()
+//        content.title = NSString.localizedUserNotificationString(forKey:
+//            "REMINDER!", arguments: nil)
+//        content.body = NSString.localizedUserNotificationString(forKey:
+//            "You have Exited: \(region.identifier)", arguments: nil)
+//        
+//        // Deliver the notification in two seconds.
+//        content.sound = UNNotificationSound.default()
+//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
+//        
+//        // Schedule the notification.
+//        let request = UNNotificationRequest(identifier: "TwoSecond", content: content, trigger: trigger)
+//        let center = UNUserNotificationCenter.current()
+//        center.add(request, withCompletionHandler: nil)
     }
     func dropPinZoomIn(placemark:MKPlacemark) {
         // cache the pin
