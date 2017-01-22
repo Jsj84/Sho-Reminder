@@ -77,12 +77,37 @@ extension LocationSearchTable {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let selectedItem = matchingItems[indexPath.row].placemark
-        // save to coreData
-        fh.writeLocationData(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude, mKtitle: selectedItem.name!, mKSubTitle: selectedItem.title!)
         
         // drop pin and dismiss table view controller
         handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
-        handleMapSearchDelegate?.popAlert()
+        
+        // show aleart to gather information 
+        let alert = UIAlertController(title: "Location Reminder", message: "Enter the reminder for this location", preferredStyle: .alert)
+        //2. Add the text field. You can configure it however you need.
+        alert.addTextField { (textField) in
+            textField.text = ""
+        }
+        // 3. Grab the value from the text field, and print it when the user clicks OK.
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+           let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
+            // save to coreData
+            self.fh.writeLocationData(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude, mKtitle: selectedItem.name!, mKSubTitle: selectedItem.title!, reminderInput: (textField?.text!)!)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+            let managedContext = appDelegate.persistentContainer.viewContext
+            
+            managedContext.delete(self.fh.locationObject[0] as NSManagedObject)
+            
+            do {
+                try managedContext.save()
+            }
+            catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
+        }))
+        // 4. Present the alert.
+        self.present(alert, animated: true, completion: nil)
+
         dismiss(animated: true, completion: nil)
+        
     }
 }

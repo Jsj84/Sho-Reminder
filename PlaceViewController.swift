@@ -16,7 +16,6 @@ import CoreData
 protocol HandleMapSearch {
     
     func dropPinZoomIn(placemark:MKPlacemark)
-    func popAlert()
 }
 class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch, UNUserNotificationCenterDelegate, UITableViewDelegate {
     
@@ -240,23 +239,6 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         
         self.present(alertController, animated: true, completion: nil)
     }
-    func showPop() {
-        popUPView.isHidden = false
-        tableView.isHidden = false
-        tableView.alpha = 1.0
-        popUPView.alpha = 1.0
-        cancelB.isHidden = false
-        saveB.isHidden = false
-        //        _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(UIMenuController.update), userInfo: nil, repeats: false)
-        
-    }
-    func update() {
-        //  PopUpView.hidden = true
-        UIView.animate(withDuration: 1.0, delay: 0.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-            self.popUPView.alpha = 0.0
-        }, completion: nil)
-        
-    }
 }
 extension PlaceViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
@@ -274,7 +256,7 @@ extension PlaceViewController: MKMapViewDelegate {
         button.setBackgroundImage(#imageLiteral(resourceName: "checkList"), for: .normal)
         rightButton.setBackgroundImage(#imageLiteral(resourceName: "delete"), for: .normal)
         
-        button.addTarget(self, action: #selector(showPop), for: .touchUpInside)
+       // button.addTarget(self, action: #selector(), for: .touchUpInside)
         rightButton.addTarget(self, action: #selector(deleteAlert), for: .touchUpInside)
         pinView?.leftCalloutAccessoryView = button
         pinView?.rightCalloutAccessoryView = rightButton
