@@ -16,6 +16,7 @@ import CoreData
 protocol HandleMapSearch {
     
     func dropPinZoomIn(placemark:MKPlacemark)
+    func popAlert()
 }
 class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch, UNUserNotificationCenterDelegate, UITableViewDelegate {
     
@@ -89,7 +90,6 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         self.hideKeyboardWhenTappedAround()
         self.dismissKeyboard()
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fh.getLocationData()
@@ -115,136 +115,148 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             let region = MKCoordinateRegionMake(placeMark.coordinate, span)
             mapView.setRegion(region, animated: true)
         }
-}
-func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-    if status == .denied {
-        let alert = UIAlertController(title: "Warning", message: "Location updates are required for this app to set reminders based on location. You can configure this is settings.", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
+    }
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .denied {
+            let alert = UIAlertController(title: "Warning", message: "Location updates are required for this app to set reminders based on location. You can configure this is settings.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        else if status == .authorizedAlways {
+            locationManager.startUpdatingLocation()
+            locationManager.distanceFilter = 10
+            
+            for i in 0..<fh.locationObject.count {
+                let lat = fh.locationObject[i].value(forKey: "latitude") as! Double
+                let long = fh.locationObject[i].value(forKey: "longitude") as! Double
+                let radius:CLLocationDistance = 30
+                center = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                let region = CLCircularRegion.init(center: center, radius: radius, identifier: "\(lat)")
+                locationManager.startMonitoring(for: region)
+            }
+        }
+    }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+    }
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("error:: \(error)")
+    }
+    func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
+        region.notifyOnEntry = true
+        region.notifyOnExit = true
+        print("Region: \(region.identifier)" + " is being monitored")
+    }
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        
+        let delegate = UIApplication.shared.delegate as? AppDelegate
+        delegate?.locationNotification(title: "Reminder", body: "Enter", identifer: region.identifier)
+    }
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        let delegate = UIApplication.shared.delegate as? AppDelegate
+        delegate?.locationNotification(title: "Reminder", body: "Exit", identifer: region.identifier)
+    }
+    func dropPinZoomIn(placemark:MKPlacemark) {
+        // cache the pin
+        selectedPin = placemark
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = placemark.coordinate
+        annotation.title = placemark.name
+        if let city = placemark.locality,
+            let state = placemark.administrativeArea {
+            annotation.subtitle = "\(city) \(state)"
+        }
+        self.mapView.addAnnotation(annotation)
+        let span = MKCoordinateSpanMake(0.05, 0.05)
+        let region = MKCoordinateRegionMake(placemark.coordinate, span)
+        mapView.setRegion(region, animated: true)
+    }
+    internal func popAlert() {
+        let alert = UIAlertController(title: "Location Reminder", message: "Enter the reminder for this location", preferredStyle: .alert)
+        //2. Add the text field. You can configure it however you need.
+        alert.addTextField { (textField) in
+            textField.text = ""
+        }
+        // 3. Grab the value from the text field, and print it when the user clicks OK.
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+            let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
+            print("Text field: \(textField?.text)")
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+            let managedContext = appDelegate.persistentContainer.viewContext
+            
+            managedContext.delete(self.fh.locationObject[0] as NSManagedObject)
+            
+            do {
+                try managedContext.save()
+            }
+            catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
+        }))
+        // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
     }
-    else if status == .authorizedAlways {
-        locationManager.startUpdatingLocation()
-        locationManager.distanceFilter = 10
+    func presentAlert() {
+        let alertController = UIAlertController(title: "Reminder", message: "Please enter the description of this reminder you will receive upon entering this location", preferredStyle: .alert)
         
-        for i in 0..<fh.locationObject.count {
-            let lat = fh.locationObject[i].value(forKey: "latitude") as! Double
-            let long = fh.locationObject[i].value(forKey: "longitude") as! Double
-            let radius:CLLocationDistance = 30
-            center = CLLocationCoordinate2D(latitude: lat, longitude: long)
-            let region = CLCircularRegion.init(center: center, radius: radius, identifier: "\(lat)")
-            locationManager.startMonitoring(for: region)
+        let confirmAction = UIAlertAction(title: "Save", style: .default) { (_) in
+            if let field = alertController.textFields?[0] {
+                // store your data
+                print(field)
+            } else {
+                // user did not fill field
+            }
         }
-    }
-}
-func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    
-}
-func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-    print("error:: \(error)")
-}
-func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
-    region.notifyOnEntry = true
-    region.notifyOnExit = true
-    print("Region: \(region.identifier)" + " is being monitored")
-}
-func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-    
-    let delegate = UIApplication.shared.delegate as? AppDelegate
-    delegate?.locationNotification(location: region, body: "test", identifer: region.identifier)
-    
-}
-func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-    
-    let content = UNMutableNotificationContent()
-    content.title = NSString.localizedUserNotificationString(forKey:
-        "REMINDER!", arguments: nil)
-    content.body = NSString.localizedUserNotificationString(forKey:
-        "You have Exited: \(region.identifier)", arguments: nil)
-    
-    // Deliver the notification in two seconds.
-    content.sound = UNNotificationSound.default()
-    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
-    
-    // Schedule the notification.
-    let request = UNNotificationRequest(identifier: "TwoSecond", content: content, trigger: trigger)
-    let center = UNUserNotificationCenter.current()
-    center.add(request, withCompletionHandler: nil)
-}
-func dropPinZoomIn(placemark:MKPlacemark) {
-    // cache the pin
-    selectedPin = placemark
-    
-    let annotation = MKPointAnnotation()
-    annotation.coordinate = placemark.coordinate
-    annotation.title = placemark.name
-    if let city = placemark.locality,
-        let state = placemark.administrativeArea {
-        annotation.subtitle = "\(city) \(state)"
-    }
-    self.mapView.addAnnotation(annotation)
-    let span = MKCoordinateSpanMake(0.05, 0.05)
-    let region = MKCoordinateRegionMake(placemark.coordinate, span)
-    mapView.setRegion(region, animated: true)
-}
-func presentAlert() {
-    let alertController = UIAlertController(title: "Reminder", message: "Please enter the description of this reminder you will receive upon entering this location", preferredStyle: .alert)
-    
-    let confirmAction = UIAlertAction(title: "Save", style: .default) { (_) in
-        if let field = alertController.textFields?[0] {
-            // store your data
-            print(field)
-        } else {
-            // user did not fill field
-        }
-    }
-    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
-    
-    alertController.addTextField { (textField) in
-        textField.placeholder = "reminder description"
-    }
-    alertController.addAction(confirmAction)
-    alertController.addAction(cancelAction)
-    
-    self.present(alertController, animated: true, completion: nil)
-}
-func deleteAlert(){
-    let alertController = UIAlertController(title: "DELETE", message: "Are you sure you would like to delete this location?", preferredStyle: .alert)
-    
-    let deleteAction = UIAlertAction(title: "Delete", style: .default) { (_) in
-    
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        let managedContext = appDelegate.persistentContainer.viewContext
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
         
-        managedContext.delete(self.fh.locationObject[0] as NSManagedObject)
-        do {
-            try managedContext.save()
+        alertController.addTextField { (textField) in
+            textField.placeholder = "reminder description"
         }
-        catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
-}
-    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
-    
-    alertController.addAction(deleteAction)
-    alertController.addAction(cancelAction)
-    
-    self.present(alertController, animated: true, completion: nil)
-}
-func showPop() {
-    popUPView.isHidden = false
-    tableView.isHidden = false
-    tableView.alpha = 1.0
-    popUPView.alpha = 1.0
-    cancelB.isHidden = false
-    saveB.isHidden = false
-    //        _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(UIMenuController.update), userInfo: nil, repeats: false)
-    
-}
-func update() {
-    //  PopUpView.hidden = true
-    UIView.animate(withDuration: 1.0, delay: 0.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-        self.popUPView.alpha = 0.0
-    }, completion: nil)
-    
-}
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    func deleteAlert(){
+        let alertController = UIAlertController(title: "DELETE", message: "Are you sure you would like to delete this location?", preferredStyle: .alert)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .default) { (_) in
+            
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+            let managedContext = appDelegate.persistentContainer.viewContext
+            
+            managedContext.delete(self.fh.locationObject[0] as NSManagedObject)
+            
+            do {
+                try managedContext.save()
+            }
+            catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+        
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    func showPop() {
+        popUPView.isHidden = false
+        tableView.isHidden = false
+        tableView.alpha = 1.0
+        popUPView.alpha = 1.0
+        cancelB.isHidden = false
+        saveB.isHidden = false
+        //        _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(UIMenuController.update), userInfo: nil, repeats: false)
+        
+    }
+    func update() {
+        //  PopUpView.hidden = true
+        UIView.animate(withDuration: 1.0, delay: 0.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            self.popUPView.alpha = 0.0
+        }, completion: nil)
+        
+    }
 }
 extension PlaceViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{

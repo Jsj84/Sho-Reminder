@@ -61,20 +61,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         content.sound = UNNotificationSound.default()
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
-        //UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         UNUserNotificationCenter.current().add(request) {(error) in
             if let error = error {
                 print("error: \(error)")
             }
         }
     }
-    func locationNotification(location: CLRegion, body: String, identifer: String) {
-        let region = CLRegion()
-        let trigger = UNLocationNotificationTrigger(region: region, repeats: true)
+    func locationNotification(title: String, body: String, identifer: String) {
         
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
         let content = UNMutableNotificationContent()
         content.body = body
-        content.title = "Reminder"
+        content.title = title 
         content.sound = UNNotificationSound.default()
         let request = UNNotificationRequest(identifier: identifer, content: content, trigger: trigger)
 

@@ -82,6 +82,7 @@ extension LocationSearchTable {
         
         // drop pin and dismiss table view controller
         handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
+        handleMapSearchDelegate?.popAlert()
         dismiss(animated: true, completion: nil)
     }
 }
