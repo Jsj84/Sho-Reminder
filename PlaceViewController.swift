@@ -17,7 +17,7 @@ protocol HandleMapSearch {
     
     func dropPinZoomIn(placemark:MKPlacemark)
 }
-class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch, UNUserNotificationCenterDelegate, UITableViewDelegate {
+class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch, UNUserNotificationCenterDelegate {
     
     let searchRadius: CLLocationDistance = 2000
     var selectedPin:MKPlacemark? = nil
@@ -28,44 +28,10 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var popUPView: UIView!
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var cancelB: UIButton!
-    @IBOutlet weak var saveB: UIButton!
-    @IBAction func cancelAction(_ sender: Any) {
-        tableView.isHidden = true
-        cancelB.isHidden = true
-        popUPView.isHidden = true
-        saveB.isHidden = true
-    }
-    @IBOutlet weak var saveAction: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        popUPView.isHidden = true
-        popUPView.layer.cornerRadius = 10
-        popUPView.layer.masksToBounds = true
-        popUPView.backgroundColor = UIColor.clear
-        popUPView.isOpaque = true
-        
-        tableView.isHidden = true
-        tableView.layer.cornerRadius = 10
-        tableView.layer.masksToBounds = true
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.backgroundColor = color
-        tableView.separatorStyle = .none
-        
-        cancelB.backgroundColor = color
-        cancelB.layer.cornerRadius = 8
-        cancelB.isHidden = true
-        saveB.backgroundColor = color
-        saveB.layer.cornerRadius = 8
-        saveB.isHidden = true
-        
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -128,9 +94,10 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             for i in 0..<fh.locationObject.count {
                 let lat = fh.locationObject[i].value(forKey: "latitude") as! Double
                 let long = fh.locationObject[i].value(forKey: "longitude") as! Double
+                let text = fh.locationObject[i].value(forKey: "reminderInput") as! String
                 let radius:CLLocationDistance = 30
                 center = CLLocationCoordinate2D(latitude: lat, longitude: long)
-                let region = CLCircularRegion.init(center: center, radius: radius, identifier: "\(lat)")
+                let region = CLCircularRegion.init(center: center, radius: radius, identifier: text)
                 locationManager.startMonitoring(for: region)
             }
         }
@@ -149,11 +116,11 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         
         let delegate = UIApplication.shared.delegate as? AppDelegate
-        delegate?.locationNotification(title: "Reminder", body: "Enter", identifer: region.identifier)
+        delegate?.locationNotification(title: "Reminder", body: region.identifier, identifer: region.identifier)
     }
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         let delegate = UIApplication.shared.delegate as? AppDelegate
-        delegate?.locationNotification(title: "Reminder", body: "Exit", identifer: region.identifier)
+        delegate?.locationNotification(title: "Reminder", body: region.identifier, identifer: region.identifier)
     }
     func dropPinZoomIn(placemark:MKPlacemark) {
         // cache the pin
@@ -171,30 +138,15 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
     }
-    internal func popAlert() {
-        let alert = UIAlertController(title: "Location Reminder", message: "Enter the reminder for this location", preferredStyle: .alert)
-        //2. Add the text field. You can configure it however you need.
-        alert.addTextField { (textField) in
-            textField.text = ""
-        }
-        // 3. Grab the value from the text field, and print it when the user clicks OK.
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
-            let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
-            print("Text field: \(textField?.text)")
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-            let managedContext = appDelegate.persistentContainer.viewContext
-            
-            managedContext.delete(self.fh.locationObject[0] as NSManagedObject)
-            
-            do {
-                try managedContext.save()
-            }
-            catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
-        }))
-        // 4. Present the alert.
-        self.present(alert, animated: true, completion: nil)
+    func popUpBox() {
+//        fh.getLocationData()
+//        let subtitleView = fh.locationObject[1].value(forKey: "reminderInput") as! String?
+//        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 250, height: 40))
+//        label.center = CGPoint(x: 100, y: 185)
+//        label.textAlignment = .center
+//        label.text = subtitleView
+//        self.view.addSubview(label)
+//        self.view.bringSubview(toFront: label)
     }
     func presentAlert() {
         let alertController = UIAlertController(title: "Reminder", message: "Please enter the description of this reminder you will receive upon entering this location", preferredStyle: .alert)
@@ -256,25 +208,11 @@ extension PlaceViewController: MKMapViewDelegate {
         button.setBackgroundImage(#imageLiteral(resourceName: "checkList"), for: .normal)
         rightButton.setBackgroundImage(#imageLiteral(resourceName: "delete"), for: .normal)
         
-       // button.addTarget(self, action: #selector(), for: .touchUpInside)
+        button.addTarget(self, action: #selector(popUpBox), for: .touchUpInside)
         rightButton.addTarget(self, action: #selector(deleteAlert), for: .touchUpInside)
         pinView?.leftCalloutAccessoryView = button
         pinView?.rightCalloutAccessoryView = rightButton
         return pinView
     }
     
-}
-extension PlaceViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
-    }
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! PopUpViewCell
-        cell.configure(text: "", placeholder: "Enter a reminder....")
-        cell.backgroundColor = UIColor.clear
-        return cell
-    }
 }
