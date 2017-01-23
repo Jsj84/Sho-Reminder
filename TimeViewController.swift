@@ -32,9 +32,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        fh.getData()
-        
+    
         view.backgroundColor = UIColor(patternImage: UIImage(named: "background.png")!)
         
         tableView.delegate = self

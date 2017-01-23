@@ -76,8 +76,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
         else if section == 1 {
+            if fh.locationObject.isEmpty == true {
+                return "You do not have any upcoming location reminders"
+            }
+            else if fh.locationObject.count == 1 {
+                return "You have 1 location reminder scheduled"
+            }
         }
-        return "Next location reminder"
+        return "You have " + "\(fh.locationObject.count)" + " location reminders scheduled"
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
@@ -106,7 +112,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.backgroundColor = UIColor.clear
             return cell
         }
-            else {
+        else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell
             cell.nameLable.text = fh.locationObject[indexPath.row].value(forKey: "mKtitle") as! String?
             cell.subtitleLable.text = fh.locationObject[indexPath.row].value(forKey: "mKSubTitle") as! String?
