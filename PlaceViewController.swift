@@ -85,10 +85,11 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             self.present(alert, animated: true, completion: nil)
         }
         else if status == .authorizedAlways {
+            fh.getLocationData()
             locationManager.startUpdatingLocation()
             locationManager.distanceFilter = 10
             var center = CLLocationCoordinate2D()
-            for i in 0..<fh.locationObject.count {
+            for i in 0..<self.fh.locationObject.count {
                 let lat = fh.locationObject[i].value(forKey: "latitude") as! Double
                 let long = fh.locationObject[i].value(forKey: "longitude") as! Double
                 let text = fh.locationObject[i].value(forKey: "reminderInput") as! String
@@ -96,6 +97,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
                 center = CLLocationCoordinate2D(latitude: lat, longitude: long)
                 let region = CLCircularRegion.init(center: center, radius: radius, identifier: text)
                 locationManager.startMonitoring(for: region)
+                print("Region: \(region.identifier)" + " is being monitored")
             }
         }
     }
@@ -108,7 +110,6 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
         region.notifyOnEntry = true
         region.notifyOnExit = true
-        print("Region: \(region.identifier)" + " is being monitored")
     }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         
@@ -173,7 +174,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         let managedContext = appDelegate.persistentContainer.viewContext
         
         let deleteAction = UIAlertAction(title: "Delete", style: .default) { (_) in
-            managedContext.delete(self.fh.locationObject[0] as NSManagedObject)            
+            managedContext.delete(self.fh.locationObject[0] as NSManagedObject)
             do {
                 try managedContext.save()
             }

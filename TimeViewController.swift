@@ -10,25 +10,12 @@ import Foundation
 import UIKit
 import CoreData
 
-class TimeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SwitchChangedDelegate {
+class TimeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     
     var userDefaults = UserDefaults.standard
     var color = UIColor(netHex:0x90F7A3)
     let fh = ManagedObject()
-    
-    internal func changeStateTo(isOn: Bool, row: Int) {
-        if isOn == true {
-            userDefaults.set(true, forKey: "\(row)")
-            userDefaults.synchronize()
-            print("row: \(row) switch is on")
-        }
-        else {
-            userDefaults.set(false, forKey: "\(row)")
-            userDefaults.synchronize()
-            print("row: \(row) switch is off")
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,8 +43,6 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
         cell.myLabel_1.text = fh.timeObject[indexPath.row].value(forKey: "name") as! String?
         cell.myLabel_2.text = fh.timeObject[indexPath.row ].value(forKey: "dateString") as! String?
-        cell.delegate = self
-        cell.row = indexPath.row
         return cell
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
