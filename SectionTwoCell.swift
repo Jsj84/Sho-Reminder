@@ -22,8 +22,8 @@ class SectionTwoCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        nameLable = UILabel(frame: CGRect(x: 0, y: 5, width: 350, height: 20))
-        subtitleLable = UILabel(frame: CGRect(x: 0, y: 35, width: 350, height: 15))
+        nameLable = UILabel(frame: CGRect(x: 14, y: 5, width: 350, height: 20))
+        subtitleLable = UILabel(frame: CGRect(x: 6, y: 35, width: 350, height: 15))
         
         nameLable.translatesAutoresizingMaskIntoConstraints = false
         subtitleLable.translatesAutoresizingMaskIntoConstraints = false

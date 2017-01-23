@@ -55,14 +55,14 @@
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="61" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="P2r-G0-M4d">
-                                <rect key="frame" x="16" y="112" width="343" height="547"/>
+                                <rect key="frame" x="0.0" y="112" width="375" height="547"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="61" id="lG9-BH-R7Y" customClass="HomeTableViewCell" customModule="Sho_Reminder" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="343" height="61"/>
+                                        <rect key="frame" x="0.0" y="56" width="375" height="61"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lG9-BH-R7Y" id="DmG-es-w4Q">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="60.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="61"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -71,21 +71,21 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="o3a-i5-iAT" firstAttribute="top" secondItem="7uF-5Q-apT" secondAttribute="top" id="C05-Nh-sCt"/>
-                            <constraint firstItem="P2r-G0-M4d" firstAttribute="top" secondItem="KAj-do-EEW" secondAttribute="bottom" constant="8" symbolic="YES" id="Cmt-z0-kyb"/>
-                            <constraint firstItem="KAj-do-EEW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Gbq-nE-EO3"/>
-                            <constraint firstItem="o3a-i5-iAT" firstAttribute="firstBaseline" secondItem="7uF-5Q-apT" secondAttribute="firstBaseline" id="GyO-n6-m4R"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="P2r-G0-M4d" secondAttribute="bottom" constant="8" symbolic="YES" id="KJ3-N5-ZRL"/>
-                            <constraint firstItem="KAj-do-EEW" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="Lpp-2V-31c"/>
-                            <constraint firstItem="KAj-do-EEW" firstAttribute="leading" secondItem="P2r-G0-M4d" secondAttribute="leading" id="QQQ-mc-1Sq"/>
-                            <constraint firstItem="KAj-do-EEW" firstAttribute="top" secondItem="o3a-i5-iAT" secondAttribute="top" id="U5t-Qa-j9A"/>
-                            <constraint firstItem="P2r-G0-M4d" firstAttribute="top" secondItem="7uF-5Q-apT" secondAttribute="bottom" constant="10" id="VRn-lb-3Dm"/>
-                            <constraint firstItem="o3a-i5-iAT" firstAttribute="leading" secondItem="KAj-do-EEW" secondAttribute="trailing" constant="8" symbolic="YES" id="Va7-LI-Mmg"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="7uF-5Q-apT" secondAttribute="trailing" constant="1" id="adf-Ag-uuc"/>
-                            <constraint firstItem="7uF-5Q-apT" firstAttribute="leading" secondItem="o3a-i5-iAT" secondAttribute="trailing" constant="7" id="ee2-Q4-Tht"/>
-                            <constraint firstItem="7uF-5Q-apT" firstAttribute="baseline" secondItem="o3a-i5-iAT" secondAttribute="baseline" id="l43-WA-bUe"/>
-                            <constraint firstItem="P2r-G0-M4d" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="mna-ev-ljx"/>
-                            <constraint firstItem="P2r-G0-M4d" firstAttribute="top" secondItem="o3a-i5-iAT" secondAttribute="bottom" constant="8" symbolic="YES" id="p29-68-j9Z"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="P2r-G0-M4d" secondAttribute="bottom" constant="8" symbolic="YES" id="2wL-uC-o6s"/>
+                            <constraint firstItem="7uF-5Q-apT" firstAttribute="leading" secondItem="o3a-i5-iAT" secondAttribute="trailing" constant="7" id="4bU-HA-F7S"/>
+                            <constraint firstItem="KAj-do-EEW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="9dX-JK-O45"/>
+                            <constraint firstItem="P2r-G0-M4d" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="A4Z-mb-82i"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="7uF-5Q-apT" secondAttribute="trailing" constant="1" id="ArQ-Af-76S"/>
+                            <constraint firstItem="P2r-G0-M4d" firstAttribute="top" secondItem="7uF-5Q-apT" secondAttribute="bottom" constant="10" id="Mie-zN-pXC"/>
+                            <constraint firstItem="P2r-G0-M4d" firstAttribute="top" secondItem="KAj-do-EEW" secondAttribute="bottom" constant="8" symbolic="YES" id="RtR-hr-doR"/>
+                            <constraint firstItem="P2r-G0-M4d" firstAttribute="top" secondItem="o3a-i5-iAT" secondAttribute="bottom" constant="8" symbolic="YES" id="W8y-Sg-rU9"/>
+                            <constraint firstAttribute="trailing" secondItem="P2r-G0-M4d" secondAttribute="trailing" id="WR2-h7-BoN"/>
+                            <constraint firstItem="o3a-i5-iAT" firstAttribute="leading" secondItem="KAj-do-EEW" secondAttribute="trailing" constant="8" symbolic="YES" id="fWG-m6-tqy"/>
+                            <constraint firstItem="o3a-i5-iAT" firstAttribute="top" secondItem="7uF-5Q-apT" secondAttribute="top" id="pOl-5Y-DdF"/>
+                            <constraint firstItem="KAj-do-EEW" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="qP4-bc-vbQ"/>
+                            <constraint firstItem="KAj-do-EEW" firstAttribute="top" secondItem="o3a-i5-iAT" secondAttribute="top" id="w2s-jI-aWc"/>
+                            <constraint firstItem="o3a-i5-iAT" firstAttribute="firstBaseline" secondItem="7uF-5Q-apT" secondAttribute="firstBaseline" id="yqD-TH-Hwx"/>
+                            <constraint firstItem="o3a-i5-iAT" firstAttribute="baseline" secondItem="7uF-5Q-apT" secondAttribute="baseline" id="zyp-9H-Wcv"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="lWO-Yt-TsT" colorLabel="IBBuiltInLabel-Blue"/>

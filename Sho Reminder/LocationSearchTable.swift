@@ -83,7 +83,7 @@ extension LocationSearchTable {
         
         // show aleart to gather information 
         let alert = UIAlertController(title: "Location Reminder", message: "Enter the reminder for this location", preferredStyle: .alert)
-        //2. Add the text field. You can configure it however you need.
+        //2. Add the text field
         alert.addTextField { (textField) in
             textField.text = ""
         }

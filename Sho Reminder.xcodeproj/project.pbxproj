@@ -18,7 +18,6 @@
 		7753BBEB1E1334B900B78D49 /* TimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBE41E1334B900B78D49 /* TimeViewController.swift */; };
 		7753BBED1E1334D300B78D49 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7753BBEC1E1334D300B78D49 /* Main.storyboard */; };
 		7753BBF11E1335D900B78D49 /* ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBF01E1335D900B78D49 /* ManagedObject.swift */; };
-		777D9B571E24A08500A5FC7C /* PopUpViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777D9B561E24A08500A5FC7C /* PopUpViewCell.swift */; };
 		77B980321E22E0D000BF5947 /* SectionTwoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B980311E22E0D000BF5947 /* SectionTwoCell.swift */; };
 		77BD25B41E17718200B81389 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77BD25B31E17718200B81389 /* CoreData.framework */; };
 		77FB8BD31E16BF30005316B5 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 77FB8BD21E16BF30005316B5 /* background.png */; };
@@ -40,7 +39,6 @@
 		7753BBE41E1334B900B78D49 /* TimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeViewController.swift; sourceTree = "<group>"; };
 		7753BBEC1E1334D300B78D49 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		7753BBF01E1335D900B78D49 /* ManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ManagedObject.swift; path = ../ManagedObject.swift; sourceTree = "<group>"; };
-		777D9B561E24A08500A5FC7C /* PopUpViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopUpViewCell.swift; sourceTree = "<group>"; };
 		77B980311E22E0D000BF5947 /* SectionTwoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionTwoCell.swift; sourceTree = "<group>"; };
 		77BD25B31E17718200B81389 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		77FB8BD21E16BF30005316B5 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
@@ -118,7 +116,6 @@
 			children = (
 				7753BBE21E1334B900B78D49 /* PlaceViewController.swift */,
 				77FB8BD71E172F24005316B5 /* LocationSearchTable.swift */,
-				777D9B561E24A08500A5FC7C /* PopUpViewCell.swift */,
 			);
 			name = Locations;
 			sourceTree = "<group>";
@@ -241,7 +238,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7753BBE71E1334B900B78D49 /* HomeViewController.swift in Sources */,
-				777D9B571E24A08500A5FC7C /* PopUpViewCell.swift in Sources */,
 				7753BBDC1E13349B00B78D49 /* AppDelegate.swift in Sources */,
 				7753BBF11E1335D900B78D49 /* ManagedObject.swift in Sources */,
 				77FB8BD81E172F24005316B5 /* LocationSearchTable.swift in Sources */,
