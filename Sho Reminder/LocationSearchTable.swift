@@ -96,8 +96,6 @@ extension LocationSearchTable {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in }))
         // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
-
-        dismiss(animated: true, completion: nil)
-        
+        dismiss(animated: true, completion: nil)        
     }
 }

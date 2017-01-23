@@ -50,8 +50,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             // clear text field
             reminderDiscription.text?.removeAll()
-            self.dismiss(animated: true, completion: nil)
-            
+            self.dismiss(animated: true, completion: nil)            
         }
     }
     override func viewDidLoad() {
