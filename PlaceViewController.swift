@@ -19,11 +19,8 @@ protocol HandleMapSearch {
 }
 class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch, UNUserNotificationCenterDelegate {
     
-    let searchRadius: CLLocationDistance = 2000
     var selectedPin:MKPlacemark? = nil
     let locationManager = CLLocationManager()
-    var center = CLLocationCoordinate2D()
-    var coordinates: [CLLocationCoordinate2D] = []
     var resultSearchController:UISearchController? = nil
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
@@ -90,7 +87,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         else if status == .authorizedAlways {
             locationManager.startUpdatingLocation()
             locationManager.distanceFilter = 10
-            
+            var center = CLLocationCoordinate2D()
             for i in 0..<fh.locationObject.count {
                 let lat = fh.locationObject[i].value(forKey: "latitude") as! Double
                 let long = fh.locationObject[i].value(forKey: "longitude") as! Double
@@ -139,14 +136,14 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         mapView.setRegion(region, animated: true)
     }
     func popUpBox() {
-//        fh.getLocationData()
-//        let subtitleView = fh.locationObject[1].value(forKey: "reminderInput") as! String?
-//        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 250, height: 40))
-//        label.center = CGPoint(x: 100, y: 185)
-//        label.textAlignment = .center
-//        label.text = subtitleView
-//        self.view.addSubview(label)
-//        self.view.bringSubview(toFront: label)
+        //        fh.getLocationData()
+        //        let subtitleView = fh.locationObject[1].value(forKey: "reminderInput") as! String?
+        //        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 250, height: 40))
+        //        label.center = CGPoint(x: 100, y: 185)
+        //        label.textAlignment = .center
+        //        label.text = subtitleView
+        //        self.view.addSubview(label)
+        //        self.view.bringSubview(toFront: label)
     }
     func presentAlert() {
         let alertController = UIAlertController(title: "Reminder", message: "Please enter the description of this reminder you will receive upon entering this location", preferredStyle: .alert)

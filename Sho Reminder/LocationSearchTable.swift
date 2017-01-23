@@ -93,17 +93,7 @@ extension LocationSearchTable {
             // save to coreData
             self.fh.writeLocationData(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude, mKtitle: selectedItem.name!, mKSubTitle: selectedItem.title!, reminderInput: (textField?.text!)!)
         }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-            let managedContext = appDelegate.persistentContainer.viewContext
-            
-            managedContext.delete(self.fh.locationObject[0] as NSManagedObject)
-            
-            do {
-                try managedContext.save()
-            }
-            catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
-        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in }))
         // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
 

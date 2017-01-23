@@ -367,7 +367,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Sho Reminder/Sho Reminder.entitlements";
 				DEVELOPMENT_TEAM = JN83A35T6F;
 				INFOPLIST_FILE = "Sho Reminder/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jnjapps.Sho-Reminder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -384,7 +384,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Sho Reminder/Sho Reminder.entitlements";
 				DEVELOPMENT_TEAM = JN83A35T6F;
 				INFOPLIST_FILE = "Sho Reminder/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jnjapps.Sho-Reminder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
