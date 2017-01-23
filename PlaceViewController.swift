@@ -22,7 +22,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     var selectedPin:MKPlacemark? = nil
     let locationManager = CLLocationManager()
     var resultSearchController:UISearchController? = nil
-    let fh = ManagedObject()
+    var fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     
     @IBOutlet weak var mapView: MKMapView!
@@ -169,13 +169,11 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     func deleteAlert(){
         let alertController = UIAlertController(title: "DELETE", message: "Are you sure you would like to delete this location?", preferredStyle: .alert)
         
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
         let deleteAction = UIAlertAction(title: "Delete", style: .default) { (_) in
-            
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-            let managedContext = appDelegate.persistentContainer.viewContext
-            
-            managedContext.delete(self.fh.locationObject[0] as NSManagedObject)
-            
+            managedContext.delete(self.fh.locationObject[0] as NSManagedObject)            
             do {
                 try managedContext.save()
             }
