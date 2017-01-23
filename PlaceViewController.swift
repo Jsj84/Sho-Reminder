@@ -113,11 +113,11 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         
         let delegate = UIApplication.shared.delegate as? AppDelegate
-        delegate?.locationNotification(title: "Reminder", body: region.identifier, identifer: region.identifier)
+        delegate?.locationNotification(title: "Location Reminder", body: region.identifier, identifer: region.identifier)
     }
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         let delegate = UIApplication.shared.delegate as? AppDelegate
-        delegate?.locationNotification(title: "Reminder", body: region.identifier, identifer: region.identifier)
+        delegate?.locationNotification(title: "Location Reminder", body: region.identifier, identifer: region.identifier)
     }
     func dropPinZoomIn(placemark:MKPlacemark) {
         // cache the pin
