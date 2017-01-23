@@ -10,8 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class TimeViewController: UIViewController, UITableViewDelegate, SwitchChangedDelegate {
-
+class TimeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SwitchChangedDelegate {
     @IBOutlet weak var tableView: UITableView!
     
     var userDefaults = UserDefaults.standard
@@ -47,8 +46,11 @@ class TimeViewController: UIViewController, UITableViewDelegate, SwitchChangedDe
         self.hideKeyboardWhenTappedAround()
         self.dismissKeyboard()
     }
-}
-extension TimeViewController: UITableViewDataSource {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fh.getData()
+        tableView.reloadData()
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fh.timeObject.count
     }
@@ -86,6 +88,7 @@ extension TimeViewController: UITableViewDataSource {
             tableView.reloadData()
         }
     }
+    
 }
 extension UIViewController {
     func hideKeyboardWhenTappedAround() {
