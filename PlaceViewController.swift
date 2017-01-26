@@ -92,10 +92,10 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             for i in 0..<self.fh.locationObject.count {
                 let lat = fh.locationObject[i].value(forKey: "latitude") as! Double
                 let long = fh.locationObject[i].value(forKey: "longitude") as! Double
-                let text = fh.locationObject[i].value(forKey: "mKtitle") as! String
+                let reminder = fh.locationObject[i].value(forKey: "reminderInput") as! String
                 let radius:CLLocationDistance = 30
                 center = CLLocationCoordinate2D(latitude: lat, longitude: long)
-                let region = CLCircularRegion.init(center: center, radius: radius, identifier: text)
+                let region = CLCircularRegion.init(center: center, radius: radius, identifier: reminder)
                 locationManager.startMonitoring(for: region)
                 print("Region: \(region.identifier)" + " is being monitored")
             }

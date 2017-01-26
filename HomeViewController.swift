@@ -130,9 +130,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 fh.timeObject.remove(at: indexPath.row)
             }
             else {
+                let t = fh.locationObject[indexPath.row].value(forKey: "reminderInput") as! String?
+                NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: t!), object: nil)
                 managedContext.delete(fh.locationObject[indexPath.row] as NSManagedObject)
                 fh.locationObject.remove(at: indexPath.row)
-                NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "mKtitle"), object: nil)
             }
             do {
                 try managedContext.save()
