@@ -9,6 +9,7 @@
 import UIKit
 import Foundation
 import CoreData
+import UserNotifications
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -120,6 +121,28 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             return cell
         }
     }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+            let managedContext = appDelegate.persistentContainer.viewContext
+            if indexPath.section == 0 {
+                managedContext.delete(fh.timeObject[indexPath.row] as NSManagedObject)
+                fh.timeObject.remove(at: indexPath.row)
+            }
+            else {
+                managedContext.delete(fh.locationObject[indexPath.row] as NSManagedObject)
+                fh.locationObject.remove(at: indexPath.row)
+                NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "mKtitle"), object: nil)
+            }
+            do {
+                try managedContext.save()
+            }
+            catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
+            tableView.reloadData()
+        }
+    }
+    
+    
 }
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {

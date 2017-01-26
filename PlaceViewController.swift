@@ -92,7 +92,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             for i in 0..<self.fh.locationObject.count {
                 let lat = fh.locationObject[i].value(forKey: "latitude") as! Double
                 let long = fh.locationObject[i].value(forKey: "longitude") as! Double
-                let text = fh.locationObject[i].value(forKey: "reminderInput") as! String
+                let text = fh.locationObject[i].value(forKey: "mKtitle") as! String
                 let radius:CLLocationDistance = 30
                 center = CLLocationCoordinate2D(latitude: lat, longitude: long)
                 let region = CLCircularRegion.init(center: center, radius: radius, identifier: text)
@@ -136,16 +136,6 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
     }
-    func popUpBox() {
-        //        fh.getLocationData()
-        //        let subtitleView = fh.locationObject[1].value(forKey: "reminderInput") as! String?
-        //        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 250, height: 40))
-        //        label.center = CGPoint(x: 100, y: 185)
-        //        label.textAlignment = .center
-        //        label.text = subtitleView
-        //        self.view.addSubview(label)
-        //        self.view.bringSubview(toFront: label)
-    }
     func presentAlert() {
         let alertController = UIAlertController(title: "Reminder", message: "Please enter the description of this reminder you will receive upon entering this location", preferredStyle: .alert)
         
@@ -167,25 +157,8 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         
         self.present(alertController, animated: true, completion: nil)
     }
-    func deleteAlert(){
-        let alertController = UIAlertController(title: "DELETE", message: "Are you sure you would like to delete this location?", preferredStyle: .alert)
-        
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        let deleteAction = UIAlertAction(title: "Delete", style: .default) { (_) in
-            managedContext.delete(self.fh.locationObject[0] as NSManagedObject)
-            do {
-                try managedContext.save()
-            }
-            catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
-        
-        alertController.addAction(deleteAction)
-        alertController.addAction(cancelAction)
-        
-        self.present(alertController, animated: true, completion: nil)
+    func popUpBox(){
+        print("test for popup box")
     }
 }
 extension PlaceViewController: MKMapViewDelegate {
@@ -200,14 +173,10 @@ extension PlaceViewController: MKMapViewDelegate {
         pinView?.canShowCallout = true
         let smallSquare = CGSize(width: 30, height: 30)
         let button = UIButton(frame: CGRect(origin: .zero, size: smallSquare))
-        let rightButton = UIButton(frame: CGRect(origin: .zero, size: smallSquare))
         button.setBackgroundImage(#imageLiteral(resourceName: "checkList"), for: .normal)
-        rightButton.setBackgroundImage(#imageLiteral(resourceName: "delete"), for: .normal)
         
         button.addTarget(self, action: #selector(popUpBox), for: .touchUpInside)
-        rightButton.addTarget(self, action: #selector(deleteAlert), for: .touchUpInside)
         pinView?.leftCalloutAccessoryView = button
-        pinView?.rightCalloutAccessoryView = rightButton
         return pinView
     }
     
