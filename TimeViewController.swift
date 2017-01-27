@@ -71,7 +71,6 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
             tableView.reloadData()
         }
     }
-    
 }
 extension UIViewController {
     func hideKeyboardWhenTappedAround() {

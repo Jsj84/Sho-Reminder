@@ -46,7 +46,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             delegate?.scheduleNotification(atDate: dateOnPicker, body: reminderDiscription.text!, title: "Reminder", identifier: reminderDiscription.text!)
             
             // save as NSObject
-            fh.save(name: reminderDiscription.text!, date: dateAsString)
+            fh.save(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker)
             
             // clear text field
             reminderDiscription.text?.removeAll()

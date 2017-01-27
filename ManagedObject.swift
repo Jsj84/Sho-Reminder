@@ -49,7 +49,7 @@ class ManagedObject: NSObject {
         }
     }
     
-    func save(name: String, date: String) {
+    func save(name: String, dateString: String, date: Date) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -59,7 +59,8 @@ class ManagedObject: NSObject {
         let object = NSManagedObject(entity: entity, insertInto: managedContext)
         
         object.setValue(name, forKeyPath: "name")
-        object.setValue(date, forKey: "dateString")
+        object.setValue(dateString, forKey: "dateString")
+        object.setValue(date, forKey: "date")
         
         do {
             try managedContext.save()
