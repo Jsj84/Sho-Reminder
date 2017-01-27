@@ -66,12 +66,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             let c = fh.timeObject[i].value(forKey: "date") as! Date
             if c < now as Date {
                 managedContext.delete(fh.timeObject[i] as NSManagedObject)
-                
                 do {
                     try managedContext.save()
                 }
                 catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
-                fh.getData()
             }
         }
         tableView.reloadData()
@@ -121,6 +119,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        fh.getData()
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell
             cell.nameLable.text = fh.timeObject[indexPath.row].value(forKey: "name") as! String?

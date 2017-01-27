@@ -41,12 +41,10 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
             let c = fh.timeObject[i].value(forKey: "date") as! Date
             if c < now as Date {
                 managedContext.delete(fh.timeObject[i] as NSManagedObject)
-                
                 do {
                     try managedContext.save()
                 }
                 catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
-                fh.getData()
             }
         }
         tableView.reloadData()
@@ -55,6 +53,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return fh.timeObject.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        fh.getData()
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
         cell.myLabel_1.text = fh.timeObject[indexPath.row].value(forKey: "name") as! String?
         cell.myLabel_2.text = fh.timeObject[indexPath.row ].value(forKey: "dateString") as! String?
