@@ -85,4 +85,9 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.backgroundColor = UIColor.white
         return cell
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            performSegue(withIdentifier: "intervalSegue", sender: AnyObject.self)
+        }
+    }
 }
