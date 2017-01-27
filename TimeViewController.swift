@@ -16,7 +16,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var userDefaults = UserDefaults.standard
     var color = UIColor(netHex:0x90F7A3)
     let fh = ManagedObject()
-    
+    var c:[NSManagedObject] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,6 +34,21 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fh.getData()
+        let now = Date()
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        for i in 0..<fh.timeObject.count {
+            let c = fh.timeObject[i].value(forKey: "date") as! Date
+            if c <= now as Date {
+                managedContext.delete(fh.timeObject[i] as NSManagedObject)
+                
+                do {
+                    try managedContext.save()
+                }
+                catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
+                tableView.reloadData()
+            }
+        }
         tableView.reloadData()
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

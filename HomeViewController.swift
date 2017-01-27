@@ -59,6 +59,22 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewWillAppear(animated)
         fh.getData()
         fh.getLocationData()
+        fh.getData()
+        let now = Date()
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        for i in 0..<fh.timeObject.count {
+            let c = fh.timeObject[i].value(forKey: "date") as! Date
+            if c <= now as Date {
+                managedContext.delete(fh.timeObject[i] as NSManagedObject)
+                
+                do {
+                    try managedContext.save()
+                }
+                catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
+                tableView.reloadData()
+            }
+        }
         tableView.reloadData()
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
