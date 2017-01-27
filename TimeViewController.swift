@@ -46,7 +46,6 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
                     try managedContext.save()
                 }
                 catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
-                tableView.reloadData()
             }
         }
         tableView.reloadData()
