@@ -39,13 +39,14 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let managedContext = appDelegate.persistentContainer.viewContext
         for i in 0..<fh.timeObject.count {
             let c = fh.timeObject[i].value(forKey: "date") as! Date
-            if c <= now as Date {
+            if c < now as Date {
                 managedContext.delete(fh.timeObject[i] as NSManagedObject)
                 
                 do {
                     try managedContext.save()
                 }
                 catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
+                fh.getData()
             }
         }
         tableView.reloadData()
