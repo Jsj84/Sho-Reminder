@@ -19,6 +19,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     var r = ""
     internal func repeatIs(interval: String) {
         r = interval
+        tableView.reloadData()
     }
     
     let fh = ManagedObject()

@@ -12,15 +12,18 @@ import UIKit
 class TimeZoneViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-    
+    var color = UIColor(netHex:0x90F7A3)
     let timeZones = ["Estern", "Western"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = UIColor(patternImage: UIImage(named: "background.png")!)
+        
         tableView.dataSource = self
         tableView.delegate = self
-        
+        tableView.backgroundColor = UIColor.clear
+        tableView.separatorColor = color
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return timeZones.count

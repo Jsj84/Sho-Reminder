@@ -380,14 +380,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="KbP-vH-3T7">
-                                <rect key="frame" x="16" y="64" width="343" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="kjA-2l-TRR">
-                                        <rect key="frame" x="0.0" y="55.5" width="343" height="44"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kjA-2l-TRR" id="bjm-gD-gYY">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -396,13 +396,15 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="KbP-vH-3T7" firstAttribute="top" secondItem="bIr-mU-whA" secondAttribute="bottom" id="Dpu-fU-SrO"/>
+                            <constraint firstItem="KbP-vH-3T7" firstAttribute="top" secondItem="bIr-mU-whA" secondAttribute="bottom" constant="-64" id="Dpu-fU-SrO"/>
                             <constraint firstItem="KbP-vH-3T7" firstAttribute="bottom" secondItem="Jzx-VM-IVx" secondAttribute="top" id="IWV-Ky-sbc"/>
-                            <constraint firstItem="KbP-vH-3T7" firstAttribute="trailing" secondItem="UOW-la-vls" secondAttribute="trailingMargin" id="noo-s5-7Cx"/>
-                            <constraint firstItem="KbP-vH-3T7" firstAttribute="leading" secondItem="UOW-la-vls" secondAttribute="leadingMargin" id="u4Q-kB-LCF"/>
+                            <constraint firstItem="KbP-vH-3T7" firstAttribute="trailing" secondItem="UOW-la-vls" secondAttribute="trailingMargin" constant="16" id="noo-s5-7Cx"/>
+                            <constraint firstItem="KbP-vH-3T7" firstAttribute="leading" secondItem="UOW-la-vls" secondAttribute="leadingMargin" constant="-16" id="u4Q-kB-LCF"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="mbs-0M-GBK"/>
+                    <navigationItem key="navigationItem" id="mbs-0M-GBK">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="6hR-Y5-F4c"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="KbP-vH-3T7" id="YJc-Kb-zfU"/>
                     </connections>
