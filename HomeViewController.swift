@@ -74,6 +74,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         tableView.reloadData()
     }
+    override func viewDidAppear(_ animated: Bool) {
+        fh.getData()
+        tableView.reloadData()
+    }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             if fh.timeObject.isEmpty == true {
@@ -119,7 +123,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        fh.getData()
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell
             cell.nameLable.text = fh.timeObject[indexPath.row].value(forKey: "name") as! String?

@@ -86,7 +86,11 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            print("cell picked")
+        if indexPath.row == 0 {
             performSegue(withIdentifier: "intervalSegue", sender: AnyObject.self)
+        }
+        else {
+            performSegue(withIdentifier: "timeZoneSegue", sender: AnyObject.self)
+        }
     }
 }
