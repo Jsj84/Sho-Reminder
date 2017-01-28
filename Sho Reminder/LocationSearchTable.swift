@@ -18,7 +18,6 @@ class LocationSearchTable: UITableViewController {
     var handleMapSearchDelegate:HandleMapSearch? = nil
     let fh = ManagedObject()
     
-    
     func parseAddress(selectedItem:MKPlacemark) -> String {
         // put a space between "4" and "Melrose Place"
         let firstSpace = (selectedItem.subThoroughfare != nil && selectedItem.thoroughfare != nil) ? " " : ""

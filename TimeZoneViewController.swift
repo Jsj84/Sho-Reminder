@@ -13,7 +13,7 @@ class TimeZoneViewController: UIViewController, UITableViewDataSource, UITableVi
     
     @IBOutlet weak var tableView: UITableView!
     
-    let timeZones = ["", ""]
+    let timeZones = ["Estern", "Western"]
     
     override func viewDidLoad() {
         super.viewDidLoad()

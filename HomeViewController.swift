@@ -159,8 +159,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             tableView.reloadData()
         }
     }
-    
-    
 }
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {
