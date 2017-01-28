@@ -70,8 +70,8 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         timePicker.backgroundColor = UIColor.clear
         
-//        self.hideKeyboardWhenTappedAround()
-//        self.dismissKeyboard()
+        self.hideKeyboardWhenTappedAround()
+        self.dismissKeyboard()
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -92,5 +92,8 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         else {
             performSegue(withIdentifier: "timeZoneSegue", sender: AnyObject.self)
         }
+    }
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: [indexPath.row], animated: false)
     }
 }

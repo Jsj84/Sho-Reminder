@@ -11,6 +11,7 @@ import UIKit
 
 class TimeTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var myLabel_1: UILabel!
     @IBOutlet weak var myLabel_2: UILabel!
     

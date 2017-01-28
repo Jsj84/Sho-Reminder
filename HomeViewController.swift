@@ -59,6 +59,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewWillAppear(animated)
         fh.getData()
         fh.getLocationData()
+        tableView.reloadData()
         let now = Date()
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -68,12 +69,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 managedContext.delete(fh.timeObject[i] as NSManagedObject)
                 do {
                     try managedContext.save()
-                    fh.getData()
                 }
                 catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
             }
-            tableView.reloadData()
         }
+        fh.getData()
+        tableView.reloadData()
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {

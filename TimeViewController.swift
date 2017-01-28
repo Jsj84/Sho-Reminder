@@ -44,6 +44,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
         cell.myLabel_1.text = fh.timeObject[indexPath.row].value(forKey: "name") as! String?
         cell.myLabel_2.text = fh.timeObject[indexPath.row ].value(forKey: "dateString") as! String?
+        cell.cellImage.image = #imageLiteral(resourceName: "StickyNote")
         return cell
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
