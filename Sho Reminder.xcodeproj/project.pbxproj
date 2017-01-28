@@ -109,10 +109,10 @@
 		7753BBEF1E13355100B78D49 /* Time */ = {
 			isa = PBXGroup;
 			children = (
-				7741EDCA1E3C0F0800765A19 /* IntervalViewController.swift */,
 				7753BBE41E1334B900B78D49 /* TimeViewController.swift */,
 				7753BBE31E1334B900B78D49 /* TimeTableViewCell.swift */,
 				771B0EA71E1C41C800C01B4D /* TimeAddViewController.swift */,
+				7741EDCA1E3C0F0800765A19 /* IntervalViewController.swift */,
 				7741EDCC1E3C156A00765A19 /* TimeZoneViewController.swift */,
 			);
 			name = Time;

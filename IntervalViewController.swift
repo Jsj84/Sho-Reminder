@@ -12,6 +12,7 @@ import UIKit
 class IntervalViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let dataSource = ["Hourly", "Daily", "Weekly", "Monthly", "Yearly"]
+    var re: setRepeat? = nil 
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -29,10 +30,12 @@ class IntervalViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
         cell?.textLabel?.text = dataSource[indexPath.row]
+        
         return cell!
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        re?.repeatIs(interval: (tableView.cellForRow(at: indexPath)?.textLabel?.text)!)
         self.dismiss(animated: true, completion: nil)
     }
 }

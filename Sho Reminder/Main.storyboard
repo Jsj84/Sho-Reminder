@@ -119,10 +119,10 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="73" id="W8m-bu-7uh" customClass="TimeTableViewCell" customModule="Sho_Reminder" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="73"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="73"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="W8m-bu-7uh" id="Eqo-X2-Taj">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="72.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K5D-hN-vdY">
@@ -319,12 +319,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YRD-uH-rEL">
-                                <rect key="frame" x="0.0" y="191" width="375" height="285"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="YRD-uH-rEL">
+                                <rect key="frame" x="0.0" y="119" width="375" height="428"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="nTd-lc-HRO">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nTd-lc-HRO" id="H6x-xB-QYm">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -336,10 +336,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="YRD-uH-rEL" secondAttribute="trailing" id="4Mm-AG-ebX"/>
-                            <constraint firstItem="Wnr-hT-O62" firstAttribute="top" secondItem="YRD-uH-rEL" secondAttribute="bottom" constant="191" id="aVi-gl-rnY"/>
-                            <constraint firstItem="YRD-uH-rEL" firstAttribute="leading" secondItem="b8n-pN-20a" secondAttribute="leading" id="k4v-1s-jgt"/>
-                            <constraint firstItem="YRD-uH-rEL" firstAttribute="centerY" secondItem="b8n-pN-20a" secondAttribute="centerY" id="wLs-TG-a92"/>
+                            <constraint firstAttribute="trailing" secondItem="YRD-uH-rEL" secondAttribute="trailing" id="HmC-Ev-Hy3"/>
+                            <constraint firstItem="YRD-uH-rEL" firstAttribute="leading" secondItem="b8n-pN-20a" secondAttribute="leading" id="Jk7-qw-W0V"/>
+                            <constraint firstItem="YRD-uH-rEL" firstAttribute="centerY" secondItem="b8n-pN-20a" secondAttribute="centerY" id="a7Z-6R-hZM"/>
+                            <constraint firstItem="YRD-uH-rEL" firstAttribute="top" secondItem="MNU-6B-Up5" secondAttribute="bottom" constant="55" id="gKi-rC-PI1"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="QG1-xf-3rO"/>
@@ -349,7 +349,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T6X-WE-GjM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4074" y="163"/>
+            <point key="canvasLocation" x="4072.8000000000002" y="162.3688155922039"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QlG-hj-9U4">
@@ -379,12 +379,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KbP-vH-3T7">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="KbP-vH-3T7">
                                 <rect key="frame" x="16" y="64" width="343" height="603"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="kjA-2l-TRR">
-                                        <rect key="frame" x="0.0" y="28" width="343" height="44"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kjA-2l-TRR" id="bjm-gD-gYY">
                                             <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>

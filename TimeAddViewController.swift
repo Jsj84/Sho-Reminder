@@ -11,7 +11,15 @@ import UIKit
 import CoreData
 import UserNotifications
 
-class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+protocol setRepeat {
+    func repeatIs(interval: String)
+}
+class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, setRepeat {
+    
+    var r = ""
+    internal func repeatIs(interval: String) {
+        r = interval
+    }
     
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
@@ -41,7 +49,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             dateFormatter.timeStyle = .short
             dateAsString = dateFormatter.string(from: dateOnPicker)
             
-             // create push notifications
+            // create push notifications
             let delegate = UIApplication.shared.delegate as? AppDelegate
             delegate?.scheduleNotification(atDate: dateOnPicker, body: reminderDiscription.text!, title: "Reminder", identifier: reminderDiscription.text!)
             
@@ -50,7 +58,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             // clear text field
             reminderDiscription.text?.removeAll()
-            self.dismiss(animated: true, completion: nil)            
+            self.dismiss(animated: true, completion: nil)
         }
     }
     override func viewDidLoad() {
@@ -70,8 +78,11 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         timePicker.backgroundColor = UIColor.clear
         
-        self.hideKeyboardWhenTappedAround()
-        self.dismissKeyboard()
+       let intervalviewcontroler =  IntervalViewController()
+       intervalviewcontroler.re = self
+        
+        //        self.hideKeyboardWhenTappedAround()
+        //        self.dismissKeyboard()
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -81,8 +92,19 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
-        cell.textLabel?.text = tableData[indexPath.row]
+        if r.characters.count < 3 {
+            cell.textLabel?.text = tableData[indexPath.row]
+        }
+        else {
+            if indexPath.row == 0 {
+                cell.textLabel?.text = "Repeat " + r
+            }
+            else {
+                cell.textLabel?.text = tableData[1]
+            }
+        }
         cell.backgroundColor = UIColor.white
+        tableView.deselectRow(at: [indexPath.row], animated: true)
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -92,8 +114,5 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         else {
             performSegue(withIdentifier: "timeZoneSegue", sender: AnyObject.self)
         }
-    }
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: [indexPath.row], animated: false)
     }
 }
