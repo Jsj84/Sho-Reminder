@@ -64,19 +64,16 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let managedContext = appDelegate.persistentContainer.viewContext
         for i in 0..<fh.timeObject.count {
             let c = fh.timeObject[i].value(forKey: "date") as! Date
-            if c < now as Date {
+            if c <= now as Date {
                 managedContext.delete(fh.timeObject[i] as NSManagedObject)
                 do {
                     try managedContext.save()
+                    fh.getData()
                 }
                 catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
             }
+            tableView.reloadData()
         }
-        tableView.reloadData()
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        fh.getData()
-        tableView.reloadData()
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {

@@ -76,8 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
     }
-    func locationNotification(title: String, body: String, identifer: String) {
-        
+    func locationNotification(title: String, body: String, identifer: String) {        
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
         let content = UNMutableNotificationContent()
         content.body = body
