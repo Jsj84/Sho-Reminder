@@ -87,8 +87,6 @@ class TimeZoneViewController: UIViewController, UITableViewDataSource, UITableVi
         cell?.textLabel?.text = timeZones[indexPath.row]
         return cell!
     }
-}
-extension TimeZoneViewController {
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         let chosenZone = tableView.cellForRow(at: indexPath)?.textLabel?.text

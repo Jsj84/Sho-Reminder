@@ -11,16 +11,17 @@ import UIKit
 
 class IntervalViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    let dataSource = ["Hourly", "Daily", "Weekly", "Monthly", "Yearly"]
-    
     var delegate: setRepeat?
     
     @IBOutlet weak var tableView: UITableView!
+    
+    let dataSource = ["Hourly", "Daily", "Weekly", "Monthly", "Yearly"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(patternImage: UIImage(named: "background.png")!)
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.clear
@@ -34,21 +35,10 @@ class IntervalViewController: UIViewController, UITableViewDelegate, UITableView
         cell?.textLabel?.text = dataSource[indexPath.row]
         return cell!
     }
-}
-extension IntervalViewController {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         let cellText = tableView.cellForRow(at: indexPath)?.textLabel?.text
         delegate?.repeatIs(interval: cellText!)
         self.dismiss(animated: true, completion: nil)
-    }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "" {
-            
-        }
-        else {
-            
-        }
-    }
-    
+  }
 }
