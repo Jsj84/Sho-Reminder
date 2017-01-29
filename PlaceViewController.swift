@@ -14,7 +14,6 @@ import UserNotifications
 import CoreData
 
 protocol HandleMapSearch {
-    
     func dropPinZoomIn(placemark:MKPlacemark)
 }
 class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch, UNUserNotificationCenterDelegate {
@@ -121,7 +120,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         delegate?.locationNotification(title: "Location Reminder", body: region.identifier, identifer: region.identifier)
     }
     func dropPinZoomIn(placemark:MKPlacemark) {
-        // cache the pin
+        
         selectedPin = placemark
         
         let annotation = MKPointAnnotation()

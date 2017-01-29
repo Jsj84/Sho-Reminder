@@ -33,4 +33,7 @@ class TimeZoneViewController: UIViewController, UITableViewDataSource, UITableVi
         cell?.textLabel?.text = timeZones[indexPath.row]
         return cell!
     }
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        self.dismiss(animated: true, completion: nil)
+    }
 }

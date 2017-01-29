@@ -310,7 +310,7 @@
         <!--Interval View Controller-->
         <scene sceneID="qG1-jF-EGy">
             <objects>
-                <viewController id="C1b-We-oUg" customClass="IntervalViewController" customModule="Sho_Reminder" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Intervalviewcontroler" id="C1b-We-oUg" customClass="IntervalViewController" customModule="Sho_Reminder" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="MNU-6B-Up5"/>
                         <viewControllerLayoutGuide type="bottom" id="Wnr-hT-O62"/>
@@ -402,9 +402,7 @@
                             <constraint firstItem="KbP-vH-3T7" firstAttribute="leading" secondItem="UOW-la-vls" secondAttribute="leadingMargin" constant="-16" id="u4Q-kB-LCF"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="mbs-0M-GBK">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="6hR-Y5-F4c"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="mbs-0M-GBK"/>
                     <connections>
                         <outlet property="tableView" destination="KbP-vH-3T7" id="YJc-Kb-zfU"/>
                     </connections>

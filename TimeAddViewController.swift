@@ -11,17 +11,13 @@ import UIKit
 import CoreData
 import UserNotifications
 
-protocol setRepeat {
+protocol setRepeat: class {
     func repeatIs(interval: String)
 }
 class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, setRepeat {
     
+    let intervalDelegate = IntervalViewController()
     var r = ""
-    internal func repeatIs(interval: String) {
-        r = interval
-        tableView.reloadData()
-    }
-    
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     let tableData = ["Repeat", "Time Zone"]
@@ -79,11 +75,17 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         timePicker.backgroundColor = UIColor.clear
         
-       let intervalviewcontroler =  IntervalViewController()
-       intervalviewcontroler.re = self
-        
-        //        self.hideKeyboardWhenTappedAround()
-        //        self.dismissKeyboard()
+        intervalDelegate.delegate = self
+    
+    }
+    func repeatIs(interval: String) {
+       print("hello")
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -93,18 +95,12 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
-        if r.characters.count < 3 {
-            cell.textLabel?.text = tableData[indexPath.row]
+        if indexPath.row == 0 {
+            cell.textLabel?.text = "Repeat " + r
         }
         else {
-            if indexPath.row == 0 {
-                cell.textLabel?.text = "Repeat " + r
-            }
-            else {
-                cell.textLabel?.text = tableData[1]
-            }
+            cell.textLabel?.text = "Time Zone"
         }
-        cell.backgroundColor = UIColor.white
         tableView.deselectRow(at: [indexPath.row], animated: true)
         return cell
     }
