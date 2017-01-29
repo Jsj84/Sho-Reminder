@@ -11,12 +11,13 @@ import UIKit
 import CoreData
 import UserNotifications
 
-protocol setRepeat: class {
+protocol setRepeat {
     func repeatIs(interval: String)
+    func timeZoneIs(zone: String)
 }
 class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, setRepeat {
-    
-    let intervalDelegate = IntervalViewController()
+  
+    let inervalController = IntervalViewController()
     var r = ""
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
@@ -75,11 +76,15 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         timePicker.backgroundColor = UIColor.clear
         
-        intervalDelegate.delegate = self
+        inervalController.delegate = self
     
     }
     func repeatIs(interval: String) {
-       print("hello")
+      r = interval
+      tableView.reloadData()
+    }
+    func timeZoneIs(zone: String) {
+        print("test")
     }
     override func viewDidAppear(_ animated: Bool) {
         tableView.reloadData()

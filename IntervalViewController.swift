@@ -12,18 +12,19 @@ import UIKit
 class IntervalViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let dataSource = ["Hourly", "Daily", "Weekly", "Monthly", "Yearly"]
-    weak var delegate: setRepeat?
+    
+    var delegate: setRepeat?
     
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         view.backgroundColor = UIColor(patternImage: UIImage(named: "background.png")!)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.clear
+        
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.count
@@ -39,7 +40,6 @@ extension IntervalViewController {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         let cellText = tableView.cellForRow(at: indexPath)?.textLabel?.text
         delegate?.repeatIs(interval: cellText!)
-        print(cellText!)
         self.dismiss(animated: true, completion: nil)
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -50,5 +50,5 @@ extension IntervalViewController {
             
         }
     }
-
+    
 }
