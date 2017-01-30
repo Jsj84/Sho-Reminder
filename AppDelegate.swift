@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     let locationManager = CLLocationManager()
     let fh = ManagedObject()
     let d = TimeAddViewController()
+    var defaults = UserDefaults()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         locationManager.delegate = self
@@ -76,8 +77,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
     }
-    func locationNotification(title: String, body: String, identifer: String) {        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
+    func locationNotification(title: String, body: String, identifer: String) {
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: true)
+//        let interval = defaults.value(forKey: "interval") as! String
+//        switch interval {
+//        case "Never":
+//
+//        case "Daily":
+//            <#code#>
+//        case "Hourly":
+//            <#code#>
+//        case "Montly":
+//            <#code#>
+//        case "Yearly":
+//            <#code#>
+//        break
+//        }
         let content = UNMutableNotificationContent()
         content.body = body
         content.title = title

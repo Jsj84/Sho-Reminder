@@ -26,6 +26,7 @@ class IntervalViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.clear
+        tableView.allowsSelection = true
         
     }
     func numberOfSections(in tableView: UITableView) -> Int {

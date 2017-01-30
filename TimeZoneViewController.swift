@@ -30,7 +30,6 @@ class TimeZoneViewController: UIViewController, UITableViewDataSource, UITableVi
         "Europe/Paris",
         "Europe/Paris",
         "America/Santiago",
-        "America/Santiago",
         "America/Bogota",
         "America/Chicago",
         "Africa/Addis_Ababa",
@@ -87,7 +86,7 @@ class TimeZoneViewController: UIViewController, UITableViewDataSource, UITableVi
         cell?.textLabel?.text = timeZones[indexPath.row]
         return cell!
     }
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         let chosenZone = tableView.cellForRow(at: indexPath)?.textLabel?.text
         defaults.set(chosenZone, forKey: "timeZone")
