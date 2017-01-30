@@ -11,14 +11,11 @@ import UIKit
 import CoreData
 import UserNotifications
 
-protocol setRepeat {
-    func repeatIs(interval: String)
-    func timeZoneIs(zone: String)
-}
-class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, setRepeat {
+class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
   
-    let inervalController = IntervalViewController()
-    var r = ""
+    var defaults = UserDefaults()
+    var chosenInterval = ""
+    var chosenTimeZone = ""
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     let tableData = ["Repeat", "Time Zone"]
@@ -76,17 +73,20 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         timePicker.backgroundColor = UIColor.clear
         
-        inervalController.delegate = self
-    
     }
-    func repeatIs(interval: String) {
-      r = interval
-      tableView.reloadData()
-    }
-    func timeZoneIs(zone: String) {
-        print("test")
-    }
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
+        if defaults.value(forKey: "interval") == nil {
+            chosenInterval = "Never"
+        }
+        else {
+            chosenInterval = defaults.value(forKey: "interval") as! String
+        }
+        if defaults.value(forKey: "timeZone") == nil {
+            print("default timezone is empty")
+        }
+        else {
+            chosenTimeZone = defaults.value(forKey: "timeZone") as! String
+        }
         tableView.reloadData()
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -101,10 +101,10 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
         if indexPath.row == 0 {
-            cell.textLabel?.text = "Repeat " + r
+            cell.textLabel?.text = "Repeat: " + chosenInterval
         }
         else {
-            cell.textLabel?.text = "Time Zone"
+            cell.textLabel?.text = "Time Zone: " + chosenTimeZone
         }
         tableView.deselectRow(at: [indexPath.row], animated: true)
         return cell

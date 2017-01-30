@@ -13,7 +13,7 @@ class TimeZoneViewController: UIViewController, UITableViewDataSource, UITableVi
     
     @IBOutlet weak var tableView: UITableView!
     var color = UIColor(netHex:0x90F7A3)
-    var delegate: setRepeat?
+    var defaults = UserDefaults()
     
     let timeZones = [
         "America/Halifax",
@@ -90,7 +90,7 @@ class TimeZoneViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         let chosenZone = tableView.cellForRow(at: indexPath)?.textLabel?.text
-        delegate?.repeatIs(interval: chosenZone!)
+        defaults.set(chosenZone, forKey: "timeZone")
         self.dismiss(animated: true, completion: nil)
     }
 }

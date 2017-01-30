@@ -9,9 +9,10 @@
 import Foundation
 import UIKit
 
+
 class IntervalViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var delegate: setRepeat?
+    let defaults = UserDefaults()
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -27,18 +28,31 @@ class IntervalViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.backgroundColor = UIColor.clear
         
     }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSource.count
+        if section == 0 {
+            return 1
+        }
+        else {
+            return dataSource.count
+        }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
+        if indexPath.section == 0 {
+            cell?.textLabel?.text = "Never"
+        }
+        else {
         cell?.textLabel?.text = dataSource[indexPath.row]
+        }
         return cell!
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         let cellText = tableView.cellForRow(at: indexPath)?.textLabel?.text
-        delegate?.repeatIs(interval: cellText!)
+        defaults.set(cellText, forKey: "interval")
         self.dismiss(animated: true, completion: nil)
-  }
+    }
 }
