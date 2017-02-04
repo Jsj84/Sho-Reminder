@@ -20,6 +20,7 @@ class ManagedObject: NSObject {
     var location : String = ""
     var theLocation = CLLocation()
     var places:[NSManagedObject] = []
+    var repeatOption:[NSManagedObject] = []
     
     
     override init() {
@@ -49,7 +50,7 @@ class ManagedObject: NSObject {
         }
     }
     
-    func save(name: String, dateString: String, date: Date) {
+    func save(name: String, dateString: String, date: Date, repeatOption: String) {
     
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -61,6 +62,7 @@ class ManagedObject: NSObject {
         object.setValue(name, forKeyPath: "name")
         object.setValue(dateString, forKey: "dateString")
         object.setValue(date, forKey: "date")
+        object.setValue(repeatOption, forKey: "repeatOption")
         
         do {
             try managedContext.save()

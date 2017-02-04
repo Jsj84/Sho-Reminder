@@ -23,8 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         locationManager.delegate = self
-        locationManager.startUpdatingLocation()
-        
+        locationManager.startUpdatingLocation()        
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
         }
@@ -78,27 +77,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     func locationNotification(title: String, body: String, identifer: String) {
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: true)
-//        let interval = defaults.value(forKey: "interval") as! String
-//        switch interval {
-//        case "Never":
-//
-//        case "Daily":
-//            <#code#>
-//        case "Hourly":
-//            <#code#>
-//        case "Montly":
-//            <#code#>
-//        case "Yearly":
-//            <#code#>
-//        break
-//        }
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
         let content = UNMutableNotificationContent()
         content.body = body
         content.title = title
         content.sound = UNNotificationSound.default()
         let request = UNNotificationRequest(identifier: identifer, content: content, trigger: trigger)
-
         UNUserNotificationCenter.current().add(request) {(error) in
             if let error = error {
                 print("error: \(error)")

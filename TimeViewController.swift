@@ -17,6 +17,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var color = UIColor(netHex:0x90F7A3)
     let fh = ManagedObject()
     var c:[NSManagedObject] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,7 +44,17 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         fh.getData()
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
         cell.myLabel_1.text = fh.timeObject[indexPath.row].value(forKey: "name") as! String?
-        cell.myLabel_2.text = fh.timeObject[indexPath.row ].value(forKey: "dateString") as! String?
+        if fh.timeObject[indexPath.row].value(forKey: "repeatOption") as! String == "Never" {
+           cell.myLabel_2.text = fh.timeObject[indexPath.row ].value(forKey: "dateString") as! String?
+        }
+        else {
+            let repeatLable = fh.timeObject[indexPath.row].value(forKey: "repeatOption") as! String
+            var timeLable = fh.timeObject[indexPath.row].value(forKey: "dateString") as! String
+            while timeLable.characters.count > 8 {
+                    timeLable.characters.removeFirst()
+            }
+            cell.myLabel_2.text = "\(repeatLable)" + "\(timeLable)"
+        }
         cell.cellImage.image = #imageLiteral(resourceName: "StickyNote")
         return cell
     }

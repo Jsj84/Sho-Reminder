@@ -13,13 +13,12 @@ import UserNotifications
 
 class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
   
-    var defaults = UserDefaults()
-    var chosenInterval = ""
     var chosenTimeZone = ""
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     let tableData = ["Repeat", "Time Zone"]
     var dateAsString = ""
+    let defaults = UserDefaults()
     
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!
@@ -48,8 +47,10 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             let delegate = UIApplication.shared.delegate as? AppDelegate
             delegate?.scheduleNotification(atDate: dateOnPicker, body: reminderDiscription.text!, title: "Reminder", identifier: reminderDiscription.text!)
             
+            let tempInterval = defaults.value(forKey: "repeat")
+            
             // save as NSObject
-            fh.save(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker)
+            fh.save(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker, repeatOption: tempInterval as! String)
             
             // clear text field
             reminderDiscription.text?.removeAll()
@@ -75,18 +76,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        if defaults.value(forKey: "interval") == nil {
-            chosenInterval = "Never"
-        }
-        else {
-            chosenInterval = defaults.value(forKey: "interval") as! String
-        }
-        if defaults.value(forKey: "timeZone") == nil {
-            print("default timezone is empty")
-        }
-        else {
-            chosenTimeZone = defaults.value(forKey: "timeZone") as! String
-        }
+        fh.getData()
         tableView.reloadData()
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -101,7 +91,12 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
         if indexPath.row == 0 {
-            cell.textLabel?.text = "Repeat: " + chosenInterval
+            if defaults.value(forKey: "repeat") != nil {
+            cell.textLabel?.text = defaults.value(forKey: "repeat") as! String?
+            }
+            else {
+                cell.textLabel?.text = "Never"
+            }
         }
         else {
             cell.textLabel?.text = "Time Zone: " + chosenTimeZone

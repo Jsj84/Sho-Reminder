@@ -53,7 +53,7 @@ class IntervalViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         let cellText = tableView.cellForRow(at: indexPath)?.textLabel?.text
-        defaults.set(cellText, forKey: "interval")
+        defaults.set(cellText!, forKey: "repeat")
         self.dismiss(animated: true, completion: nil)
     }
 }
