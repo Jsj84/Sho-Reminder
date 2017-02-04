@@ -122,9 +122,24 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
+             let repeatLable = fh.timeObject[indexPath.row].value(forKey: "repeatOption") as! String
+             let dateAsString = fh.timeObject[indexPath.row].value(forKey: "dateString") as! String
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell
             cell.nameLable.text = fh.timeObject[indexPath.row].value(forKey: "name") as! String?
-            cell.subtitleLable.text = fh.timeObject[indexPath.row ].value(forKey: "dateString") as! String?
+            if fh.timeObject[indexPath.row].value(forKey: "repeatOption") as! String == "Never" {
+                cell.subtitleLable.text = dateAsString
+            }
+            else if fh.timeObject[indexPath.row].value(forKey: "repeatOption") as! String? == "Monthly" {
+                cell.subtitleLable.text = "Repeat " + "\(repeatLable)" + " from " + "\(dateAsString)"
+                
+            }
+            else {
+                var timeLable = fh.timeObject[indexPath.row].value(forKey: "dateString") as! String
+                while timeLable.characters.count > 8 {
+                    timeLable.characters.removeFirst()
+                }
+                cell.subtitleLable.text = "Repeat " + "\(repeatLable)" + " at " + "\(timeLable)"
+            }
             cell.backgroundColor = UIColor.clear
             return cell
         }
