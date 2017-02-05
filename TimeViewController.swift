@@ -17,6 +17,8 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var color = UIColor(netHex:0x90F7A3)
     let fh = ManagedObject()
     var c:[NSManagedObject] = []
+    let today = NSDate()
+    let calendaer = NSCalendar(identifier: .gregorian)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,20 +50,33 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
         cell.myLabel_1.text = fh.timeObject[indexPath.row].value(forKey: "name") as! String?
         
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE"
+        let dateString = formatter.string(from: today as Date)
+        
         switch repeatLable {
         case "Never":
             cell.myLabel_2.text = "Notify me at: " + "\(dateAsString)"
         case "Hourly":
             let startIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 7)
-            let endIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 13)
+            let endIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 12)
+            let str = dateAsString[startIndex...endIndex]
+            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " from " + "\(str)"
+        case "Daily":
+            let startIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 7)
+            let endIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 14)
             let str = dateAsString[startIndex...endIndex]
             cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " at " + "\(str)"
-        case "Daily":
-            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on " + "\(dateAsString)"
         case "Weekly":
-            cell.myLabel_2.text = "Repeat "  + "\(repeatLable)" + " on " + "\(dateAsString)"
+            let startIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 7)
+            let endIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 14)
+            let str = dateAsString[startIndex...endIndex]
+            cell.myLabel_2.text = "Repeat "  + "\(repeatLable)" + " every " + "\(dateString)" + " at " + "\(str)"
         case "Monthly":
-            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on " + "\(dateAsString)"
+            let startIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 2)
+            let endIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 2)
+            let str = dateAsString[startIndex...endIndex]
+            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on the " + "\(str)" + "TH"
         default: break
         }
         cell.cellImage.image = #imageLiteral(resourceName: "StickyNote")
