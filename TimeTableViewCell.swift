@@ -17,5 +17,7 @@ class TimeTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        myLabel_1.adjustsFontSizeToFitWidth = true
+        myLabel_2.adjustsFontSizeToFitWidth = true
     }
 }

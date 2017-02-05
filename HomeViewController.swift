@@ -15,6 +15,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
+
     
     @IBOutlet weak var way: UILabel!
     @IBOutlet weak var place: UIButton!

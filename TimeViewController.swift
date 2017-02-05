@@ -42,18 +42,29 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         fh.getData()
+        let repeatLable = fh.timeObject[indexPath.row].value(forKey: "repeatOption") as! String
+        let dateAsString = fh.timeObject[indexPath.row].value(forKey: "dateString") as! String
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
         cell.myLabel_1.text = fh.timeObject[indexPath.row].value(forKey: "name") as! String?
-        if fh.timeObject[indexPath.row].value(forKey: "repeatOption") as! String == "Never" {
-           cell.myLabel_2.text = fh.timeObject[indexPath.row ].value(forKey: "dateString") as! String?
-        }
-        else {
-            let repeatLable = fh.timeObject[indexPath.row].value(forKey: "repeatOption") as! String
-            var timeLable = fh.timeObject[indexPath.row].value(forKey: "dateString") as! String
+        
+        switch repeatLable {
+        case "Never":
+            cell.myLabel_2.text = "Notify me at: " + "\(dateAsString)"
+        case "Hourly":
+            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on " + "\(dateAsString)"
+        case "Daily":
+            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on " + "\(dateAsString)"
+        case "Weekly":
+            cell.myLabel_2.text = "Repeat "  + "\(repeatLable)" + " on " + "\(dateAsString)"
+        case "Monthly":
+            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on " + "\(dateAsString)"
+        default:
+            var timeLable = repeatLable
             while timeLable.characters.count > 8 {
-                    timeLable.characters.removeFirst()
+                timeLable.characters.removeFirst()
             }
-            cell.myLabel_2.text = "\(repeatLable)" + "\(timeLable)"
+            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " at " + "\(timeLable)"
         }
         cell.cellImage.image = #imageLiteral(resourceName: "StickyNote")
         return cell
