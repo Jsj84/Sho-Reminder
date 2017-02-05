@@ -123,26 +123,48 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-             let repeatLable = fh.timeObject[indexPath.row].value(forKey: "repeatOption") as! String
-             let dateAsString = fh.timeObject[indexPath.row].value(forKey: "dateString") as! String
+            let titleOne = fh.timeObject[indexPath.row].value(forKey: "name") as! String
+            let repeatLable = fh.timeObject[indexPath.row].value(forKey: "repeatOption") as! String
+            let dateAsString = fh.timeObject[indexPath.row].value(forKey: "dateString") as! String
+            let chosenDate = fh.timeObject[indexPath.row].value(forKey: "date") as! Date
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell
-            cell.nameLable.text = fh.timeObject[indexPath.row].value(forKey: "name") as! String?
-            if fh.timeObject[indexPath.row].value(forKey: "repeatOption") as! String == "Never" {
-                cell.subtitleLable.text = dateAsString
-            }
-            else if fh.timeObject[indexPath.row].value(forKey: "repeatOption") as! String? == "Monthly" {
-                cell.subtitleLable.text = "Repeat " + "\(repeatLable)" + " from " + "\(dateAsString)"
-                
-            }
-            else {
-                var timeLable = fh.timeObject[indexPath.row].value(forKey: "dateString") as! String
-                while timeLable.characters.count > 8 {
-                    timeLable.characters.removeFirst()
-                }
-                cell.subtitleLable.text = "Repeat " + "\(repeatLable)" + " at " + "\(timeLable)"
+            cell.nameLable.text = titleOne
+            
+            let formatter = DateFormatter()
+            let dayFormatter = DateFormatter()
+            let yearlyFormatter = DateFormatter()
+            let hourlyFormatter = DateFormatter()
+            let monthlyFormatter = DateFormatter()
+            formatter.dateFormat = "EEEE"
+            dayFormatter.dateFormat = "MMMM d"
+            hourlyFormatter.dateFormat = "mm"
+            yearlyFormatter.timeStyle = .short
+            monthlyFormatter.dateFormat = "d"
+            let dateString = formatter.string(from: chosenDate)
+            let monthYear = dayFormatter.string(from: chosenDate)
+            let timeStr = yearlyFormatter.string(from: chosenDate)
+            let hourStr = hourlyFormatter.string(from: chosenDate)
+            let monthStr = monthlyFormatter.string(from: chosenDate)
+            
+            switch repeatLable {
+            case "Never":
+                cell.subtitleLable.text = "Notify me at: " + "\(dateAsString)"
+            case "Hourly":
+                cell.subtitleLable.text = "Repeat " + "\(repeatLable)" + " at " + "\(hourStr)" + " minutes after the hour"
+            case "Daily":
+                cell.subtitleLable.text = "Repeat " + "\(repeatLable)" + " at " + "\(timeStr)"
+            case "Weekly":
+                cell.subtitleLable.text = "Repeat" + " every " + "\(dateString)" + " at " + "\(timeStr)"
+            case "Monthly":
+                cell.subtitleLable.text = "Repeat " + "\(repeatLable)" + " on the " + "\(monthStr)" + "TH" + " \(timeStr)"
+            case "Yearly":
+                cell.subtitleLable.text = "Repeat " + "\(repeatLable)" + " on " + "\(monthYear)" + " at " + "\(timeStr)"
+            default: break
             }
             cell.backgroundColor = UIColor.clear
             return cell
+
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell

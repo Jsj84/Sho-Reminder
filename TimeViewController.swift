@@ -17,7 +17,6 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var color = UIColor(netHex:0x90F7A3)
     let fh = ManagedObject()
     var c:[NSManagedObject] = []
-    let today = NSDate()
     let calendaer = NSCalendar(identifier: .gregorian)
     
     override func viewDidLoad() {
@@ -44,39 +43,43 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         fh.getData()
+        let titleOne = fh.timeObject[indexPath.row].value(forKey: "name") as! String
         let repeatLable = fh.timeObject[indexPath.row].value(forKey: "repeatOption") as! String
         let dateAsString = fh.timeObject[indexPath.row].value(forKey: "dateString") as! String
+        let chosenDate = fh.timeObject[indexPath.row].value(forKey: "date") as! Date
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
-        cell.myLabel_1.text = fh.timeObject[indexPath.row].value(forKey: "name") as! String?
+        cell.myLabel_1.text = titleOne
         
         let formatter = DateFormatter()
+        let dayFormatter = DateFormatter()
+        let yearlyFormatter = DateFormatter()
+        let hourlyFormatter = DateFormatter()
+        let monthlyFormatter = DateFormatter()
         formatter.dateFormat = "EEEE"
-        let dateString = formatter.string(from: today as Date)
+        dayFormatter.dateFormat = "MMMM d"
+        hourlyFormatter.dateFormat = "mm"
+        yearlyFormatter.timeStyle = .short
+        monthlyFormatter.dateFormat = "d"
+        let dateString = formatter.string(from: chosenDate)
+        let monthYear = dayFormatter.string(from: chosenDate)
+        let timeStr = yearlyFormatter.string(from: chosenDate)
+        let hourStr = hourlyFormatter.string(from: chosenDate)
+        let monthStr = monthlyFormatter.string(from: chosenDate)
         
         switch repeatLable {
         case "Never":
             cell.myLabel_2.text = "Notify me at: " + "\(dateAsString)"
         case "Hourly":
-            let startIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 7)
-            let endIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 12)
-            let str = dateAsString[startIndex...endIndex]
-            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " from " + "\(str)"
+            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " at " + "\(hourStr)" + " minutes after the hour"
         case "Daily":
-            let startIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 7)
-            let endIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 14)
-            let str = dateAsString[startIndex...endIndex]
-            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " at " + "\(str)"
+            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " at " + "\(timeStr)"
         case "Weekly":
-            let startIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 7)
-            let endIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 14)
-            let str = dateAsString[startIndex...endIndex]
-            cell.myLabel_2.text = "Repeat "  + "\(repeatLable)" + " every " + "\(dateString)" + " at " + "\(str)"
+            cell.myLabel_2.text = "Repeat" + " every " + "\(dateString)" + " at " + "\(timeStr)"
         case "Monthly":
-            let startIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 2)
-            let endIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 2)
-            let str = dateAsString[startIndex...endIndex]
-            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on the " + "\(str)" + "TH"
+            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on the " + "\(monthStr)" + "TH" + " \(timeStr)"
+        case "Yearly":
+            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on " + "\(monthYear)" + " at " + "\(timeStr)"
         default: break
         }
         cell.cellImage.image = #imageLiteral(resourceName: "StickyNote")
