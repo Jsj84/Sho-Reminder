@@ -52,19 +52,17 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         case "Never":
             cell.myLabel_2.text = "Notify me at: " + "\(dateAsString)"
         case "Hourly":
-            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on " + "\(dateAsString)"
+            let startIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 7)
+            let endIndex = dateAsString.index(dateAsString.startIndex, offsetBy: 13)
+            let str = dateAsString[startIndex...endIndex]
+            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " at " + "\(str)"
         case "Daily":
             cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on " + "\(dateAsString)"
         case "Weekly":
             cell.myLabel_2.text = "Repeat "  + "\(repeatLable)" + " on " + "\(dateAsString)"
         case "Monthly":
             cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on " + "\(dateAsString)"
-        default:
-            var timeLable = repeatLable
-            while timeLable.characters.count > 8 {
-                timeLable.characters.removeFirst()
-            }
-            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " at " + "\(timeLable)"
+        default: break
         }
         cell.cellImage.image = #imageLiteral(resourceName: "StickyNote")
         return cell
