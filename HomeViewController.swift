@@ -15,7 +15,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
-
+    
     
     @IBOutlet weak var way: UILabel!
     @IBOutlet weak var place: UIButton!
@@ -65,8 +65,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
         for i in 0..<fh.timeObject.count {
+            let n = fh.timeObject[i].value(forKey: "repeatOption") as! String
             let c = fh.timeObject[i].value(forKey: "date") as! Date
             if c <= now as Date {
+                appDelegate.deleteNotification(identifier: n)
                 managedContext.delete(fh.timeObject[i] as NSManagedObject)
                 do {
                     try managedContext.save()
@@ -164,7 +166,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             cell.backgroundColor = UIColor.clear
             return cell
-
+            
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell
@@ -176,15 +178,21 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
             let managedContext = appDelegate.persistentContainer.viewContext
             if indexPath.section == 0 {
+                let t = fh.timeObject[indexPath.row].value(forKey: "name") as! String
+                let appDelegate = AppDelegate()
+                appDelegate.deleteNotification(identifier: t)
+                
                 managedContext.delete(fh.timeObject[indexPath.row] as NSManagedObject)
                 fh.timeObject.remove(at: indexPath.row)
             }
             else {
-                let t = fh.locationObject[indexPath.row].value(forKey: "reminderInput") as! String?
-                NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: t!), object: nil)
+                let l = fh.locationObject[indexPath.row].value(forKey: "reminderInput") as! String
+                let appDelegate = AppDelegate()
+                appDelegate.deleteNotification(identifier: l)
                 managedContext.delete(fh.locationObject[indexPath.row] as NSManagedObject)
                 fh.locationObject.remove(at: indexPath.row)
             }

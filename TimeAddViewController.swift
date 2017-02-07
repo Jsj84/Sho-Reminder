@@ -12,7 +12,7 @@ import CoreData
 import UserNotifications
 
 class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
-  
+    
     var chosenTimeZone = ""
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
@@ -42,15 +42,22 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             dateFormatter.dateStyle = .short
             dateFormatter.timeStyle = .short
             dateAsString = dateFormatter.string(from: dateOnPicker)
+            var tempInterval = String()
             
+            if defaults.value(forKey: "repeat") == nil {
+                tempInterval = "Never"
+            }
+            else {
+                tempInterval = defaults.value(forKey: "repeat") as! String
+            }
             // create push notifications
             let delegate = UIApplication.shared.delegate as? AppDelegate
-            delegate?.scheduleNotification(atDate: dateOnPicker, body: reminderDiscription.text!, title: "Reminder", identifier: reminderDiscription.text!)
+            //            delegate?.scheduleNotification(atDate: dateOnPicker, body: reminderDiscription.text!, title: "Reminder", identifier: reminderDiscription.text!)
+            delegate?.intervalNotification(date: dateOnPicker, title: "Interval Reminder", body: reminderDiscription.text!, identifier: reminderDiscription.text!, theInterval: tempInterval)
             
-            let tempInterval = defaults.value(forKey: "repeat")
             
             // save as NSObject
-            fh.save(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker, repeatOption: tempInterval as! String)
+            fh.save(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker, repeatOption: tempInterval)
             
             // clear text field
             reminderDiscription.text?.removeAll()
@@ -79,6 +86,9 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         fh.getData()
         tableView.reloadData()
     }
+    override func viewDidDisappear(_ animated: Bool) {
+        defaults.removeObject(forKey: "repeat")
+    }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
     }
@@ -92,7 +102,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
         if indexPath.row == 0 {
             if defaults.value(forKey: "repeat") != nil {
-            cell.textLabel?.text = defaults.value(forKey: "repeat") as! String?
+                cell.textLabel?.text = defaults.value(forKey: "repeat") as! String?
             }
             else {
                 cell.textLabel?.text = "Never"

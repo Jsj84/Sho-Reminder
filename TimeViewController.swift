@@ -77,7 +77,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         case "Weekly":
             cell.myLabel_2.text = "Repeat" + " every " + "\(dateString)" + " at " + "\(timeStr)"
         case "Monthly":
-            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on the " + "\(monthStr)" + "TH" + " \(timeStr)"
+            cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on the " + "\(monthStr)" + "TH" + " at" + " \(timeStr)"
         case "Yearly":
             cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on " + "\(monthYear)" + " at " + "\(timeStr)"
         default: break
@@ -100,6 +100,11 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            
+            let t = fh.timeObject[indexPath.row].value(forKey: "name") as! String
+            let aD = AppDelegate()
+            aD.deleteNotification(identifier: t)
+            
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
             let managedContext = appDelegate.persistentContainer.viewContext
             managedContext.delete(fh.timeObject[indexPath.row] as NSManagedObject)
