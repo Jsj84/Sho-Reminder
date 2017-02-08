@@ -91,9 +91,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         let someMinutesEarlier = Calendar.current.date(byAdding: .second, value: Int(interval), to: date)
         let testinterval = someMinutesEarlier?.timeIntervalSinceNow
-
-       // let notificationTime = date.addingTimeInterval(interval)
-       // let components = Calendar.current.dateComponents([.second], from: notificationTime)
         
         let content = UNMutableNotificationContent()
         content.title = title
@@ -103,23 +100,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: testinterval!, repeats: allow)
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         
-        UNUserNotificationCenter.current().add(request) {(error) in
-            if let error = error {
-                print("error: \(error)")
-            }
-        }
-    }
-    func scheduleNotification(atDate: Date, body: String, title: String, identifier: String) {
-        let calendar = Calendar(identifier: .gregorian)
-        let components = calendar.dateComponents(in: .current, from: atDate)
-        let newComponents = DateComponents(calendar: calendar, timeZone: .current, month: components.month, day: components.day, hour: components.hour, minute: components.minute)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: newComponents, repeats: false)
-        
-        let content = UNMutableNotificationContent()
-        content.title = title
-        content.body = body
-        content.sound = UNNotificationSound.default()
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request) {(error) in
             if let error = error {
                 print("error: \(error)")
