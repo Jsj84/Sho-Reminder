@@ -23,8 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     let center = UNUserNotificationCenter.current()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-//        center.removeAllDeliveredNotifications()
-//        center.removeAllPendingNotificationRequests()
+        center.removeAllDeliveredNotifications()
+        center.removeAllPendingNotificationRequests()
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
@@ -64,38 +64,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         var allow = Bool()
         var interval = TimeInterval()
-
+        
         switch theInterval {
-        case "Never":
-            allow = false
-            interval = 60
         case "Hourly":
             allow = true
             interval = 60
         case "Daily":
             allow = true
             interval = TimeInterval(60 * 24)
+            break
         case "Weekly":
             allow = true
             interval = TimeInterval(60 * 24 * 7)
+            break
         case "Monthly":
             allow = true
             interval = TimeInterval(60 * 24 * 7)
+            break
         case "Yearly":
             allow = true
             interval = 60
-        default: break
+        default:
+            allow = false
+            interval = 60
+            break
         }
+        let someMinutesEarlier = Calendar.current.date(byAdding: .second, value: Int(interval), to: date)
+        let testinterval = someMinutesEarlier?.timeIntervalSinceNow
+
+       // let notificationTime = date.addingTimeInterval(interval)
+       // let components = Calendar.current.dateComponents([.second], from: notificationTime)
         
-        let notifcationTime = date.addingTimeInterval(interval)
-        let components = Calendar.current.dateComponents([.second], from: notifcationTime)
-    
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = UNNotificationSound.default()
         
-        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: allow)
+        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: testinterval!, repeats: allow)
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) {(error) in
