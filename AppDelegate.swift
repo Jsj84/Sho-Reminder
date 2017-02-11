@@ -62,42 +62,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     func intervalNotification(date: Date, title: String, body: String, identifier: String, theInterval: String) {
         
-        var allow = Bool()
         var interval = TimeInterval()
+        let calendar = Calendar.current
         
         switch theInterval {
         case "Hourly":
-            allow = true
-            interval = 60
+            interval = TimeInterval(NSCalendar.Unit.hour.rawValue)
         case "Daily":
-            allow = true
-            interval = TimeInterval(60 * 24)
+            interval = TimeInterval(NSCalendar.Unit.day.rawValue)
             break
         case "Weekly":
-            allow = true
-            interval = TimeInterval(60 * 24 * 7)
+            interval = TimeInterval(NSCalendar.Unit.day.rawValue) * 7
             break
         case "Monthly":
-            allow = true
-            interval = TimeInterval(60 * 24 * 7)
+            interval = TimeInterval(NSCalendar.Unit.month.rawValue)
             break
         case "Yearly":
-            allow = true
-            interval = 60
+            interval = TimeInterval(NSCalendar.Unit.year.rawValue)
         default:
-            allow = false
-            interval = 60
+            interval = TimeInterval(NSCalendar.Unit.second.rawValue) * 60
             break
         }
-        let someMinutesEarlier = Calendar.current.date(byAdding: .second, value: Int(interval), to: date)
-        let testinterval = someMinutesEarlier?.timeIntervalSinceNow
+        let component = calendar.dateComponents([.hour, .second, .minute, .day, .year, .month], from: date.addingTimeInterval(interval))
         
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = UNNotificationSound.default()
         
-        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: testinterval!, repeats: allow)
+        let trigger = UNCalendarNotificationTrigger.init(dateMatching: component, repeats: true)
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) {(error) in
