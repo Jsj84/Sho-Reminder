@@ -17,7 +17,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var color = UIColor(netHex:0x90F7A3)
     let fh = ManagedObject()
     var c:[NSManagedObject] = []
-    let calendaer = NSCalendar(identifier: .gregorian)
+    let calendaer = Calendar.current
     
     override func viewDidLoad() {
         super.viewDidLoad()

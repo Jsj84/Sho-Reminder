@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     let d = TimeAddViewController()
     var defaults = UserDefaults()
     let center = UNUserNotificationCenter.current()
+    let calendar = Calendar.current
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         center.removeAllDeliveredNotifications()
@@ -62,35 +63,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     func intervalNotification(date: Date, title: String, body: String, identifier: String, theInterval: String) {
         
-        var interval = TimeInterval()
         let calendar = Calendar.current
+        var components = DateComponents()
         
         switch theInterval {
         case "Hourly":
-            interval = TimeInterval(NSCalendar.Unit.hour.rawValue)
+            components = calendar.dateComponents([.minute, .second], from: date)
         case "Daily":
-            interval = TimeInterval(NSCalendar.Unit.day.rawValue)
+            components = calendar.dateComponents([.hour, .minute, .second], from: date)
             break
         case "Weekly":
-            interval = TimeInterval(NSCalendar.Unit.day.rawValue) * 7
+            components = calendar.dateComponents([.day, .hour, .minute, .second], from: date)
             break
         case "Monthly":
-            interval = TimeInterval(NSCalendar.Unit.month.rawValue)
+            components = calendar.dateComponents([.day, .hour], from: date)
             break
         case "Yearly":
-            interval = TimeInterval(NSCalendar.Unit.year.rawValue)
+            components = calendar.dateComponents([.day, .hour], from: date)
         default:
-            interval = TimeInterval(NSCalendar.Unit.second.rawValue) * 60
+            components = calendar.dateComponents([.second], from: date)
             break
         }
-        let component = calendar.dateComponents([.hour, .second, .minute, .day, .year, .month], from: date.addingTimeInterval(interval))
         
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = UNNotificationSound.default()
         
-        let trigger = UNCalendarNotificationTrigger.init(dateMatching: component, repeats: true)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) {(error) in
