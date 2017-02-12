@@ -22,7 +22,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(patternImage: UIImage(named: "background.png")!)
+        view.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "Corkboard_BG"))
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -87,16 +87,19 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if fh.timeObject.isEmpty == true {
-            return "You Don't have any upcoming reminders"
+            return "You Currently Do Not Have Any Reminders Scheduled"
         } else {
-            return "Upcoming Reminders"
+            return "Scheduled Reminders"
         }
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
             return 50
+    }
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let headerView = view as? UITableViewHeaderFooterView {
+            headerView.textLabel?.textColor = color
+            headerView.textLabel?.font = UIFont (name: "HelveticaNeue-Bold", size: 14)!
         }
-        return 50
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {

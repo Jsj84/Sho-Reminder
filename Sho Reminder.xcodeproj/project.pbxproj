@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		771B0EA81E1C41C800C01B4D /* TimeAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771B0EA71E1C41C800C01B4D /* TimeAddViewController.swift */; };
-		772C67311E3D105E00C16752 /* Sticky_Note.png in Resources */ = {isa = PBXBuildFile; fileRef = 772C67301E3D105E00C16752 /* Sticky_Note.png */; };
 		7741EDCB1E3C0F0800765A19 /* IntervalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7741EDCA1E3C0F0800765A19 /* IntervalViewController.swift */; };
 		7741EDCD1E3C156A00765A19 /* TimeZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7741EDCC1E3C156A00765A19 /* TimeZoneViewController.swift */; };
 		7753BBCF1E13345400B78D49 /* Sho_Reminder.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBCD1E13345400B78D49 /* Sho_Reminder.xcdatamodeld */; };
@@ -23,14 +22,12 @@
 		7753BBF11E1335D900B78D49 /* ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBF01E1335D900B78D49 /* ManagedObject.swift */; };
 		77B980321E22E0D000BF5947 /* SectionTwoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B980311E22E0D000BF5947 /* SectionTwoCell.swift */; };
 		77BD25B41E17718200B81389 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77BD25B31E17718200B81389 /* CoreData.framework */; };
-		77FB8BD31E16BF30005316B5 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 77FB8BD21E16BF30005316B5 /* background.png */; };
 		77FB8BD81E172F24005316B5 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FB8BD71E172F24005316B5 /* LocationSearchTable.swift */; };
 		77FB8BDD1E175E70005316B5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77FB8BDC1E175E70005316B5 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		771B0EA71E1C41C800C01B4D /* TimeAddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeAddViewController.swift; sourceTree = "<group>"; };
-		772C67301E3D105E00C16752 /* Sticky_Note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Sticky_Note.png; sourceTree = "<group>"; };
 		7741EDCA1E3C0F0800765A19 /* IntervalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntervalViewController.swift; sourceTree = "<group>"; };
 		7741EDCC1E3C156A00765A19 /* TimeZoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeZoneViewController.swift; sourceTree = "<group>"; };
 		7753BBC31E13345400B78D49 /* Sho Reminder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sho Reminder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,7 +44,6 @@
 		7753BBF01E1335D900B78D49 /* ManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ManagedObject.swift; path = ../ManagedObject.swift; sourceTree = "<group>"; };
 		77B980311E22E0D000BF5947 /* SectionTwoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionTwoCell.swift; sourceTree = "<group>"; };
 		77BD25B31E17718200B81389 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		77FB8BD21E16BF30005316B5 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		77FB8BD71E172F24005316B5 /* LocationSearchTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
 		77FB8BDC1E175E70005316B5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		77FB8BDE1E175E9A005316B5 /* Sho Reminder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Sho Reminder.entitlements"; sourceTree = "<group>"; };
@@ -87,7 +83,6 @@
 			isa = PBXGroup;
 			children = (
 				77FB8BD61E16EC65005316B5 /* Core Files */,
-				77FB8BD51E16EC48005316B5 /* Images */,
 				77FB8BD41E16EC38005316B5 /* Locations */,
 				7753BBEE1E13353200B78D49 /* Home */,
 				7753BBEF1E13355100B78D49 /* Time */,
@@ -126,15 +121,6 @@
 				77FB8BD71E172F24005316B5 /* LocationSearchTable.swift */,
 			);
 			name = Locations;
-			sourceTree = "<group>";
-		};
-		77FB8BD51E16EC48005316B5 /* Images */ = {
-			isa = PBXGroup;
-			children = (
-				772C67301E3D105E00C16752 /* Sticky_Note.png */,
-				77FB8BD21E16BF30005316B5 /* background.png */,
-			);
-			name = Images;
 			sourceTree = "<group>";
 		};
 		77FB8BD61E16EC65005316B5 /* Core Files */ = {
@@ -233,10 +219,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7753BBED1E1334D300B78D49 /* Main.storyboard in Resources */,
-				77FB8BD31E16BF30005316B5 /* background.png in Resources */,
 				7753BBD41E13345400B78D49 /* LaunchScreen.storyboard in Resources */,
 				7753BBD11E13345400B78D49 /* Assets.xcassets in Resources */,
-				772C67311E3D105E00C16752 /* Sticky_Note.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

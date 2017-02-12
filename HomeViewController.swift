@@ -16,7 +16,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     
-    
     @IBOutlet weak var way: UILabel!
     @IBOutlet weak var place: UIButton!
     @IBOutlet weak var time: UIButton!
@@ -35,9 +34,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.navigationController?.navigationBar.backgroundColor = UIColor.green
         
-        view.backgroundColor = UIColor(patternImage: UIImage(named: "background.png")!)
+        view.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "Corkboard_BG"))
         
-        way.font = UIFont (name: "HelveticaNeue-Bold", size: 19)!
+        way.font = UIFont (name: "HelveticaNeue-Bold", size: 22)!
+        way.textColor = UIColor.black
         
         place.layer.cornerRadius = 8
         place.backgroundColor = color
@@ -113,7 +113,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             return 50
         }
         else  {
-            return 55
+            return 40
+        }
+    }
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let headerVew = view as? UITableViewHeaderFooterView {
+            headerVew.textLabel?.textColor = color
+            headerVew.textLabel?.textAlignment = .left
+            headerVew.textLabel?.font = UIFont (name: "HelveticaNeue-Bold", size: 14)!
         }
     }
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -179,6 +186,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.backgroundColor = UIColor.clear
             return cell
         }
+    }
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let myView = UIView()
+        if section == 0 {
+            myView.backgroundColor = color
+        } else {
+            myView.backgroundColor = UIColor.clear
+        }
+        return myView
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {

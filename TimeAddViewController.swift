@@ -54,7 +54,6 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             let delegate = UIApplication.shared.delegate as? AppDelegate
             delegate?.intervalNotification(date: dateOnPicker, title: "It's Time!", body: reminderDiscription.text!, identifier: reminderDiscription.text!, theInterval: tempInterval)
             
-            
             // save as NSObject
             fh.save(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker, repeatOption: tempInterval)
             
@@ -63,10 +62,10 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.dismiss(animated: true, completion: nil)
         }
     }
-    override func viewDidLoad() {
+     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(patternImage: UIImage(named: "background.png")!)
+        view.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "Corkboard_BG"))
         
         CancelBFef.backgroundColor = color
         CancelBFef.layer.cornerRadius = 8
@@ -79,6 +78,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.separatorColor = color
         
         timePicker.backgroundColor = UIColor.clear
+        timePicker.setValue(UIColor.black, forKeyPath: "textColor")
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -101,10 +101,11 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
         if indexPath.row == 0 {
             if defaults.value(forKey: "repeat") != nil {
-                cell.textLabel?.text = defaults.value(forKey: "repeat") as! String?
+                let timeRepeat = defaults.value(forKey: "repeat") as! String
+                cell.textLabel?.text = "Repeat: " + "\(timeRepeat)"
             }
             else {
-                cell.textLabel?.text = "Never"
+                cell.textLabel?.text = "Repeat: Never"
             }
         }
         else {

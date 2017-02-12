@@ -13,6 +13,7 @@ class SectionTwoCell: UITableViewCell {
     
     var nameLable = UILabel()
     var subtitleLable = UILabel()
+    var color = UIColor(netHex:0x90F7A3)
     
     
     required init?(coder aDecoder: NSCoder) {
@@ -27,14 +28,13 @@ class SectionTwoCell: UITableViewCell {
         nameLable.translatesAutoresizingMaskIntoConstraints = false
         nameLable.numberOfLines = 3
         nameLable.adjustsFontSizeToFitWidth = true
-        subtitleLable.font = UIFont.systemFont(ofSize: 14)
-        subtitleLable.translatesAutoresizingMaskIntoConstraints = false
+        subtitleLable.font = UIFont (name: "HelveticaNeue-Bold", size: 14)!
         
-        subtitleLable.textColor = UIColor.lightGray
+        subtitleLable.textColor = UIColor.white
         
         contentView.addSubview(nameLable)
         contentView.addSubview(subtitleLable)
-    }    
+    }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         

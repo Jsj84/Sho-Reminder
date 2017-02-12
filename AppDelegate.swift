@@ -26,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter = 5
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
         }
         return true
@@ -52,6 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
     func intervalNotification(date: Date, title: String, body: String, identifier: String, theInterval: String) {
         
         let calendar = Calendar.current
@@ -97,7 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         content.title = "You're close!"
         content.sound = UNNotificationSound.default()
         
-        let radius:CLLocationDistance = 25
+        let radius:CLLocationDistance = 20
         let locationCenter = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         
         region = CLCircularRegion(center: locationCenter, radius: radius, identifier: identifier)

@@ -68,7 +68,7 @@ class TimeZoneViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(patternImage: UIImage(named: "background.png")!)
+        view.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "Corkboard_BG"))
         
         tableView.dataSource = self
         tableView.delegate = self
