@@ -67,7 +67,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         for i in 0..<fh.timeObject.count {
             let t = fh.timeObject[i].value(forKey: "name") as! String
             let c = fh.timeObject[i].value(forKey: "date") as! Date
-            if c <= now as Date {
+            let r = fh.timeObject[i].value(forKey: "repeatOption") as! String
+            if c <= now as Date && r == "Never" {
                 appDelegate.deleteNotification(identifier: t)
                 managedContext.delete(fh.timeObject[i] as NSManagedObject)
                 do {
@@ -190,9 +191,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 fh.timeObject.remove(at: indexPath.row)
             }
             else {
-                let l = fh.locationObject[indexPath.row].value(forKey: "reminderInput") as! String
+                let l = fh.locationObject[indexPath.row].value(forKey: "mKtitle") as! String
+                let g = fh.locationObject[indexPath.row].value(forKey: "reminderInput") as! String
                 let appDelegate = AppDelegate()
                 appDelegate.deleteNotification(identifier: l)
+                appDelegate.deleteNotification(identifier: g)
                 managedContext.delete(fh.locationObject[indexPath.row] as NSManagedObject)
                 fh.locationObject.remove(at: indexPath.row)
             }

@@ -73,9 +73,9 @@ extension LocationSearchTable {
     }
 }
 extension LocationSearchTable {
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let selectedItem = matchingItems[indexPath.row].placemark
+    let selectedItem = matchingItems[indexPath.row].placemark
         
         // drop pin and dismiss table view controller
         handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
@@ -91,6 +91,11 @@ extension LocationSearchTable {
            let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             // save to coreData
             self.fh.writeLocationData(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude, mKtitle: selectedItem.name!, mKSubTitle: selectedItem.title!, reminderInput: (textField?.text!)!)
+            
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+            // Schedule a notification
+            appDelegate.locationBasedNotification(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude, title: selectedItem.name!, body: selectedItem.title!, identifier: selectedItem.name!)
+            
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in }))
         // 4. Present the alert.
