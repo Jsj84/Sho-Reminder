@@ -94,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         let content = UNMutableNotificationContent()
         content.body = body
-        content.title = title
+        content.title = "Location Reminder!"
         content.sound = UNNotificationSound.default()
         
         let radius:CLLocationDistance = 25
@@ -107,19 +107,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let trigger = UNLocationNotificationTrigger.init(region: region!, repeats: true)
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         
-        UNUserNotificationCenter.current().add(request) {(error) in
-            if let error = error {
-                print("error: \(error)")
-            }
-        }
-    }
-    func locationNotification(title: String, body: String, identifer: String) {
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
-        let content = UNMutableNotificationContent()
-        content.body = body
-        content.title = title
-        content.sound = UNNotificationSound.default()
-        let request = UNNotificationRequest(identifier: identifer, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request) {(error) in
             if let error = error {
                 print("error: \(error)")

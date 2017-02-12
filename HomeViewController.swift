@@ -81,29 +81,32 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.reloadData()
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        var stringToReturn: String?
+        var locationString: String?
+        
         if section == 0 {
-            if fh.timeObject.isEmpty == true {
-                return "You do not have any upcoming reminders"
+            switch fh.timeObject.count {
+            case 0:
+                stringToReturn = "You do not have any upcoming reminders"; break
+            case 1 :
+                stringToReturn = "You have 1 reminder scheduled"; break
+            default:
+                stringToReturn = "You have " + "\(fh.timeObject.count)" + " reminders scheduled"; break
             }
-            else if fh.timeObject.count == 1 {
-                return "You have 1 reminder scheduled"
-            }
-            else if fh.timeObject.count < 3 {
-                return "You have " + "\(fh.timeObject.count)" + " reminders scheduled"
-            }
-            else {
-                return "Your next 3 reminders are"
+            return stringToReturn
+        }
+        if section == 1 {
+            switch fh.locationObject.count {
+            case 0:
+                locationString = "You do not have any upcoming location reminders"; break
+            case 1 :
+                locationString = "You have 1 upcoming reminder"; break
+            default:
+                locationString = "You have " + "\(fh.locationObject.count)" + " reminders scheduled"; break
             }
         }
-        else if section == 1 {
-            if fh.locationObject.isEmpty == true {
-                return "You do not have any upcoming location reminders"
-            }
-            else if fh.locationObject.count == 1 {
-                return "You have 1 location reminder scheduled"
-            }
-        }
-        return "You have " + "\(fh.locationObject.count)" + " location reminders scheduled"
+        return locationString
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
