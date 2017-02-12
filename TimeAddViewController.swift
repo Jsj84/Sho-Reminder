@@ -52,7 +52,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             // create push notifications
             let delegate = UIApplication.shared.delegate as? AppDelegate
-            delegate?.intervalNotification(date: dateOnPicker, title: "Interval Reminder", body: reminderDiscription.text!, identifier: reminderDiscription.text!, theInterval: tempInterval)
+            delegate?.intervalNotification(date: dateOnPicker, title: "It's Time!", body: reminderDiscription.text!, identifier: reminderDiscription.text!, theInterval: tempInterval)
             
             
             // save as NSObject

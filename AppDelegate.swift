@@ -73,11 +73,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         case "Daily":
             components = calendar.dateComponents([.hour, .minute, .second], from: date) ; break
         case "Weekly":
-            components = calendar.dateComponents([.day, .hour, .minute, .second], from: date) ; break
+            components = calendar.dateComponents([.weekday, .hour, .minute, .second], from: date) ; break
         case "Monthly":
-            components = calendar.dateComponents([.day, .hour], from: date) ; break
+            components = calendar.dateComponents([.month, .day, .hour], from: date) ; break
         case "Yearly":
-            components = calendar.dateComponents([.day, .hour], from: date) ; break
+            components = calendar.dateComponents([.month, .day, .hour], from: date) ; break
         default: break
         }
         
@@ -94,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         let content = UNMutableNotificationContent()
         content.body = body
-        content.title = "Location Reminder!"
+        content.title = "You're close!"
         content.sound = UNNotificationSound.default()
         
         let radius:CLLocationDistance = 25
