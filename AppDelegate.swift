@@ -27,12 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 5
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
         }
         return true
     }
-    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -54,7 +52,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .denied {
+            let alert = UIAlertController(title: "Warning", message: "Location updates are required for this app to set reminders based on location. You can configure this is settings.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
+           // self.present(alert, animated: true, completion: nil)
+        }
+        else if status == .authorizedAlways {
+            fh.getLocationData()
+            locationManager.startUpdatingLocation()
+            locationManager.distanceFilter = 5
+            var center = CLLocationCoordinate2D()
+            for i in 0..<self.fh.locationObject.count {
+                let lat = fh.locationObject[i].value(forKey: "latitude") as! Double
+                let long = fh.locationObject[i].value(forKey: "longitude") as! Double
+                let reminder = fh.locationObject[i].value(forKey: "reminderInput") as! String
+                let radius:CLLocationDistance = 20
+                center = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                let region = CLCircularRegion.init(center: center, radius: radius, identifier: reminder)
+                locationManager.startMonitoring(for: region)
+                print("Region: \(region.identifier)" + " is being monitored")
+            }
+        }
+    }
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("error:: \(error)")
+    }
+    func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
+        region.notifyOnEntry = true
+        region.notifyOnExit = true
+    }
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        locationManager.delegate?.locationManager!(locationManager, didEnterRegion: region)
+        region.notifyOnEntry = true
+    }
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+      region.notifyOnExit = true
+    }
+
     func intervalNotification(date: Date, title: String, body: String, identifier: String, theInterval: String) {
         
         let calendar = Calendar.current

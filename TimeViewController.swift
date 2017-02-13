@@ -18,6 +18,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     let fh = ManagedObject()
     var c:[NSManagedObject] = []
     let calendaer = Calendar.current
+    var cellImage:UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +29,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.clear
         tableView.allowsSelection = false
-        tableView.separatorColor = color
+        tableView.separatorColor = UIColor.black
         
         self.hideKeyboardWhenTappedAround()
         self.dismissKeyboard()
@@ -37,6 +38,12 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewWillAppear(animated)
         fh.getData()
         tableView.reloadData()
+    }
+    func randomImage() -> UIImage {
+        let imageSet:[UIImage] = [#imageLiteral(resourceName: "Red_Sticky"),#imageLiteral(resourceName: "Green_Sticky"),#imageLiteral(resourceName: "Blue_sticky"),#imageLiteral(resourceName: "Yellow_Sticky")]
+        let randomImage = Int(arc4random_uniform(UInt32(imageSet.count)))
+        let generatedImage = imageSet[randomImage]
+        return generatedImage
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fh.timeObject.count
@@ -50,6 +57,8 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
         cell.myLabel_1.text = titleOne
+        cell.myLabel_2.textColor = UIColor.white
+        cell.backgroundColor = UIColor.clear
         
         let formatter = DateFormatter()
         let dayFormatter = DateFormatter()
@@ -82,7 +91,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.myLabel_2.text = "Repeat " + "\(repeatLable)" + " on " + "\(monthYear)" + " at " + "\(timeStr)"
         default: break
         }
-        cell.cellImage.image = #imageLiteral(resourceName: "StickyNote")
+        cell.cellImage.image = randomImage()
         return cell
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -93,11 +102,12 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-            return 50
+            return 30
     }
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
-            headerView.textLabel?.textColor = color
+            headerView.textLabel?.textColor = UIColor.black
+            headerView.backgroundView?.backgroundColor = color
             headerView.textLabel?.font = UIFont (name: "HelveticaNeue-Bold", size: 14)!
         }
     }

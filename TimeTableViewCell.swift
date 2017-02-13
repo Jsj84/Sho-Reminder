@@ -19,5 +19,8 @@ class TimeTableViewCell: UITableViewCell {
         super.awakeFromNib()
         myLabel_1.adjustsFontSizeToFitWidth = true
         myLabel_2.adjustsFontSizeToFitWidth = true
+        
+        myLabel_1.font = UIFont(name: "HelveticaNeue-Bold", size: 14)!
+        myLabel_2.font = UIFont(name: "HelveticaNeue-Bold", size: 14)!
     }
 }

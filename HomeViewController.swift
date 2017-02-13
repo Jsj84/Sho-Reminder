@@ -30,8 +30,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.register(SectionTwoCell.self, forCellReuseIdentifier: "cell")
-        
         self.navigationController?.navigationBar.backgroundColor = UIColor.green
         
         view.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "Corkboard_BG"))
@@ -52,9 +50,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.clear
-        tableView.separatorColor = color
+        tableView.separatorColor = UIColor.black
         tableView.backgroundView?.isOpaque = true
         tableView.allowsSelection = false
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 200
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -109,16 +109,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return locationString
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 50
-        }
-        else  {
-            return 40
-        }
+        return 30
     }
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerVew = view as? UITableViewHeaderFooterView {
-            headerVew.textLabel?.textColor = color
+            headerVew.backgroundView?.backgroundColor = color
+            headerVew.textLabel?.textColor = UIColor.black
             headerVew.textLabel?.textAlignment = .left
             headerVew.textLabel?.font = UIFont (name: "HelveticaNeue-Bold", size: 14)!
         }
@@ -143,6 +139,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell
             cell.nameLable.text = titleOne
+            cell.backgroundColor = UIColor.clear
+            cell.imageIcon.image = #imageLiteral(resourceName: "Clock_Icon")
             
             let formatter = DateFormatter()
             let dayFormatter = DateFormatter()
@@ -170,31 +168,21 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             case "Weekly":
                 cell.subtitleLable.text = "Repeat" + " every " + "\(dateString)" + " at " + "\(timeStr)"
             case "Monthly":
-                cell.subtitleLable.text = "Repeat " + "\(repeatLable)" + " on the " + "\(monthStr)" + "TH" + " \(timeStr)"
+                cell.subtitleLable.text = "Repeat " + "\(repeatLable)" + " on the " + "\(monthStr)" + "TH" + " at" + " \(timeStr)"
             case "Yearly":
                 cell.subtitleLable.text = "Repeat " + "\(repeatLable)" + " on " + "\(monthYear)" + " at " + "\(timeStr)"
             default: break
             }
-            cell.backgroundColor = UIColor.clear
             return cell
-            
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell
             cell.nameLable.text = fh.locationObject[indexPath.row].value(forKey: "mKtitle") as! String?
             cell.subtitleLable.text = fh.locationObject[indexPath.row].value(forKey: "mKSubTitle") as! String?
+            cell.imageIcon.image = #imageLiteral(resourceName: "Location_Icon")
             cell.backgroundColor = UIColor.clear
             return cell
         }
-    }
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let myView = UIView()
-        if section == 0 {
-            myView.backgroundColor = color
-        } else {
-            myView.backgroundColor = UIColor.clear
-        }
-        return myView
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
