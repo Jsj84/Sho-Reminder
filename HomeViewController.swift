@@ -99,11 +99,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if section == 1 {
             switch fh.locationObject.count {
             case 0:
-                locationString = "You do not have any upcoming location reminders"; break
+                locationString = "no location reminders scheduled"; break
             case 1 :
-                locationString = "You have 1 upcoming reminder"; break
+                locationString = "1 location reminder Scheduled"; break
             default:
-                locationString = "You have " + "\(fh.locationObject.count)" + " reminders scheduled"; break
+                locationString = "\(fh.locationObject.count)" + " Location reminders scheduled"; break
             }
         }
         return locationString

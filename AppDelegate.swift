@@ -105,7 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         switch theInterval {
         case "Never":
-            YesOrNo = false; components = calendar.dateComponents([.minute, .second], from: date); break
+            YesOrNo = false; components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date); break
         case "Hourly":
             components = calendar.dateComponents([.minute, .second], from: date); break
         case "Daily":
