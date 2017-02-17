@@ -33,7 +33,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o3a-i5-iAT">
                                 <rect key="frame" x="227" y="72" width="62" height="32"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="62" id="Q4n-nb-lEc"/>
+                                    <constraint firstAttribute="width" constant="62" id="Pnq-hU-eue"/>
                                 </constraints>
                                 <state key="normal">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -45,7 +45,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7uF-5Q-apT">
                                 <rect key="frame" x="296" y="72" width="62" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="62" id="Udc-kf-7XW"/>
+                                    <constraint firstAttribute="width" constant="62" id="xKN-Ld-e5E"/>
                                 </constraints>
                                 <state key="normal">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -59,10 +59,10 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="61" id="lG9-BH-R7Y" customClass="SectionTwoCell" customModule="Sho_Reminder" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="375" height="61"/>
+                                        <rect key="frame" x="0.0" y="56" width="375" height="61"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lG9-BH-R7Y" id="DmG-es-w4Q">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="61"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="" lineBreakMode="clip" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DO9-iI-LwK">
@@ -109,21 +109,21 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="KAj-do-EEW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="4Mj-6E-VwN"/>
-                            <constraint firstItem="KAj-do-EEW" firstAttribute="top" secondItem="o3a-i5-iAT" secondAttribute="top" id="H7X-bX-Goa"/>
-                            <constraint firstItem="P2r-G0-M4d" firstAttribute="top" secondItem="7uF-5Q-apT" secondAttribute="bottom" constant="10" id="JH7-aw-Nrb"/>
-                            <constraint firstItem="o3a-i5-iAT" firstAttribute="leading" secondItem="KAj-do-EEW" secondAttribute="trailing" constant="8" symbolic="YES" id="LlO-xB-vus"/>
-                            <constraint firstItem="KAj-do-EEW" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="Rqo-xQ-v43"/>
-                            <constraint firstItem="P2r-G0-M4d" firstAttribute="top" secondItem="o3a-i5-iAT" secondAttribute="bottom" constant="8" symbolic="YES" id="SeT-l1-2lt"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="7uF-5Q-apT" secondAttribute="trailing" constant="1" id="TLR-fN-6Aa"/>
-                            <constraint firstItem="P2r-G0-M4d" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Taq-0p-IQr"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="P2r-G0-M4d" secondAttribute="bottom" constant="8" symbolic="YES" id="YMb-Kw-ldL"/>
-                            <constraint firstItem="7uF-5Q-apT" firstAttribute="leading" secondItem="o3a-i5-iAT" secondAttribute="trailing" constant="7" id="eHE-k0-dxS"/>
-                            <constraint firstItem="P2r-G0-M4d" firstAttribute="top" secondItem="KAj-do-EEW" secondAttribute="bottom" constant="8" symbolic="YES" id="hEi-I9-VDx"/>
-                            <constraint firstAttribute="trailing" secondItem="P2r-G0-M4d" secondAttribute="trailing" id="o1j-j6-y2L"/>
-                            <constraint firstItem="7uF-5Q-apT" firstAttribute="firstBaseline" secondItem="o3a-i5-iAT" secondAttribute="firstBaseline" id="pqD-im-KlQ"/>
-                            <constraint firstItem="o3a-i5-iAT" firstAttribute="top" secondItem="7uF-5Q-apT" secondAttribute="top" id="tm9-OL-fSn"/>
-                            <constraint firstItem="o3a-i5-iAT" firstAttribute="baseline" secondItem="7uF-5Q-apT" secondAttribute="baseline" id="zSz-Fb-7O6"/>
+                            <constraint firstItem="o3a-i5-iAT" firstAttribute="top" secondItem="7uF-5Q-apT" secondAttribute="top" id="BQf-5U-ghb"/>
+                            <constraint firstAttribute="trailing" secondItem="P2r-G0-M4d" secondAttribute="trailing" id="DHW-rn-gvl"/>
+                            <constraint firstItem="P2r-G0-M4d" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Kl9-W4-Y3q"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="7uF-5Q-apT" secondAttribute="trailing" constant="1" id="NYg-ZI-XMR"/>
+                            <constraint firstItem="P2r-G0-M4d" firstAttribute="top" secondItem="7uF-5Q-apT" secondAttribute="bottom" constant="10" id="Q56-Zq-W6m"/>
+                            <constraint firstItem="P2r-G0-M4d" firstAttribute="top" secondItem="KAj-do-EEW" secondAttribute="bottom" constant="8" symbolic="YES" id="Ulf-d1-fQf"/>
+                            <constraint firstItem="P2r-G0-M4d" firstAttribute="top" secondItem="o3a-i5-iAT" secondAttribute="bottom" constant="8" symbolic="YES" id="aSB-L6-AK3"/>
+                            <constraint firstItem="KAj-do-EEW" firstAttribute="top" secondItem="o3a-i5-iAT" secondAttribute="top" id="eJz-RQ-G1j"/>
+                            <constraint firstItem="o3a-i5-iAT" firstAttribute="baseline" secondItem="7uF-5Q-apT" secondAttribute="baseline" id="hIo-Ug-R18"/>
+                            <constraint firstItem="KAj-do-EEW" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="kfL-KG-RLL"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="P2r-G0-M4d" secondAttribute="bottom" constant="8" symbolic="YES" id="mSx-DH-VQC"/>
+                            <constraint firstItem="o3a-i5-iAT" firstAttribute="leading" secondItem="KAj-do-EEW" secondAttribute="trailing" constant="8" symbolic="YES" id="nMS-45-CXa"/>
+                            <constraint firstItem="o3a-i5-iAT" firstAttribute="firstBaseline" secondItem="7uF-5Q-apT" secondAttribute="firstBaseline" id="okX-un-kYr"/>
+                            <constraint firstItem="7uF-5Q-apT" firstAttribute="leading" secondItem="o3a-i5-iAT" secondAttribute="trailing" constant="7" id="pno-3v-M9N"/>
+                            <constraint firstItem="KAj-do-EEW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="zzS-jy-avH"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="lWO-Yt-TsT" colorLabel="IBBuiltInLabel-Blue"/>
@@ -157,10 +157,10 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="73" id="W8m-bu-7uh" customClass="TimeTableViewCell" customModule="Sho_Reminder" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="73"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="73"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="W8m-bu-7uh" id="Eqo-X2-Taj">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="72.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lKl-XP-vXb">
