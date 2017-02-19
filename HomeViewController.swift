@@ -10,13 +10,11 @@ import UIKit
 import Foundation
 import CoreData
 import UserNotifications
-import CoreLocation
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
-    let locationManager = CLLocationManager()
     
     @IBOutlet weak var way: UILabel!
     @IBOutlet weak var place: UIButton!
@@ -31,9 +29,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
         self.navigationController?.navigationBar.backgroundColor = UIColor.green
         
@@ -204,10 +199,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             else {
                 let l = fh.locationObject[indexPath.row].value(forKey: "mKtitle") as! String
-                let g = fh.locationObject[indexPath.row].value(forKey: "reminderInput") as! String
                 let appDelegate = AppDelegate()
                 appDelegate.deleteNotification(identifier: l)
-                appDelegate.deleteNotification(identifier: g)
                 managedContext.delete(fh.locationObject[indexPath.row] as NSManagedObject)
                 fh.locationObject.remove(at: indexPath.row)
             }
@@ -218,45 +211,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             tableView.reloadData()
         }
     }
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if status == .denied {
-            let alert = UIAlertController(title: "Warning", message: "Location updates are required for this app to set reminders based on location. You can configure this is settings.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-        else if status == .authorizedAlways {
-            fh.getLocationData()
-            locationManager.startUpdatingLocation()
-            locationManager.distanceFilter = 5
-            var center = CLLocationCoordinate2D()
-            for i in 0..<self.fh.locationObject.count {
-                let lat = fh.locationObject[i].value(forKey: "latitude") as! Double
-                let long = fh.locationObject[i].value(forKey: "longitude") as! Double
-                let reminder = fh.locationObject[i].value(forKey: "reminderInput") as! String
-                let radius:CLLocationDistance = 20
-                center = CLLocationCoordinate2D(latitude: lat, longitude: long)
-                let region = CLCircularRegion.init(center: center, radius: radius, identifier: reminder)
-                locationManager.startMonitoring(for: region)
-                print("Region: \(region.identifier)" + " is being monitored")
-            }
-        }
-    }
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("error:: \(error)")
-    }
-    func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) { 
-        locationManager.delegate = self
-        region.notifyOnExit = true
-    }
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        locationManager.delegate = self
-        region.notifyOnEntry = true
-    }
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        region.notifyOnExit = true
-    }
-    
 }
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {

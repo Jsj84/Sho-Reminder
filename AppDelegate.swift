@@ -20,13 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     let center = UNUserNotificationCenter.current()
     let calendar = Calendar.current
     let locationManager = CLLocationManager()
-    
-    var region: CLRegion?
+    var region = CLRegion()
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        locationManager.startUpdatingLocation()
-        locationManager.delegate = self
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
         }
         return true
@@ -76,9 +73,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         case "Weekly":
             components = calendar.dateComponents([.weekday, .hour, .minute, .second], from: date) ; break
         case "Monthly":
-            components = calendar.dateComponents([.month, .day, .hour], from: date) ; break
+            components = calendar.dateComponents([.day, .hour, .second], from: date) ; break
         case "Yearly":
-            components = calendar.dateComponents([.month, .day, .hour], from: date) ; break
+            components = calendar.dateComponents([.month, .day, .hour, .second], from: date) ; break
         default: break
         }
         
@@ -91,25 +88,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
     }
+    
     func locationBasedNotification(latitude: Double, longitude: Double, title: String, body: String, identifier: String) {
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter = 7
+        locationManager.startUpdatingLocation()
         
         let content = UNMutableNotificationContent()
         content.body = body
         content.title = "You're close!"
         content.sound = UNNotificationSound.default()
         
-        let radius:CLLocationDistance = 20
+        let radius:CLLocationDistance = 25
         let locationCenter = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         
         region = CLCircularRegion(center: locationCenter, radius: radius, identifier: identifier)
-        locationManager.startMonitoring(for: region!)
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 7
-        locationManager.delegate = region as! CLLocationManagerDelegate?
-        region?.notifyOnEntry = true
-        region?.notifyOnExit = true
+        locationManager.startMonitoring(for: region)
+        region.notifyOnEntry = true
+        region.notifyOnExit = true
         
-        let trigger = UNLocationNotificationTrigger.init(region: region!, repeats: true)
+        let trigger = UNLocationNotificationTrigger(region: region, repeats: true)
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) {(error) in
@@ -118,10 +118,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
     }
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        region.notifyOnEntry = true
+    }
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        region.notifyOnExit = true
+    }
     func deleteNotification(identifier: String) {
         let identifier = identifier
         center.removePendingNotificationRequests(withIdentifiers: [identifier])
-        print(identifier)
     }
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Sho_Reminder")
