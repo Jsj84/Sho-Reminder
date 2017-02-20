@@ -10,9 +10,11 @@ import UIKit
 import Foundation
 import CoreData
 import UserNotifications
+import CoreLocation
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    let locationManager = CLLocationManager()
     var fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     
@@ -199,6 +201,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             else {
                 let l = fh.locationObject[indexPath.row].value(forKey: "mKtitle") as! String
+                let latitude = fh.locationObject[indexPath.row].value(forKey: "latitude") as! Double
+                let longitude = fh.locationObject[indexPath.row].value(forKey: "longitude") as! Double
+                let radius:CLLocationDistance = 25
+                let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                let region = CLCircularRegion(center: center, radius: radius, identifier: l)
+                locationManager.stopMonitoring(for: region)
+                
                 let appDelegate = AppDelegate()
                 appDelegate.deleteNotification(identifier: l)
                 managedContext.delete(fh.locationObject[indexPath.row] as NSManagedObject)

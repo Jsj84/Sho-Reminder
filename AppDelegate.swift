@@ -93,12 +93,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 7
+        locationManager.distanceFilter = 10
         locationManager.startUpdatingLocation()
         
         let content = UNMutableNotificationContent()
         content.body = body
-        content.title = "You're close!"
+        content.title = "You're close to: " + "\(title)"
         content.sound = UNNotificationSound.default()
         
         let radius:CLLocationDistance = 25
