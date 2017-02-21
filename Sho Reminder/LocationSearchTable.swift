@@ -94,7 +94,7 @@ extension LocationSearchTable {
             
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
             // Schedule a notification
-            appDelegate.locationBasedNotification(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude, title: selectedItem.title!, body: (textField?.text!)!, identifier: selectedItem.name!)
+            appDelegate.locationBasedNotification(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude, title: selectedItem.name!, body: (textField?.text!)!, identifier: selectedItem.name!)
             
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in }))
