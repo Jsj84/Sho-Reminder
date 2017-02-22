@@ -31,6 +31,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
         
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
@@ -123,8 +124,8 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             self.present(alert, animated: true, completion: nil)
         }
         else if status == .authorizedAlways {
-           // fh.getLocationData()
             locationManager.startUpdatingLocation()
+           // fh.getLocationData()
 //            locationManager.distanceFilter = 5
 //            var center = CLLocationCoordinate2D()
 //            for i in 0..<self.fh.locationObject.count {
@@ -143,9 +144,13 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         print("error:: \(error)")
     }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        appDelegate.locationManager.delegate = self
         region.notifyOnEntry = true
     }
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        appDelegate.locationManager.delegate = self
         region.notifyOnExit = true
     }
     

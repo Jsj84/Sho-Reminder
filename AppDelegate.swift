@@ -24,6 +24,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        locationManager.startUpdatingLocation()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter = 5
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
         }
         return true
@@ -88,17 +92,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
     }
-    
     func locationBasedNotification(latitude: Double, longitude: Double, title: String, body: String, identifier: String) {
-        
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 10
-        locationManager.startUpdatingLocation()
         
         let content = UNMutableNotificationContent()
         content.body = body
-        content.title = "You're close to: " + "\(title)"
+        content.title = "You're close to: " + title
         content.sound = UNNotificationSound.default()
         
         let radius:CLLocationDistance = 25
