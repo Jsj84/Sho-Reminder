@@ -87,7 +87,7 @@ class ManagedObject: NSObject {
             }
         }
     
-    func writeLocationData (latitude: Double, longitude: Double, mKtitle: String, mKSubTitle: String, reminderInput: String) {
+    func writeLocationData (latitude: Double, longitude: Double, mKtitle: String, mKSubTitle: String, reminderInput: String, id: String) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -102,6 +102,7 @@ class ManagedObject: NSObject {
         object.setValue(mKtitle, forKey: "mKtitle")
         object.setValue(mKSubTitle, forKey: "mKSubTitle")
         object.setValue(reminderInput, forKey: "reminderInput")
+        object.setValue(id, forKey: "id")
         
         do {
             try managedContext.save()

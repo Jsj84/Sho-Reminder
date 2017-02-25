@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        locationManager.startUpdatingLocation()
+        locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = 5
@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
+    
     func intervalNotification(date: Date, title: String, body: String, identifier: String, theInterval: String) {
         
         let calendar = Calendar.current
@@ -92,35 +92,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
     }
-    func locationBasedNotification(latitude: Double, longitude: Double, title: String, body: String, identifier: String) {
-        
-        let content = UNMutableNotificationContent()
-        content.body = body
-        content.title = "You're close to: " + title
-        content.sound = UNNotificationSound.default()
-        
-        let radius:CLLocationDistance = 25
-        let locationCenter = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        
-        region = CLCircularRegion(center: locationCenter, radius: radius, identifier: identifier)
-        locationManager.startMonitoring(for: region)
-        region.notifyOnEntry = true
-        region.notifyOnExit = true
-        
-        let trigger = UNLocationNotificationTrigger(region: region, repeats: true)
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request) {(error) in
-            if let error = error {
-                print("error: \(error)")
-            }
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if region is CLCircularRegion {
+            handleEvent(forRegion: region)
         }
     }
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        region.notifyOnEntry = true
-    }
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        region.notifyOnExit = true
+        if region is CLCircularRegion {
+            handleEvent(forRegion: region)
+        }
+    }
+    func handleEvent(forRegion region: CLRegion!) {
+        for i in 0..<fh.locationObject.count {
+            let id = fh.locationObject[i].value(forKey: "id") as! String
+            if id == region.identifier {
+                let title = fh.locationObject[i].value(forKey: "mKtitle") as! String
+                let body = fh.locationObject[i].value(forKey: "reminderInput") as! String
+                let identifier = fh.locationObject[i].value(forKey: "id") as! String
+                
+                if UIApplication.shared.applicationState == .active {
+                    let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
+                    let okay = UIAlertAction(title: "Okay", style: .cancel) { (_) in }
+                    alertController.addAction(okay)
+                    self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+                }
+                else {
+                    let content = UNMutableNotificationContent()
+                    content.body = body
+                    content.title = "You're close to: " + title
+                    content.sound = UNNotificationSound.default()
+                    
+                    //let trigger = UNLocationNotificationTrigger(region: region, repeats: true)
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                    let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                    
+                    UNUserNotificationCenter.current().add(request) {(error) in
+                        if let error = error {
+                            print("error: \(error)")
+                        }
+                    }
+                }
+            }
+        }
+        
     }
     func deleteNotification(identifier: String) {
         let identifier = identifier

@@ -200,12 +200,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 fh.timeObject.remove(at: indexPath.row)
             }
             else {
+                let id = fh.locationObject[indexPath.row].value(forKey: "id") as! String
                 let l = fh.locationObject[indexPath.row].value(forKey: "mKtitle") as! String
                 let latitude = fh.locationObject[indexPath.row].value(forKey: "latitude") as! Double
                 let longitude = fh.locationObject[indexPath.row].value(forKey: "longitude") as! Double
                 let radius:CLLocationDistance = 25
                 let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                let region = CLCircularRegion(center: center, radius: radius, identifier: l)
+                let region = CLCircularRegion(center: center, radius: radius, identifier: id)
                 locationManager.stopMonitoring(for: region)
                 
                 let appDelegate = AppDelegate()

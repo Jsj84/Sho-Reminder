@@ -14,6 +14,7 @@ import CoreData
 
 protocol HandleMapSearch {
     func dropPinZoomIn(placemark:MKPlacemark)
+    func region(region: CLRegion)
 }
 class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch {
     
@@ -66,6 +67,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             let annotation = MKPointAnnotation()
             annotation.coordinate = (selectedPin?.coordinate)!
             annotation.title = fh.locationObject[i].value(forKey: "mKtitle") as! String?
+
             
             if let city = selectedPin?.locality,
                 let state = selectedPin?.administrativeArea {
@@ -76,6 +78,23 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             let region = MKCoordinateRegionMake(placeMark.coordinate, span)
             mapView.setRegion(region, animated: true)
         }
+    }
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .denied {
+            let alert = UIAlertController(title: "Warning", message: "Location updates are required for this app to set reminders based on location. You can configure this is settings.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        else if status == .authorizedAlways {
+            locationManager.startUpdatingLocation()
+        }
+    }
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("error:: \(error)")
+    }
+    func region(region: CLRegion) {
+        let region = region
+        locationManager.stopMonitoring(for: region)
     }
     func dropPinZoomIn(placemark:MKPlacemark) {
         
@@ -116,42 +135,6 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     }
     func popUpBox(){
         print("test for popup box")
-    }
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if status == .denied {
-            let alert = UIAlertController(title: "Warning", message: "Location updates are required for this app to set reminders based on location. You can configure this is settings.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-        else if status == .authorizedAlways {
-            locationManager.startUpdatingLocation()
-           // fh.getLocationData()
-//            locationManager.distanceFilter = 5
-//            var center = CLLocationCoordinate2D()
-//            for i in 0..<self.fh.locationObject.count {
-//                let lat = fh.locationObject[i].value(forKey: "latitude") as! Double
-//                let long = fh.locationObject[i].value(forKey: "longitude") as! Double
-//                let reminder = fh.locationObject[i].value(forKey: "reminderInput") as! String
-//                let radius:CLLocationDistance = 20
-//                center = CLLocationCoordinate2D(latitude: lat, longitude: long)
-//                let region = CLCircularRegion.init(center: center, radius: radius, identifier: reminder)
-//                locationManager.startMonitoring(for: region)
-//                print("Region: \(region.identifier)" + " is being monitored")
-//            }
-       }
-    }
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("error:: \(error)")
-    }
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        appDelegate.locationManager.delegate = self
-        region.notifyOnEntry = true
-    }
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        appDelegate.locationManager.delegate = self
-        region.notifyOnExit = true
     }
     
 }
