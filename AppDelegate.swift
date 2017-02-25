@@ -26,8 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 5
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
         }
         return true
@@ -103,6 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     func handleEvent(forRegion region: CLRegion!) {
+        fh.getLocationData()
         for i in 0..<fh.locationObject.count {
             let id = fh.locationObject[i].value(forKey: "id") as! String
             if id == region.identifier {

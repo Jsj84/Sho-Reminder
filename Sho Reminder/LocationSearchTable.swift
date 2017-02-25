@@ -17,6 +17,7 @@ class LocationSearchTable: UITableViewController {
     var mapView: MKMapView? = nil
     var handleMapSearchDelegate:HandleMapSearch? = nil
     let fh = ManagedObject()
+    let locationManager = CLLocationManager()
     
     func parseAddress(selectedItem:MKPlacemark) -> String {
         // put a space between "4" and "Melrose Place"
@@ -77,7 +78,7 @@ extension LocationSearchTable {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         fh.getLocationData()
-        var id = fh.locationObject.count + 1
+        let id = fh.locationObject.count + 1
         
         let selectedItem = matchingItems[indexPath.row].placemark
         
@@ -89,7 +90,7 @@ extension LocationSearchTable {
         
         // drop pin and dismiss table view controller
         handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
-        handleMapSearchDelegate?.region(region: region)
+        
         
         // show aleart to gather information
         let alert = UIAlertController(title: "Location Reminder", message: "Enter the reminder for this location", preferredStyle: .alert)
@@ -101,15 +102,21 @@ extension LocationSearchTable {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             // save to coreData
-            let newNum = id as NSNumber
-            let newID = newNum.stringValue
-            self.fh.writeLocationData(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude, mKtitle: selectedItem.name!, mKSubTitle: selectedItem.title!, reminderInput: (textField?.text!)!, id: newID)
-            id  = id + 1
+            self.fh.writeLocationData(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude, mKtitle: selectedItem.name!, mKSubTitle: selectedItem.title!, reminderInput: (textField?.text!)!, id: identifier)
+            
+            if CLLocationManager.isRangingAvailable() == true {
+                self.locationManager.stopMonitoring(for: region)
+                alert?.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in }))
+                // 4. Present the alert.
+                self.present(alert!, animated: true, completion: nil)
+            } else {
+                let alert1 = UIAlertController(title: "Warnign", message: "Thius devuce does not support Geo Fending", preferredStyle: .alert)
+                alert1.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: { (action: UIAlertAction!) in }))
+                // 4. Present the alert.
+                self.present(alert1, animated: true, completion: nil)
+            }
             
         }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in }))
-        // 4. Present the alert.
-        self.present(alert, animated: true, completion: nil)
         dismiss(animated: true, completion: nil)
     }
 }

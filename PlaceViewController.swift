@@ -14,9 +14,8 @@ import CoreData
 
 protocol HandleMapSearch {
     func dropPinZoomIn(placemark:MKPlacemark)
-    func region(region: CLRegion)
 }
-class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch {
+class PlaceViewController : UIViewController, HandleMapSearch {
     
     var selectedPin:MKPlacemark? = nil
     let locationManager = CLLocationManager()
@@ -29,10 +28,9 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestAlwaysAuthorization()
-        locationManager.requestWhenInUseAuthorization()
+        locationManager.distanceFilter = 7
+        locationManager.startUpdatingLocation()
         
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
@@ -89,14 +87,11 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             locationManager.startUpdatingLocation()
         }
     }
+    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
+        print("Monitoring failed for region with identifier: \(region!.identifier)")
+    }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error:: \(error)")
-    }
-    func region(region: CLRegion) {
-        let region = region
-        locationManager.startMonitoring(for: region)
-        print("region with Identifier " + region.identifier + " is being monitored for")
-        print(region)
     }
     func dropPinZoomIn(placemark:MKPlacemark) {
         
