@@ -208,6 +208,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
                 let region = CLCircularRegion(center: center, radius: radius, identifier: id)
                 locationManager.stopMonitoring(for: region)
+                print("region with identifer " + id + " is no longer being monitored for")
                 
                 let appDelegate = AppDelegate()
                 appDelegate.deleteNotification(identifier: l)

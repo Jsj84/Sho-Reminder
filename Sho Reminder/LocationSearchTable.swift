@@ -17,7 +17,6 @@ class LocationSearchTable: UITableViewController {
     var mapView: MKMapView? = nil
     var handleMapSearchDelegate:HandleMapSearch? = nil
     let fh = ManagedObject()
-    var id = 0
     
     func parseAddress(selectedItem:MKPlacemark) -> String {
         // put a space between "4" and "Melrose Place"
@@ -77,6 +76,9 @@ extension LocationSearchTable {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        fh.getLocationData()
+        var id = fh.locationObject.count + 1
+        
         let selectedItem = matchingItems[indexPath.row].placemark
         
         let center = CLLocationCoordinate2D(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude)
@@ -99,10 +101,10 @@ extension LocationSearchTable {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             // save to coreData
-            let newNum = self.id as NSNumber
+            let newNum = id as NSNumber
             let newID = newNum.stringValue
             self.fh.writeLocationData(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude, mKtitle: selectedItem.name!, mKSubTitle: selectedItem.title!, reminderInput: (textField?.text!)!, id: newID)
-            self.id += 1
+            id  = id + 1
             
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in }))

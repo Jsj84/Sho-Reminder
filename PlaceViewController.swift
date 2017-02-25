@@ -94,7 +94,9 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     }
     func region(region: CLRegion) {
         let region = region
-        locationManager.stopMonitoring(for: region)
+        locationManager.startMonitoring(for: region)
+        print("region with Identifier " + region.identifier + " is being monitored for")
+        print(region)
     }
     func dropPinZoomIn(placemark:MKPlacemark) {
         
