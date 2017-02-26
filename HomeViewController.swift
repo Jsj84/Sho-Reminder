@@ -160,6 +160,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             let hourStr = hourlyFormatter.string(from: chosenDate)
             let monthStr = monthlyFormatter.string(from: chosenDate)
             
+            
             switch repeatLable {
             case "Never":
                 cell.subtitleLable.text = "Notify me at: " + "\(dateAsString)"
