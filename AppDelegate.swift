@@ -20,14 +20,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     let center = UNUserNotificationCenter.current()
     let calendar = Calendar.current
     let locationManager = CLLocationManager()
-    var region = CLRegion()
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
-        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
-        }
+        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in }
         return true
     }
     func applicationWillResignActive(_ application: UIApplication) {
@@ -91,52 +90,71 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        if region is CLCircularRegion {
-            handleEvent(forRegion: region)
+       let i = getObjectPath(region: region)
+         let title = fh.locationObject[i].value(forKey: "mKtitle") as! String
+         let body = fh.locationObject[i].value(forKey: "reminderInput") as! String
+        
+        if UIApplication.shared.applicationState == .active {
+            let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
+            let okay = UIAlertAction(title: "Okay", style: .cancel) { (_) in }
+            alertController.addAction(okay)
+            self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
         }
-    }
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        if region is CLCircularRegion {
-            handleEvent(forRegion: region)
-        }
-    }
-    func handleEvent(forRegion region: CLRegion!) {
-        fh.getLocationData()
-        for i in 0..<fh.locationObject.count {
-            let id = fh.locationObject[i].value(forKey: "id") as! String
-            if id == region.identifier {
-                let title = fh.locationObject[i].value(forKey: "mKtitle") as! String
-                let body = fh.locationObject[i].value(forKey: "reminderInput") as! String
-                let identifier = fh.locationObject[i].value(forKey: "id") as! String
-                
-                if UIApplication.shared.applicationState == .active {
-                    let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
-                    let okay = UIAlertAction(title: "Okay", style: .cancel) { (_) in }
-                    alertController.addAction(okay)
-                    self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
-                }
-                else {
-                    let content = UNMutableNotificationContent()
-                    content.body = body
-                    content.title = "You're close to: " + title
-                    content.sound = UNNotificationSound.default()
-                    
-                    //let trigger = UNLocationNotificationTrigger(region: region, repeats: true)
-                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-                    let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-                    
-                    UNUserNotificationCenter.current().add(request) {(error) in
-                        if let error = error {
-                            print("error: \(error)")
-                        }
-                    }
+        else {
+            let content = UNMutableNotificationContent()
+            content.title = "You just Entered: " + title
+            content.body = body
+            content.sound = UNNotificationSound.default()
+            
+            let trigger = UNLocationNotificationTrigger(region: region, repeats: true)
+            let request = UNNotificationRequest(identifier: region.identifier, content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request) {(error) in
+                if let error = error {
+                    print("error: \(error)")
                 }
             }
         }
+    }
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        let i = getObjectPath(region: region)
+        let title = fh.locationObject[i].value(forKey: "mKtitle") as! String
+        let body = fh.locationObject[i].value(forKey: "reminderInput") as! String
         
+        if UIApplication.shared.applicationState == .active {
+            let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
+            let okay = UIAlertAction(title: "Okay", style: .cancel) { (_) in }
+            alertController.addAction(okay)
+            self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+        }
+        else {
+            let content = UNMutableNotificationContent()
+            content.title = "You just Exited: " + title
+            content.body = body
+            content.sound = UNNotificationSound.default()
+            
+            let trigger = UNLocationNotificationTrigger(region: region, repeats: true)
+            let request = UNNotificationRequest(identifier: region.identifier, content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request) {(error) in
+                if let error = error {
+                    print("error: \(error)")
+                }
+            }
+        }
+    }
+    func getObjectPath(region: CLRegion) -> Int {
+        var path = Int()
+        fh.getLocationData()
+        for i in 0..<fh.locationObject.count {
+            let title = fh.locationObject[i].value(forKey: "mKtitle") as! String
+            if title == region.identifier {
+                path = i
+            }
+        }
+        return path
     }
     func deleteNotification(identifier: String) {
-        let identifier = identifier
         center.removePendingNotificationRequests(withIdentifiers: [identifier])
     }
     lazy var persistentContainer: NSPersistentContainer = {

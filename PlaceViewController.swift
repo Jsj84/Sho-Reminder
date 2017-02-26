@@ -15,7 +15,7 @@ import CoreData
 protocol HandleMapSearch {
     func dropPinZoomIn(placemark:MKPlacemark)
 }
-class PlaceViewController : UIViewController, HandleMapSearch {
+class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch {
     
     var selectedPin:MKPlacemark? = nil
     let locationManager = CLLocationManager()
@@ -28,6 +28,7 @@ class PlaceViewController : UIViewController, HandleMapSearch {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = 7
         locationManager.startUpdatingLocation()
