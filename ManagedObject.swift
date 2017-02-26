@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import CoreLocation
 import Foundation
 
 class ManagedObject: NSObject {
@@ -17,12 +16,7 @@ class ManagedObject: NSObject {
     
     var timeObject: [NSManagedObject] = []
     var locationObject:[NSManagedObject] = []
-    var location : String = ""
-    var theLocation = CLLocation()
-    var places:[NSManagedObject] = []
-    var repeatOption:[NSManagedObject] = []
-    
-    
+  
     override init() {
         
         // This resource is the same name as your xcdatamodeld contained in your project.
@@ -50,7 +44,7 @@ class ManagedObject: NSObject {
         }
     }
     
-    func save(name: String, dateString: String, date: Date, repeatOption: String, timeZone: String) {
+    func save(name: String, dateString: String, date: Date, repeatOption: String, timeZone: String, id: String) {
     
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -64,6 +58,7 @@ class ManagedObject: NSObject {
         object.setValue(date, forKey: "date")
         object.setValue(repeatOption, forKey: "repeatOption")
         object.setValue(timeZone, forKey: "timeZone")
+        object.setValue(id, forKey: "id")
         
         do {
             try managedContext.save()

@@ -16,7 +16,6 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     let tableData = ["Repeat", "Time Zone"]
-    var dateAsString = ""
     let defaults = UserDefaults()
     var tempTimeZone = String()
     
@@ -41,8 +40,11 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             let dateOnPicker = timePicker.date //capture the date shown on the picker
             dateFormatter.dateStyle = .short
             dateFormatter.timeStyle = .short
-            dateAsString = dateFormatter.string(from: dateOnPicker)
+            let dateAsString = dateFormatter.string(from: dateOnPicker)
             var tempInterval = String()
+            fh.getData()
+            let countId = fh.timeObject.count + 1 as NSNumber
+            let id = countId.stringValue
             
             if defaults.value(forKey: "repeat") == nil {
                 tempInterval = "Never"
@@ -58,10 +60,10 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             // create push notifications
             let delegate = UIApplication.shared.delegate as? AppDelegate
-            delegate?.intervalNotification(date: dateOnPicker, title: "It's Time!", body: reminderDiscription.text!, identifier: reminderDiscription.text!, theInterval: tempInterval, timeZone: tempTimeZone)
+            delegate?.intervalNotification(date: dateOnPicker, title: "It's Time!", body: reminderDiscription.text!, identifier: id, theInterval: tempInterval, timeZone: tempTimeZone)
             
             // save as NSObject
-            fh.save(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker, repeatOption: tempInterval, timeZone: tempTimeZone)
+            fh.save(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker, repeatOption: tempInterval, timeZone: tempTimeZone, id: id)
             
             // clear text field
             reminderDiscription.text?.removeAll()

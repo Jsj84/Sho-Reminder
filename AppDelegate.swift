@@ -18,13 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var isGrantedNotificationAccess:Bool = false
     let fh = ManagedObject()
     let center = UNUserNotificationCenter.current()
-    let calendar = Calendar.current
+    var calendar = Calendar.current
     let locationManager = CLLocationManager()
+    let content = UNMutableNotificationContent()
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        locationManager.requestAlwaysAuthorization()
-        locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in }
         return true
@@ -53,14 +52,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func intervalNotification(date: Date, title: String, body: String, identifier: String, theInterval: String, timeZone: String) {
         
-        var calendar = Calendar.current
         calendar.timeZone = TimeZone.init(identifier: timeZone)!
         var components = DateComponents()
         
         var YesOrNo:Bool = true
-        YesOrNo = true
-        
-        let content = UNMutableNotificationContent()
+
         content.title = title
         content.body = body
         content.sound = UNNotificationSound.default()
@@ -103,7 +99,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
         }
         else {
-            let content = UNMutableNotificationContent()
             content.title = "You just Entered: " + title
             content.body = body
             content.sound = UNNotificationSound.default()
@@ -131,7 +126,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
         }
         else {
-            let content = UNMutableNotificationContent()
             content.title = "You just Exited: " + title
             content.body = body
             content.sound = UNNotificationSound.default()

@@ -114,12 +114,11 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
-            let t = fh.timeObject[indexPath.row].value(forKey: "name") as! String
-            let aD = AppDelegate()
-            aD.deleteNotification(identifier: t)
-            
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
             let managedContext = appDelegate.persistentContainer.viewContext
+            let id = fh.timeObject[indexPath.row].value(forKey: "id") as! String
+            appDelegate.deleteNotification(identifier: id)
+            
             managedContext.delete(fh.timeObject[indexPath.row] as NSManagedObject)
             fh.timeObject.remove(at: indexPath.row)
             do {

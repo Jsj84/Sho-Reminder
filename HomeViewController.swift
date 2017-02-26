@@ -192,16 +192,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
             let managedContext = appDelegate.persistentContainer.viewContext
             if indexPath.section == 0 {
-                let t = fh.timeObject[indexPath.row].value(forKey: "name") as! String
+                let id = fh.timeObject[indexPath.row].value(forKey: "id") as! String
                 let appDelegate = AppDelegate()
-                appDelegate.deleteNotification(identifier: t)
+                appDelegate.deleteNotification(identifier: id)
                 
                 managedContext.delete(fh.timeObject[indexPath.row] as NSManagedObject)
                 fh.timeObject.remove(at: indexPath.row)
             }
             else {
                 let id = fh.locationObject[indexPath.row].value(forKey: "id") as! String
-                let l = fh.locationObject[indexPath.row].value(forKey: "mKtitle") as! String
                 let latitude = fh.locationObject[indexPath.row].value(forKey: "latitude") as! Double
                 let longitude = fh.locationObject[indexPath.row].value(forKey: "longitude") as! Double
                 let radius:CLLocationDistance = 25
@@ -211,7 +210,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 print("region with identifer " + id + " is no longer being monitored for")
                 
                 let appDelegate = AppDelegate()
-                appDelegate.deleteNotification(identifier: l)
+                appDelegate.deleteNotification(identifier: id)
                 managedContext.delete(fh.locationObject[indexPath.row] as NSManagedObject)
                 fh.locationObject.remove(at: indexPath.row)
             }

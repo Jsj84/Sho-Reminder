@@ -28,6 +28,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = 7
