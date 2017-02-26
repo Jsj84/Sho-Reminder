@@ -93,6 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
        let i = getObjectPath(region: region)
          let title = fh.locationObject[i].value(forKey: "mKtitle") as! String
          let body = fh.locationObject[i].value(forKey: "reminderInput") as! String
+         let id = fh.locationObject[i].value(forKey: "id") as! String
         
         if UIApplication.shared.applicationState == .active {
             let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
@@ -106,8 +107,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             content.body = body
             content.sound = UNNotificationSound.default()
             
-            let trigger = UNLocationNotificationTrigger(region: region, repeats: true)
-            let request = UNNotificationRequest(identifier: region.identifier, content: content, trigger: trigger)
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+            let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
             
             UNUserNotificationCenter.current().add(request) {(error) in
                 if let error = error {
@@ -120,6 +121,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let i = getObjectPath(region: region)
         let title = fh.locationObject[i].value(forKey: "mKtitle") as! String
         let body = fh.locationObject[i].value(forKey: "reminderInput") as! String
+        let id = fh.locationObject[i].value(forKey: "id") as! String
         
         if UIApplication.shared.applicationState == .active {
             let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
@@ -133,8 +135,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             content.body = body
             content.sound = UNNotificationSound.default()
             
-            let trigger = UNLocationNotificationTrigger(region: region, repeats: true)
-            let request = UNNotificationRequest(identifier: region.identifier, content: content, trigger: trigger)
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+            let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
             
             UNUserNotificationCenter.current().add(request) {(error) in
                 if let error = error {
