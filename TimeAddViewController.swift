@@ -18,6 +18,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     let tableData = ["Repeat", "Time Zone"]
     var dateAsString = ""
     let defaults = UserDefaults()
+    var tempTimeZone = String()
     
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!
@@ -42,7 +43,6 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             dateFormatter.timeStyle = .short
             dateAsString = dateFormatter.string(from: dateOnPicker)
             var tempInterval = String()
-            var tempTimeZone = String()
             
             if defaults.value(forKey: "repeat") == nil {
                 tempInterval = "Never"
@@ -84,6 +84,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.separatorColor = color
         
         timePicker.backgroundColor = UIColor.clear
+        timePicker.timeZone = TimeZone.init(identifier: tempTimeZone)
         timePicker.setValue(UIColor.black, forKeyPath: "textColor")
         
     }

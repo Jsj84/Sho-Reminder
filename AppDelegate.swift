@@ -53,8 +53,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func intervalNotification(date: Date, title: String, body: String, identifier: String, theInterval: String, timeZone: String) {
         
-        let calendar = Calendar.current
-        let theZone = calendar.timeZone.identifier
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone.init(identifier: timeZone)!
         var components = DateComponents()
         
         var YesOrNo:Bool = true
@@ -67,17 +67,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         switch theInterval {
         case "Never":
-            YesOrNo = false; components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date); break
+            YesOrNo = false; components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second, .timeZone], from: date); break
         case "Hourly":
             components = calendar.dateComponents([.minute, .second], from: date); break
         case "Daily":
             components = calendar.dateComponents([.hour, .minute, .second], from: date) ; break
         case "Weekly":
-            components = calendar.dateComponents([.weekday, .hour, .minute, .second], from: date) ; break
+            components = calendar.dateComponents([.weekday, .hour, .minute, .second, .timeZone], from: date) ; break
         case "Monthly":
-            components = calendar.dateComponents([.day, .hour, .second], from: date) ; break
+            components = calendar.dateComponents([.day, .hour, .second, .timeZone], from: date) ; break
         case "Yearly":
-            components = calendar.dateComponents([.month, .day, .hour, .second], from: date) ; break
+            components = calendar.dateComponents([.month, .day, .hour, .second, .timeZone], from: date) ; break
         default: break
         }
         
@@ -150,8 +150,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         var path = Int()
         fh.getLocationData()
         for i in 0..<fh.locationObject.count {
-            let title = fh.locationObject[i].value(forKey: "mKtitle") as! String
-            if title == region.identifier {
+            let id = fh.locationObject[i].value(forKey: "id") as! String
+            if id == region.identifier {
                 path = i
             }
         }
