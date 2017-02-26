@@ -31,7 +31,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 7
+        locationManager.distanceFilter = 5
         locationManager.startUpdatingLocation()
         
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable

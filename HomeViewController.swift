@@ -67,11 +67,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
         for i in 0..<fh.timeObject.count {
-            let t = fh.timeObject[i].value(forKey: "name") as! String
+            let id = fh.timeObject[i].value(forKey: "id") as! String
             let c = fh.timeObject[i].value(forKey: "date") as! Date
             let r = fh.timeObject[i].value(forKey: "repeatOption") as! String
             if c <= now as Date && r == "Never" {
-                appDelegate.deleteNotification(identifier: t)
+                appDelegate.deleteNotification(identifier: id)
                 managedContext.delete(fh.timeObject[i] as NSManagedObject)
                 do {
                     try managedContext.save()

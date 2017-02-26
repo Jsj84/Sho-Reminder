@@ -85,7 +85,7 @@ extension LocationSearchTable {
         let center = CLLocationCoordinate2D(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude)
         let newNum = id as NSNumber
         let identifier = newNum.stringValue
-        let radius = Double()
+        let radius = 15 as CLLocationDistance
         let clamedRadius = min(radius, locationManager.maximumRegionMonitoringDistance)
         let region = CLCircularRegion(center: center, radius: clamedRadius, identifier: identifier)
         

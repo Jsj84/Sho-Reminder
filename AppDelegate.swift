@@ -76,7 +76,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             components = calendar.dateComponents([.month, .day, .hour, .second, .timeZone], from: date) ; break
         default: break
         }
-        
+        if UIApplication.shared.applicationState == .active {
+            let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
+            let okay = UIAlertAction(title: "Okay", style: .cancel) { (_) in }
+            alertController.addAction(okay)
+            self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+        }
+        else {
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: YesOrNo)
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         
@@ -86,6 +92,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
     }
+}
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
        let i = getObjectPath(region: region)
          let title = fh.locationObject[i].value(forKey: "mKtitle") as! String
@@ -120,7 +127,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let id = fh.locationObject[i].value(forKey: "id") as! String
         
         if UIApplication.shared.applicationState == .active {
-            let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
+            let alertController = UIAlertController(title: "You just Exited: " + title, message: body, preferredStyle: .alert)
             let okay = UIAlertAction(title: "Okay", style: .cancel) { (_) in }
             alertController.addAction(okay)
             self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
