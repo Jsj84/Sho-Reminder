@@ -15,55 +15,7 @@ class TimeZoneViewController: UIViewController, UITableViewDataSource, UITableVi
     var color = UIColor(netHex:0x90F7A3)
     var defaults = UserDefaults()
     
-    let timeZones = [
-        "America/Halifax",
-        "America/Juneau",
-        "America/Juneau",
-        "America/Argentina/Buenos_Aires",
-        "America/Halifax",
-        "Asia/Dhaka",
-        "America/Sao_Paulo",
-        "America/Sao_Paulo",
-        "Europe/London",
-        "Africa/Harare",
-        "America/Chicago",
-        "Europe/Paris",
-        "Europe/Paris",
-        "America/Santiago",
-        "America/Bogota",
-        "America/Chicago",
-        "Africa/Addis_Ababa",
-        "America/New_York",
-        "GMT",
-        "Europe/Istanbul",
-        "Europe/Istanbul",
-        "America/New_York",
-        "Asia/Dubai",
-        "Asia/Hong_Kong",
-        "Pacific/Honolulu",
-        "Asia/Bangkok",
-        "Asia/Tehran",
-        "Asia/Calcutta",
-        "Asia/Tokyo",
-        "Asia/Seoul",
-        "America/Denver",
-        "Europe/Moscow",
-        "Europe/Moscow",
-        "America/Denver",
-        "Pacific/Auckland",
-        "Pacific/Auckland",
-        "America/Los_Angeles",
-        "America/Lima",
-        "Asia/Manila",
-        "Asia/Karachi",
-        "America/Los_Angeles",
-        "Asia/Singapore",
-        "UTC",
-        "Africa/Lagos",
-        "Europe/Lisbon",
-        "Europe/Lisbon",
-        "Asia/Jakarta"
-    ]
+    let theZone = TimeZone.knownTimeZoneIdentifiers
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,16 +26,18 @@ class TimeZoneViewController: UIViewController, UITableViewDataSource, UITableVi
         tableView.delegate = self
         tableView.backgroundColor = UIColor.clear
         tableView.separatorColor = color
+    
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Choose a timezone"
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return timeZones.count
+        
+        return theZone.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
-        cell?.textLabel?.text = timeZones[indexPath.row]
+        cell?.textLabel?.text = theZone[indexPath.row]
         return cell!
     }
       func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

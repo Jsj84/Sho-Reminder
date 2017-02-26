@@ -50,7 +50,7 @@ class ManagedObject: NSObject {
         }
     }
     
-    func save(name: String, dateString: String, date: Date, repeatOption: String) {
+    func save(name: String, dateString: String, date: Date, repeatOption: String, timeZone: String) {
     
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -63,6 +63,7 @@ class ManagedObject: NSObject {
         object.setValue(dateString, forKey: "dateString")
         object.setValue(date, forKey: "date")
         object.setValue(repeatOption, forKey: "repeatOption")
+        object.setValue(timeZone, forKey: "timeZone")
         
         do {
             try managedContext.save()

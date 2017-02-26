@@ -5,6 +5,7 @@
         <attribute name="dateString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="repeatOption" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeZone" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Locations" representedClassName="Locations" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
@@ -15,7 +16,7 @@
         <attribute name="reminderInput" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Items" positionX="-54" positionY="-9" width="128" height="105"/>
+        <element name="Items" positionX="-54" positionY="-9" width="128" height="120"/>
         <element name="Locations" positionX="-54" positionY="9" width="128" height="135"/>
     </elements>
 </model>

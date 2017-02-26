@@ -51,9 +51,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    func intervalNotification(date: Date, title: String, body: String, identifier: String, theInterval: String) {
+    func intervalNotification(date: Date, title: String, body: String, identifier: String, theInterval: String, timeZone: String) {
         
         let calendar = Calendar.current
+        let theZone = calendar.timeZone.identifier
         var components = DateComponents()
         
         var YesOrNo:Bool = true

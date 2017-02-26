@@ -13,7 +13,6 @@ import UserNotifications
 
 class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
-    var chosenTimeZone = ""
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     let tableData = ["Repeat", "Time Zone"]
@@ -43,6 +42,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             dateFormatter.timeStyle = .short
             dateAsString = dateFormatter.string(from: dateOnPicker)
             var tempInterval = String()
+            var tempTimeZone = String()
             
             if defaults.value(forKey: "repeat") == nil {
                 tempInterval = "Never"
@@ -50,19 +50,25 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             else {
                 tempInterval = defaults.value(forKey: "repeat") as! String
             }
+            if defaults.value(forKey: "timeZone") == nil {
+                tempTimeZone = Calendar.current.timeZone.identifier
+            }
+            else {
+                tempTimeZone = defaults.value(forKey: "timeZone") as! String
+            }
             // create push notifications
             let delegate = UIApplication.shared.delegate as? AppDelegate
-            delegate?.intervalNotification(date: dateOnPicker, title: "It's Time!", body: reminderDiscription.text!, identifier: reminderDiscription.text!, theInterval: tempInterval)
+            delegate?.intervalNotification(date: dateOnPicker, title: "It's Time!", body: reminderDiscription.text!, identifier: reminderDiscription.text!, theInterval: tempInterval, timeZone: tempTimeZone)
             
             // save as NSObject
-            fh.save(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker, repeatOption: tempInterval)
+            fh.save(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker, repeatOption: tempInterval, timeZone: tempTimeZone)
             
             // clear text field
             reminderDiscription.text?.removeAll()
             self.dismiss(animated: true, completion: nil)
         }
     }
-     override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "Corkboard_BG"))
@@ -108,8 +114,13 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
                 cell.textLabel?.text = "Repeat: Never"
             }
         }
-        else {
-            cell.textLabel?.text = "Time Zone: " + chosenTimeZone
+        else if indexPath.row == 1 {
+            if defaults.value(forKey: "TimeZone") != nil {
+                let timeZone = defaults.value(forKey: "timeZone") as! String
+                cell.textLabel?.text = "Time Zone: " + timeZone
+            } else {
+                cell.textLabel?.text = "Time Zone: " + Calendar.current.timeZone.identifier
+            }
         }
         tableView.deselectRow(at: [indexPath.row], animated: true)
         return cell
