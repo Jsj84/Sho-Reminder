@@ -93,6 +93,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     override func viewDidDisappear(_ animated: Bool) {
         defaults.removeObject(forKey: "repeat")
+        defaults.removeObject(forKey: "timeZone")
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
@@ -115,9 +116,9 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
         else if indexPath.row == 1 {
-            if defaults.value(forKey: "TimeZone") != nil {
+            if defaults.value(forKey: "timeZone") != nil {
                 let timeZone = defaults.value(forKey: "timeZone") as! String
-                cell.textLabel?.text = "Time Zone: " + timeZone
+                cell.textLabel?.text = "Time Zone: " + "\(timeZone)"
             } else {
                 cell.textLabel?.text = "Time Zone: " + Calendar.current.timeZone.identifier
             }
