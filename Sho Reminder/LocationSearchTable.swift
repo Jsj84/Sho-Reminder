@@ -86,8 +86,7 @@ extension LocationSearchTable {
         let newNum = id as NSNumber
         let identifier = newNum.stringValue
         let radius = 15 as CLLocationDistance
-        let clamedRadius = min(radius, locationManager.maximumRegionMonitoringDistance)
-        let region = CLCircularRegion(center: center, radius: clamedRadius, identifier: identifier)
+        let region = CLCircularRegion(center: center, radius: radius, identifier: identifier)
         
         
         // drop pin and dismiss table view controller

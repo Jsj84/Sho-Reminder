@@ -58,6 +58,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             else {
                 tempTimeZone = defaults.value(forKey: "timeZone") as! String
             }
+            
             // create push notifications
             let delegate = UIApplication.shared.delegate as? AppDelegate
             delegate?.intervalNotification(date: dateOnPicker, title: "It's Time!", body: reminderDiscription.text!, identifier: id, theInterval: tempInterval, timeZone: tempTimeZone)
@@ -86,7 +87,6 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.separatorColor = color
         
         timePicker.backgroundColor = UIColor.clear
-        timePicker.timeZone = TimeZone.init(identifier: tempTimeZone)
         timePicker.setValue(UIColor.black, forKeyPath: "textColor")
         
     }

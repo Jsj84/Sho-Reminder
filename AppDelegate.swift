@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var isGrantedNotificationAccess:Bool = false
     let fh = ManagedObject()
     let center = UNUserNotificationCenter.current()
-    var calendar = Calendar.current
     let locationManager = CLLocationManager()
     let content = UNMutableNotificationContent()
     
@@ -52,8 +51,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func intervalNotification(date: Date, title: String, body: String, identifier: String, theInterval: String, timeZone: String) {
         
-        calendar.timeZone = TimeZone.init(identifier: timeZone)!
         var components = DateComponents()
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone(identifier: timeZone)!
+    
         
         var YesOrNo:Bool = true
 
@@ -69,14 +70,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         case "Daily":
             components = calendar.dateComponents([.hour, .minute, .second], from: date) ; break
         case "Weekly":
-            components = calendar.dateComponents([.weekday, .hour, .minute, .second, .timeZone], from: date) ; break
+            components = calendar.dateComponents([.weekday, .hour, .minute, .second], from: date) ; break
         case "Monthly":
-            components = calendar.dateComponents([.day, .hour, .second, .timeZone], from: date) ; break
+            components = calendar.dateComponents([.day, .hour, .second], from: date) ; break
         case "Yearly":
-            components = calendar.dateComponents([.month, .day, .hour, .second, .timeZone], from: date) ; break
-        default: break
+            components = calendar.dateComponents([.month, .day, .hour, .second], from: date) ; break
+        default: break        
         }
-
+        
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: YesOrNo)
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         

@@ -34,6 +34,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.hideKeyboardWhenTappedAround()
         self.dismissKeyboard()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fh.getData()
@@ -59,7 +60,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.myLabel_1.text = titleOne
         cell.myLabel_2.textColor = UIColor.white
         cell.backgroundColor = UIColor.clear
-        
+
         let formatter = DateFormatter()
         let dayFormatter = DateFormatter()
         let yearlyFormatter = DateFormatter()
@@ -102,7 +103,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-            return 30
+        return 30
     }
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
@@ -111,22 +112,35 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
             headerView.textLabel?.font = UIFont (name: "HelveticaNeue-Bold", size: 14)!
         }
     }
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let moreRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Edit", handler:{action, indexpath in
+  
+        });
+        moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0);
+        
+        let deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler:{action, indexpath in
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
             let managedContext = appDelegate.persistentContainer.viewContext
-            let id = fh.timeObject[indexPath.row].value(forKey: "id") as! String
+            let id = self.fh.timeObject[indexPath.row].value(forKey: "id") as! String
             appDelegate.deleteNotification(identifier: id)
             
-            managedContext.delete(fh.timeObject[indexPath.row] as NSManagedObject)
-            fh.timeObject.remove(at: indexPath.row)
+            managedContext.delete(self.fh.timeObject[indexPath.row] as NSManagedObject)
+            self.fh.timeObject.remove(at: indexPath.row)
             do {
                 try managedContext.save()
             }
             catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
             tableView.reloadData()
-        }
+
+        });
+        
+        return [deleteRowAction, moreRowAction]
+   }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        tableView.setEditing(true, animated: true)
     }
 }
 extension UIViewController {

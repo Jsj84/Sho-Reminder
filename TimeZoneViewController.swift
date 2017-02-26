@@ -15,6 +15,9 @@ class TimeZoneViewController: UIViewController, UITableViewDataSource, UITableVi
     var color = UIColor(netHex:0x90F7A3)
     var defaults = UserDefaults()
     
+    @IBAction func doCancel(_ sender: Any) {
+       self.dismiss(animated: true, completion: nil)
+    }
     let theZone = TimeZone.knownTimeZoneIdentifiers
     
     override func viewDidLoad() {
@@ -42,8 +45,8 @@ class TimeZoneViewController: UIViewController, UITableViewDataSource, UITableVi
     }
       func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        let chosenZone = tableView.cellForRow(at: indexPath)?.textLabel?.text
-        defaults.set(chosenZone, forKey: "timeZone")
+        let zone = theZone[indexPath.row]
+        defaults.set(zone, forKey: "timeZone")
         self.dismiss(animated: true, completion: nil)
     }
 }
