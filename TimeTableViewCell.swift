@@ -23,4 +23,7 @@ class TimeTableViewCell: UITableViewCell {
         myLabel_1.font = UIFont(name: "HelveticaNeue-Bold", size: 14)!
         myLabel_2.font = UIFont(name: "HelveticaNeue-Bold", size: 14)!
     }
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+    }
 }

@@ -60,7 +60,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.myLabel_1.text = titleOne
         cell.myLabel_2.textColor = UIColor.white
         cell.backgroundColor = UIColor.clear
-
+        
         let formatter = DateFormatter()
         let dayFormatter = DateFormatter()
         let yearlyFormatter = DateFormatter()
@@ -117,28 +117,40 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let moreRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Edit", handler:{action, indexpath in
-  
-        });
+            self.performSegue(withIdentifier: "addSegue", sender: nil)
+            self.tableView.setEditing(true, animated: true)
+            //let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
+            
+        })
         moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0);
         
         let deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler:{action, indexpath in
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-            let managedContext = appDelegate.persistentContainer.viewContext
-            let id = self.fh.timeObject[indexPath.row].value(forKey: "id") as! String
-            appDelegate.deleteNotification(identifier: id)
             
-            managedContext.delete(self.fh.timeObject[indexPath.row] as NSManagedObject)
-            self.fh.timeObject.remove(at: indexPath.row)
-            do {
-                try managedContext.save()
-            }
-            catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
-            tableView.reloadData()
-
-        });
+            let alert = UIAlertController(title: "Confirm", message: "Delete this Reminder?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (_) in
+                
+                
+                guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+                let managedContext = appDelegate.persistentContainer.viewContext
+                let id = self.fh.timeObject[indexPath.row].value(forKey: "id") as! String
+                appDelegate.deleteNotification(identifier: id)
+                
+                managedContext.delete(self.fh.timeObject[indexPath.row] as NSManagedObject)
+                self.fh.timeObject.remove(at: indexPath.row)
+                do {
+                    try managedContext.save()
+                }
+                catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
+                tableView.reloadData()
+                
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
+            }))
+              self.present(alert, animated: true, completion: nil)
+        })
         
         return [deleteRowAction, moreRowAction]
-   }
+    }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         tableView.setEditing(true, animated: true)
     }
