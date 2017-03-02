@@ -19,6 +19,8 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var c:[NSManagedObject] = []
     let calendaer = Calendar.current
     var cellImage:UIImage?
+    var cellToEdit = Int()
+    let moreRowAction = UITableViewRowAction()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -116,20 +118,17 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return true
     }
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let moreRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Edit", handler:{action, indexpath in
+        let moreRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: " Edit ", handler:{action, indexpath in
+            self.cellToEdit = indexPath.row
+            print(self.cellToEdit)
             self.performSegue(withIdentifier: "addSegue", sender: nil)
-            self.tableView.setEditing(true, animated: true)
-            //let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TimeTableViewCell
-            
+            self.tableView.setEditing(true, animated: true)            
         })
         moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0);
         
         let deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler:{action, indexpath in
-            
             let alert = UIAlertController(title: "Confirm", message: "Delete this Reminder?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (_) in
-                
-                
                 guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
                 let managedContext = appDelegate.persistentContainer.viewContext
                 let id = self.fh.timeObject[indexPath.row].value(forKey: "id") as! String
@@ -146,7 +145,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
             }))
-              self.present(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         })
         
         return [deleteRowAction, moreRowAction]
@@ -154,6 +153,16 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         tableView.setEditing(true, animated: true)
     }
+//    func prepareForSegue(_segue: UIStoryboardSegue, sender: [UITableViewRowAction]?) {
+//        if _segue.identifier == "addSegue"
+//        {
+//            if let destinationVC = _segue.destination as? TimeAddViewController {
+//                print("hey")
+//                date = (self.fh.timeObject[cellToEdit].value(forKey: "date") as! Date)
+//                destinationVC.timePicker.date = date!
+//            }
+//        }
+//    }
 }
 extension UIViewController {
     func hideKeyboardWhenTappedAround() {

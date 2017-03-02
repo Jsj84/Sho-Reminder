@@ -97,6 +97,8 @@ extension LocationSearchTable {
         //2. Add the text field
         alert.addTextField { (textField) in
             textField.text = ""
+            textField.autocorrectionType = .default
+            textField.keyboardAppearance = .dark
         }
         // 3. Grab the value from the text field, and print it when the user clicks OK.
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in

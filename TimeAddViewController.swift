@@ -15,9 +15,17 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
-    let tableData = ["Repeat", "Time Zone"]
     let defaults = UserDefaults()
-    var tempTimeZone = String()
+    
+    private var queue = DispatchQueue(label: "your.queue.identifier")
+    private (set) var value: Int = 0
+    
+    func increment() -> Int {
+        queue.sync {
+            value += 1
+        }
+        return value
+    }
     
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!
@@ -43,28 +51,21 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             let dateAsString = dateFormatter.string(from: dateOnPicker)
             var tempInterval = String()
             fh.getData()
-            let countId = fh.timeObject.count + 1 as NSNumber
-            let id = countId.stringValue
-            
+            let cId = value as NSNumber
+            let id = cId.stringValue
             if defaults.value(forKey: "repeat") == nil {
                 tempInterval = "Never"
             }
             else {
                 tempInterval = defaults.value(forKey: "repeat") as! String
             }
-            if defaults.value(forKey: "timeZone") == nil {
-                tempTimeZone = Calendar.current.timeZone.identifier
-            }
-            else {
-                tempTimeZone = defaults.value(forKey: "timeZone") as! String
-            }
             
             // create push notifications
             let delegate = UIApplication.shared.delegate as? AppDelegate
-            delegate?.intervalNotification(date: dateOnPicker, title: "It's Time!", body: reminderDiscription.text!, identifier: id, theInterval: tempInterval, timeZone: tempTimeZone)
+            delegate?.intervalNotification(date: dateOnPicker, title: "It's Time!", body: reminderDiscription.text!, identifier: id, theInterval: tempInterval)
             
             // save as NSObject
-            fh.save(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker, repeatOption: tempInterval, timeZone: tempTimeZone, id: id)
+            fh.save(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker, repeatOption: tempInterval, id: id)
             
             // clear text field
             reminderDiscription.text?.removeAll()
@@ -96,7 +97,6 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     override func viewDidDisappear(_ animated: Bool) {
         defaults.removeObject(forKey: "repeat")
-        defaults.removeObject(forKey: "timeZone")
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
@@ -105,36 +105,22 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         return 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableData.count
+        return 1
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
-        if indexPath.row == 0 {
-            if defaults.value(forKey: "repeat") != nil {
-                let timeRepeat = defaults.value(forKey: "repeat") as! String
-                cell.textLabel?.text = "Repeat: " + "\(timeRepeat)"
-            }
-            else {
-                cell.textLabel?.text = "Repeat: Never"
-            }
+        if defaults.value(forKey: "repeat") != nil {
+            let timeRepeat = defaults.value(forKey: "repeat") as! String
+            cell.textLabel?.text = "Repeat: " + "\(timeRepeat)"
         }
-        else if indexPath.row == 1 {
-            if defaults.value(forKey: "timeZone") != nil {
-                let timeZone = defaults.value(forKey: "timeZone") as! String
-                cell.textLabel?.text = "Time Zone: " + "\(timeZone)"
-            } else {
-                cell.textLabel?.text = "Time Zone: " + Calendar.current.timeZone.identifier
-            }
+        else {
+            cell.textLabel?.text = "Repeat: Never"
         }
         tableView.deselectRow(at: [indexPath.row], animated: true)
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
             performSegue(withIdentifier: "intervalSegue", sender: AnyObject.self)
-        }
-        else {
-            performSegue(withIdentifier: "timeZoneSegue", sender: AnyObject.self)
-        }
+
     }
 }

@@ -194,6 +194,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             let managedContext = appDelegate.persistentContainer.viewContext
             if indexPath.section == 0 {
                 let id = fh.timeObject[indexPath.row].value(forKey: "id") as! String
+                print(id)
                 let appDelegate = AppDelegate()
                 appDelegate.deleteNotification(identifier: id)
                 
