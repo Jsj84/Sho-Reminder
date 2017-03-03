@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
+
 class TimeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     
@@ -21,6 +22,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var cellImage:UIImage?
     var cellToEdit = Int()
     let moreRowAction = UITableViewRowAction()
+    var i = Int()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -120,9 +122,9 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let moreRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: " Edit ", handler:{action, indexpath in
             self.cellToEdit = indexPath.row
-            print(self.cellToEdit)
+            self.i = self.cellToEdit
             self.performSegue(withIdentifier: "addSegue", sender: nil)
-            self.tableView.setEditing(true, animated: true)            
+            self.tableView.setEditing(true, animated: true)
         })
         moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0);
         
@@ -153,16 +155,15 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         tableView.setEditing(true, animated: true)
     }
-//    func prepareForSegue(_segue: UIStoryboardSegue, sender: [UITableViewRowAction]?) {
-//        if _segue.identifier == "addSegue"
-//        {
-//            if let destinationVC = _segue.destination as? TimeAddViewController {
-//                print("hey")
-//                date = (self.fh.timeObject[cellToEdit].value(forKey: "date") as! Date)
-//                destinationVC.timePicker.date = date!
-//            }
-//        }
-//    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "addSegue" {
+            print("hey")
+            print(i)
+            let controller = segue.destination as! TimeAddViewController
+            let picker = fh.timeObject[i].value(forKey: "date") as! Date
+            controller.dateOnTimePicker(date: picker)
+        }
+    }
 }
 extension UIViewController {
     func hideKeyboardWhenTappedAround() {

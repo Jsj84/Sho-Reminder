@@ -16,16 +16,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     let defaults = UserDefaults()
-    
-    private var queue = DispatchQueue(label: "your.queue.identifier")
-    private (set) var value: Int = 0
-    
-    func increment() -> Int {
-        queue.sync {
-            value += 1
-        }
-        return value
-    }
+    var value = Int()
     
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!
@@ -53,6 +44,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             fh.getData()
             let cId = value as NSNumber
             let id = cId.stringValue
+            
             if defaults.value(forKey: "repeat") == nil {
                 tempInterval = "Never"
             }
@@ -89,7 +81,16 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         timePicker.backgroundColor = UIColor.clear
         timePicker.setValue(UIColor.black, forKeyPath: "textColor")
-        
+    }
+    func dateOnTimePicker(date: Date) {
+        let picker = UIDatePicker()
+        picker.setDate(date, animated: true)
+        timePicker = picker
+        print(picker.date)
+        timePicker.setDate(date, animated: false)
+    }
+    func datePickerChanged(datePicker: UIDatePicker) {
+        timePicker = datePicker
     }
     override func viewWillAppear(_ animated: Bool) {
         fh.getData()
