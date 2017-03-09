@@ -21,7 +21,7 @@ class IntervalViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "Corkboard_BG"))
+           self.view.addBackground()
         
         tableView.delegate = self
         tableView.dataSource = self

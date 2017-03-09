@@ -16,7 +16,6 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     let defaults = UserDefaults()
-    var value = Int()
     
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!
@@ -41,9 +40,16 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             dateFormatter.timeStyle = .short
             let dateAsString = dateFormatter.string(from: dateOnPicker)
             var tempInterval = String()
-            fh.getData()
-            let cId = value as NSNumber
-            let id = cId.stringValue
+            var id = Int()
+            if defaults.value(forKey: "id") == nil {
+                id = 0
+            }
+            else {
+                id = defaults.value(forKey: "id") as! Int
+            }
+            print(id)
+            let NsId = id as NSNumber
+            let identifier = NsId.stringValue
             
             if defaults.value(forKey: "repeat") == nil {
                 tempInterval = "Never"
@@ -54,10 +60,13 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             // create push notifications
             let delegate = UIApplication.shared.delegate as? AppDelegate
-            delegate?.intervalNotification(date: dateOnPicker, title: "It's Time!", body: reminderDiscription.text!, identifier: id, theInterval: tempInterval)
+            delegate?.intervalNotification(date: dateOnPicker, title: "It's Time!", body: reminderDiscription.text!, identifier: identifier, theInterval: tempInterval)
             
             // save as NSObject
             fh.save(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker, repeatOption: tempInterval, id: id)
+            
+            let changedValue = id + 1
+            defaults.setValue(changedValue, forKeyPath: "id")
             
             // clear text field
             reminderDiscription.text?.removeAll()
@@ -67,7 +76,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "Corkboard_BG"))
+        self.view.addBackground()
         
         CancelBFef.backgroundColor = color
         CancelBFef.layer.cornerRadius = 8
@@ -121,7 +130,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            performSegue(withIdentifier: "intervalSegue", sender: AnyObject.self)
-
+        performSegue(withIdentifier: "intervalSegue", sender: AnyObject.self)
+        
     }
 }

@@ -20,11 +20,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     let center = UNUserNotificationCenter.current()
     let locationManager = CLLocationManager()
     let content = UNMutableNotificationContent()
+    let defaults = UserDefaults()
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         locationManager.delegate = self
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in }
+        
+        if defaults.value(forKey: "hasBeenOpen") == nil {
+            center.removeAllDeliveredNotifications()
+            center.removeAllPendingNotificationRequests()
+            defaults.setValue("hasHad", forKey: "hasBeenOpen")
+        }
         return true
     }
     func applicationWillResignActive(_ application: UIApplication) {
@@ -53,9 +60,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         var components = DateComponents()
         let calendar = Calendar.current
-
+        
         var YesOrNo:Bool = true
-
+        
         content.title = title
         content.body = body
         content.sound = UNNotificationSound.default()
@@ -73,7 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             components = calendar.dateComponents([.day, .hour, .second], from: date) ; break
         case "Yearly":
             components = calendar.dateComponents([.month, .day, .hour, .second], from: date) ; break
-        default: break        
+        default: break
         }
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: YesOrNo)
@@ -84,13 +91,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 print("error: \(error)")
             }
         }
- }
+    }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-       let i = getObjectPath(region: region)
-         let title = fh.locationObject[i].value(forKey: "mKtitle") as! String
-         let body = fh.locationObject[i].value(forKey: "reminderInput") as! String
-         let id = fh.locationObject[i].value(forKey: "id") as! String
-        
+        let i = getObjectPath(region: region)
+        let title = fh.locationObject[i].value(forKey: "mKtitle") as! String
+        let body = fh.locationObject[i].value(forKey: "reminderInput") as! String
+        let idInt = fh.locationObject[i].value(forKey: "id") as! Int
+        let idNs = idInt as NSNumber
+        let id = idNs.stringValue
         if UIApplication.shared.applicationState == .active {
             let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
             let okay = UIAlertAction(title: "Okay", style: .cancel) { (_) in }
@@ -116,8 +124,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let i = getObjectPath(region: region)
         let title = fh.locationObject[i].value(forKey: "mKtitle") as! String
         let body = fh.locationObject[i].value(forKey: "reminderInput") as! String
-        let id = fh.locationObject[i].value(forKey: "id") as! String
-        
+        let idInt = fh.locationObject[i].value(forKey: "id") as! Int
+        let idNs = idInt as NSNumber
+        let id = idNs.stringValue
         if UIApplication.shared.applicationState == .active {
             let alertController = UIAlertController(title: "You just Exited: " + title, message: body, preferredStyle: .alert)
             let okay = UIAlertAction(title: "Okay", style: .cancel) { (_) in }
@@ -143,7 +152,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         var path = Int()
         fh.getLocationData()
         for i in 0..<fh.locationObject.count {
-            let id = fh.locationObject[i].value(forKey: "id") as! String
+            let idInt = fh.locationObject[i].value(forKey: "id") as! Int
+            let idNs = idInt as NSNumber
+            let id = idNs.stringValue
             if id == region.identifier {
                 path = i
             }
@@ -163,4 +174,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         return container
     }()
 }
-
+extension UIView {
+    func addBackground() {
+        let width = UIScreen.main.bounds.size.width
+        let height = UIScreen.main.bounds.size.height
+        
+        let imageViewBackground = UIImageView.init(frame: CGRect(x: 0, y: 0, width: width, height: height))
+        
+        imageViewBackground.image = #imageLiteral(resourceName: "br")
+        
+        imageViewBackground.contentMode = UIViewContentMode.redraw
+        
+        self.addSubview(imageViewBackground)
+        self.sendSubview(toBack: imageViewBackground)
+    }}

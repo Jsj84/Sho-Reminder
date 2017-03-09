@@ -18,6 +18,7 @@ class LocationSearchTable: UITableViewController {
     var handleMapSearchDelegate:HandleMapSearch? = nil
     let fh = ManagedObject()
     let locationManager = CLLocationManager()
+    let defaults = UserDefaults()
     
     func parseAddress(selectedItem:MKPlacemark) -> String {
         // put a space between "4" and "Melrose Place"
@@ -76,22 +77,27 @@ extension LocationSearchTable {
 extension LocationSearchTable {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        fh.getLocationData()
-        let id = fh.locationObject.count + 1
+        var id = Int()
+        if defaults.value(forKey: "locationId") == nil {
+            id = -1
+        }
+        else {
+            id = defaults.value(forKey: "locationId") as! Int
+        }
+        print(id)
+        let NsId = id as NSNumber
+        let identifier = NsId.stringValue
         
         let selectedItem = matchingItems[indexPath.row].placemark
         
         let center = CLLocationCoordinate2D(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude)
-        let newNum = id as NSNumber
-        let identifier = newNum.stringValue
         let radius = 15 as CLLocationDistance
         let region = CLCircularRegion(center: center, radius: radius, identifier: identifier)
         
         
         // drop pin and dismiss table view controller
         handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
-                
+        
         // show aleart to gather information
         let alert = UIAlertController(title: "Location Reminder", message: "Enter the reminder for this location", preferredStyle: .alert)
         //2. Add the text field
@@ -104,10 +110,12 @@ extension LocationSearchTable {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             // save to coreData
-            self.fh.writeLocationData(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude, mKtitle: selectedItem.name!, mKSubTitle: selectedItem.title!, reminderInput: (textField?.text!)!, id: identifier)
-                self.locationManager.startMonitoring(for: region)
+            self.fh.writeLocationData(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude, mKtitle: selectedItem.name!, mKSubTitle: selectedItem.title!, reminderInput: (textField?.text!)!, id: id)
+            self.locationManager.startMonitoring(for: region)
+           let changedValue = id - 1
+            self.defaults.set(changedValue, forKey: "locationId")
         }))
-         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in }))
         // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
         dismiss(animated: true, completion: nil)

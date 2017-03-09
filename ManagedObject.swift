@@ -44,7 +44,7 @@ class ManagedObject: NSObject {
         }
     }
     
-    func save(name: String, dateString: String, date: Date, repeatOption: String, id: String) {
+    func save(name: String, dateString: String, date: Date, repeatOption: String, id: Int) {
     
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -82,7 +82,7 @@ class ManagedObject: NSObject {
             }
         }
     
-    func writeLocationData (latitude: Double, longitude: Double, mKtitle: String, mKSubTitle: String, reminderInput: String, id: String) {
+    func writeLocationData (latitude: Double, longitude: Double, mKtitle: String, mKSubTitle: String, reminderInput: String, id: Int) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext

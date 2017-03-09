@@ -34,7 +34,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.navigationController?.navigationBar.backgroundColor = UIColor.green
         
-        view.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "Corkboard_BG"))
+       self.view.addBackground()
         
         way.font = UIFont (name: "HelveticaNeue-Bold", size: 22)!
         way.textColor = UIColor.black
@@ -67,7 +67,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
         for i in 0..<fh.timeObject.count {
-            let id = fh.timeObject[i].value(forKey: "id") as! String
+            let idInt = fh.timeObject[i].value(forKey: "id") as! Int
+            let newId = idInt as NSNumber
+            let id = newId.stringValue
             let c = fh.timeObject[i].value(forKey: "date") as! Date
             let r = fh.timeObject[i].value(forKey: "repeatOption") as! String
             if c <= now as Date && r == "Never" {
@@ -189,11 +191,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
             let managedContext = appDelegate.persistentContainer.viewContext
             if indexPath.section == 0 {
-                let id = fh.timeObject[indexPath.row].value(forKey: "id") as! String
+                fh.getData()
+                let idInt = fh.timeObject[indexPath.row].value(forKey: "id") as! Int
+                let newId = idInt as NSNumber
+                let id = newId.stringValue
                 print(id)
                 let appDelegate = AppDelegate()
                 appDelegate.deleteNotification(identifier: id)
@@ -202,17 +206,21 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 fh.timeObject.remove(at: indexPath.row)
             }
             else {
-                let id = fh.locationObject[indexPath.row].value(forKey: "id") as! String
+                fh.getLocationData()
+                let id = fh.locationObject[indexPath.row].value(forKey: "id") as! Int
+                let nsNum = id as NSNumber
+                let numString = nsNum.stringValue
+                    
                 let latitude = fh.locationObject[indexPath.row].value(forKey: "latitude") as! Double
                 let longitude = fh.locationObject[indexPath.row].value(forKey: "longitude") as! Double
                 let radius:CLLocationDistance = 25
                 let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                let region = CLCircularRegion(center: center, radius: radius, identifier: id)
+                let region = CLCircularRegion(center: center, radius: radius, identifier: numString)
                 locationManager.stopMonitoring(for: region)
-                print("region with identifer " + id + " is no longer being monitored for")
+                print("region with identifer " + numString + " is no longer being monitored for")
                 
                 let appDelegate = AppDelegate()
-                appDelegate.deleteNotification(identifier: id)
+                appDelegate.deleteNotification(identifier: numString)
                 managedContext.delete(fh.locationObject[indexPath.row] as NSManagedObject)
                 fh.locationObject.remove(at: indexPath.row)
             }

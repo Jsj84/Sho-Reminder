@@ -27,7 +27,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "Corkboard_BG"))
+          self.view.addBackground()
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -155,7 +155,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         tableView.setEditing(true, animated: true)
     }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    func prepare(for segue: UIStoryboardSegue, sender: TimeTableViewCell) {
         if segue.identifier == "addSegue" {
             print("hey")
             print(i)
