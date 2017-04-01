@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="DxT-lp-kOo">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="DxT-lp-kOo">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -243,32 +242,32 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="Ksm-6v-FfI">
-                                <rect key="frame" x="0.0" y="71.5" width="375" height="218"/>
+                                <rect key="frame" x="0.0" y="109" width="375" height="203"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="218" id="8xc-Aj-meL"/>
+                                    <constraint firstAttribute="height" constant="203" id="c1r-ze-Sgr"/>
                                 </constraints>
                                 <date key="date" timeIntervalSinceReferenceDate="505169025.993276">
                                     <!--2017-01-03 20:43:45 +0000-->
                                 </date>
                             </datePicker>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="3pP-Io-H3j">
-                                <rect key="frame" x="0.0" y="335.5" width="375" height="331.5"/>
+                                <rect key="frame" x="0.0" y="320" width="375" height="348"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" id="NNN-vr-hIa">
-                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="56" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NNN-vr-hIa" id="eXi-g4-y7o">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ACZ-dW-74g">
-                                <rect key="frame" x="16" y="28" width="90" height="35.5"/>
+                                <rect key="frame" x="16" y="28" width="90" height="36"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="90" id="463-AF-ijv"/>
+                                    <constraint firstAttribute="width" constant="90" id="glw-ta-lPe"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Cancel ">
@@ -281,7 +280,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tul-PW-HUk">
                                 <rect key="frame" x="267" y="28" width="92" height="35"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="92" id="b7J-zW-3ut"/>
+                                    <constraint firstAttribute="width" constant="92" id="vgl-zL-Hdp"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <state key="normal" title="Save"/>
@@ -290,7 +289,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Reminder Description" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EPm-Eb-q8y">
-                                <rect key="frame" x="16" y="297.5" width="343" height="30"/>
+                                <rect key="frame" x="16" y="71" width="343" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -298,22 +297,21 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Ksm-6v-FfI" firstAttribute="trailing" secondItem="3pP-Io-H3j" secondAttribute="trailing" id="0A7-EB-VXj"/>
-                            <constraint firstAttribute="trailing" secondItem="Ksm-6v-FfI" secondAttribute="trailing" id="0h9-SQ-9p7"/>
-                            <constraint firstItem="tul-PW-HUk" firstAttribute="trailing" secondItem="EPm-Eb-q8y" secondAttribute="trailing" id="4OX-nH-NOU"/>
-                            <constraint firstItem="3pP-Io-H3j" firstAttribute="bottom" secondItem="fcK-5h-vRI" secondAttribute="top" id="4bB-5B-8Vt"/>
-                            <constraint firstItem="Ksm-6v-FfI" firstAttribute="centerX" secondItem="EPm-Eb-q8y" secondAttribute="centerX" id="CVT-fQ-Phe"/>
-                            <constraint firstItem="ACZ-dW-74g" firstAttribute="leading" secondItem="TAg-hY-WiA" secondAttribute="leadingMargin" id="GTT-hR-Z3P"/>
-                            <constraint firstItem="3pP-Io-H3j" firstAttribute="top" secondItem="EPm-Eb-q8y" secondAttribute="bottom" constant="8" symbolic="YES" id="NMw-O4-Ygn"/>
-                            <constraint firstItem="Ksm-6v-FfI" firstAttribute="leading" secondItem="3pP-Io-H3j" secondAttribute="leading" id="PLb-Lq-Uzr"/>
-                            <constraint firstItem="EPm-Eb-q8y" firstAttribute="top" secondItem="Ksm-6v-FfI" secondAttribute="bottom" constant="8" symbolic="YES" id="czV-Zf-SQM"/>
-                            <constraint firstItem="ACZ-dW-74g" firstAttribute="leading" secondItem="EPm-Eb-q8y" secondAttribute="leading" id="dgE-xI-Ntn"/>
-                            <constraint firstItem="ACZ-dW-74g" firstAttribute="baseline" secondItem="tul-PW-HUk" secondAttribute="firstBaseline" id="fzk-hl-NyY"/>
-                            <constraint firstItem="Ksm-6v-FfI" firstAttribute="leading" secondItem="TAg-hY-WiA" secondAttribute="leading" id="iRb-L7-uUZ"/>
-                            <constraint firstItem="ACZ-dW-74g" firstAttribute="top" secondItem="1ZN-X2-wbE" secondAttribute="bottom" constant="8" symbolic="YES" id="isv-l4-1uh"/>
-                            <constraint firstItem="ACZ-dW-74g" firstAttribute="top" secondItem="tul-PW-HUk" secondAttribute="top" id="kYt-6J-Gl3"/>
-                            <constraint firstItem="Ksm-6v-FfI" firstAttribute="top" secondItem="ACZ-dW-74g" secondAttribute="bottom" constant="8" symbolic="YES" id="lOg-2k-BTq"/>
-                            <constraint firstItem="tul-PW-HUk" firstAttribute="baseline" secondItem="ACZ-dW-74g" secondAttribute="firstBaseline" id="zZb-9A-xeY"/>
+                            <constraint firstItem="Ksm-6v-FfI" firstAttribute="leading" secondItem="3pP-Io-H3j" secondAttribute="leading" id="31A-v9-s2L"/>
+                            <constraint firstItem="Ksm-6v-FfI" firstAttribute="trailing" secondItem="3pP-Io-H3j" secondAttribute="trailing" id="8R9-Hc-4yU"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="3pP-Io-H3j" secondAttribute="bottom" constant="-1" id="GgY-Zn-OPg"/>
+                            <constraint firstItem="3pP-Io-H3j" firstAttribute="top" secondItem="Ksm-6v-FfI" secondAttribute="bottom" constant="8" symbolic="YES" id="M1C-jG-eBL"/>
+                            <constraint firstItem="ACZ-dW-74g" firstAttribute="top" secondItem="1ZN-X2-wbE" secondAttribute="bottom" constant="8" symbolic="YES" id="O50-ei-PJe"/>
+                            <constraint firstItem="ACZ-dW-74g" firstAttribute="leading" secondItem="EPm-Eb-q8y" secondAttribute="leading" id="UlI-91-79n"/>
+                            <constraint firstItem="EPm-Eb-q8y" firstAttribute="centerX" secondItem="Ksm-6v-FfI" secondAttribute="centerX" id="WEe-SX-xyb"/>
+                            <constraint firstAttribute="trailing" secondItem="Ksm-6v-FfI" secondAttribute="trailing" id="WoO-wR-YaI"/>
+                            <constraint firstItem="Ksm-6v-FfI" firstAttribute="top" secondItem="EPm-Eb-q8y" secondAttribute="bottom" constant="8" symbolic="YES" id="Z5i-uu-BcD"/>
+                            <constraint firstItem="Ksm-6v-FfI" firstAttribute="leading" secondItem="TAg-hY-WiA" secondAttribute="leading" id="hNX-mg-cTk"/>
+                            <constraint firstItem="tul-PW-HUk" firstAttribute="trailing" secondItem="EPm-Eb-q8y" secondAttribute="trailing" id="hPd-Tv-fJB"/>
+                            <constraint firstItem="ACZ-dW-74g" firstAttribute="top" secondItem="tul-PW-HUk" secondAttribute="top" id="jZC-Fk-Nzb"/>
+                            <constraint firstItem="ACZ-dW-74g" firstAttribute="leading" secondItem="TAg-hY-WiA" secondAttribute="leadingMargin" id="jcb-QV-bU9"/>
+                            <constraint firstItem="ACZ-dW-74g" firstAttribute="centerY" secondItem="tul-PW-HUk" secondAttribute="centerY" id="oaY-FH-YqK"/>
+                            <constraint firstItem="EPm-Eb-q8y" firstAttribute="top" secondItem="tul-PW-HUk" secondAttribute="bottom" constant="8" symbolic="YES" id="uOj-Ye-UOd"/>
                         </constraints>
                     </view>
                     <connections>

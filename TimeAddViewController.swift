@@ -109,7 +109,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         defaults.removeObject(forKey: "repeat")
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
+        return 1
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1

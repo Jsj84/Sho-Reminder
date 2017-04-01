@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Sho Reminder needs your location to send you location based notifications</string>
 	<key>CFBundleDisplayName</key>
 	<string>Sho It</string>
 	<key>CFBundleDocumentTypes</key>
@@ -28,10 +26,12 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.1</string>
+	<string>1.0.2</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>ITSAppUsesNonExemptEncrption</key>
+	<false/>
+	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -45,6 +45,8 @@
 	</array>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Sho Reminder needs your permission to provide you with location based services</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Sho Reminder needs your location to send you location based notifications</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -58,13 +60,11 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDefault</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 </dict>
 </plist>

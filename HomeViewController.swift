@@ -16,6 +16,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     let locationManager = CLLocationManager()
     var fh = ManagedObject()
+    
     var color = UIColor(netHex:0x90F7A3)
     
     @IBOutlet weak var way: UILabel!
@@ -32,7 +33,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.backgroundColor = UIColor.green
+    self.navigationController?.navigationBar.backgroundColor = UIColor.green
         
        self.view.addBackground()
         
