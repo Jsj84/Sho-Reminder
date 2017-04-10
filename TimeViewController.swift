@@ -20,14 +20,12 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var c:[NSManagedObject] = []
     let calendaer = Calendar.current
     var cellImage:UIImage?
-    var cellToEdit = Int()
-    let moreRowAction = UITableViewRowAction()
-    var i = Int()
+    var dateToChange = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-          self.view.addBackground()
+        self.view.addBackground()
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -120,11 +118,17 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return true
     }
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        fh.getData()
+        let cellID = indexPath.row
+        let idInt = fh.timeObject[cellID].value(forKey: "id") as! Int
+        dateToChange = fh.timeObject[cellID].value(forKey: "date") as! Date
+        print(dateToChange)
+        let newId = idInt as NSNumber
+        let id = newId.stringValue
         let moreRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: " Edit ", handler:{action, indexpath in
-            self.cellToEdit = indexPath.row
-            self.i = self.cellToEdit
+            let nvc = TimeAddViewController()
+            nvc.editID = cellID
             self.performSegue(withIdentifier: "addSegue", sender: nil)
-            self.tableView.setEditing(true, animated: true)
         })
         moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0);
         
@@ -133,36 +137,23 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
             alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (_) in
                 guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
                 let managedContext = appDelegate.persistentContainer.viewContext
-                let id = self.fh.timeObject[indexPath.row].value(forKey: "id") as! String
                 appDelegate.deleteNotification(identifier: id)
-                
-                managedContext.delete(self.fh.timeObject[indexPath.row] as NSManagedObject)
+                managedContext.delete(self.fh.timeObject[cellID] as NSManagedObject)
                 self.fh.timeObject.remove(at: indexPath.row)
                 do {
                     try managedContext.save()
                 }
                 catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
                 tableView.reloadData()
-                
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
             }))
             self.present(alert, animated: true, completion: nil)
         })
-        
         return [deleteRowAction, moreRowAction]
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         tableView.setEditing(true, animated: true)
-    }
-    func prepare(for segue: UIStoryboardSegue, sender: TimeTableViewCell) {
-        if segue.identifier == "addSegue" {
-            print("hey")
-            print(i)
-            let controller = segue.destination as! TimeAddViewController
-            let picker = fh.timeObject[i].value(forKey: "date") as! Date
-            controller.dateOnTimePicker(date: picker)
-        }
     }
 }
 extension UIViewController {

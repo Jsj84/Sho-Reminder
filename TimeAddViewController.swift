@@ -16,6 +16,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     let defaults = UserDefaults()
+    var editID = Int()
     
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!
@@ -91,18 +92,12 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         timePicker.backgroundColor = UIColor.clear
         timePicker.setValue(UIColor.black, forKeyPath: "textColor")
     }
-    func dateOnTimePicker(date: Date) {
-        let picker = UIDatePicker()
-        picker.setDate(date, animated: true)
-        timePicker = picker
-        print(picker.date)
-        timePicker.setDate(date, animated: false)
-    }
-    func datePickerChanged(datePicker: UIDatePicker) {
-        timePicker = datePicker
-    }
     override func viewWillAppear(_ animated: Bool) {
         fh.getData()
+        let tv = TimeViewController()
+        let d = tv.dateToChange
+        print(d)
+        timePicker.setDate(d, animated: true)
         tableView.reloadData()
     }
     override func viewDidDisappear(_ animated: Bool) {

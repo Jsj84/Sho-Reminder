@@ -77,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         case "Weekly":
             components = calendar.dateComponents([.weekday, .hour, .minute, .second], from: date) ; break
         case "Monthly":
-            components = calendar.dateComponents([.day, .hour, .second], from: date) ; break
+            components = calendar.dateComponents([.day, .hour, .second, .weekday], from: date) ; break
         case "Yearly":
             components = calendar.dateComponents([.month, .day, .hour, .second], from: date) ; break
         default: break
