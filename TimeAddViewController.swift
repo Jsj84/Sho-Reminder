@@ -16,7 +16,6 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     let defaults = UserDefaults()
-    var editID = Int()
     
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!
@@ -36,7 +35,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         else {
             self.view.endEditing(true)
             let dateFormatter = DateFormatter()
-            let dateOnPicker = timePicker.date //capture the date shown on the picker
+            let dateOnPicker = timePicker.date 
             dateFormatter.dateStyle = .short
             dateFormatter.timeStyle = .short
             let dateAsString = dateFormatter.string(from: dateOnPicker)
@@ -94,15 +93,15 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     override func viewWillAppear(_ animated: Bool) {
         fh.getData()
-        if defaults.value(forKey: "cellId") != nil {
+        if defaults.value(forKey: "cellId") != nil && defaults.bool(forKey: "bool") != false {
             let g = defaults.value(forKey: "cellId") as! Int
-            print(g)
             let newDate = fh.timeObject[g].value(forKey: "date") as! Date
             let uploadText = fh.timeObject[g].value(forKey: "name") as! String
             reminderDiscription.text = uploadText
             reminderDiscription.reloadInputViews()
             timePicker.setDate(newDate, animated: true)
             timePicker.reloadInputViews()
+            tableView.reloadData()
         }
         tableView.reloadData()
     }
@@ -123,6 +122,11 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         if defaults.value(forKey: "repeat") != nil {
             let timeRepeat = defaults.value(forKey: "repeat") as! String
             cell.textLabel?.text = "Repeat: " + "\(timeRepeat)"
+        }
+        else if defaults.bool(forKey: "bool") == true {
+            let g = defaults.value(forKey: "cellId") as! Int
+            let option = fh.timeObject[g].value(forKey: "repeatOption") as! String
+            cell.textLabel?.text = "Repeat: " + "\(option)"
         }
         else {
             cell.textLabel?.text = "Repeat: Never"

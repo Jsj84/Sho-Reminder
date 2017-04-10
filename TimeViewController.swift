@@ -38,6 +38,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.userDefaults.set(false, forKey: "bool")
         fh.getData()
         tableView.reloadData()
     }
@@ -123,7 +124,8 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let newId = idInt as NSNumber
         let id = newId.stringValue
         let moreRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: " Edit ", handler:{action, indexpath in
-             self.userDefaults.set(cellID, forKey: "cellId")
+            self.userDefaults.set(cellID, forKey: "cellId")
+            self.userDefaults.set(true, forKey: "bool")
             self.performSegue(withIdentifier: "addSegue", sender: nil)
         })
         moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0);
