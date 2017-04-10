@@ -94,10 +94,16 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     override func viewWillAppear(_ animated: Bool) {
         fh.getData()
-        let tv = TimeViewController()
-        let d = tv.dateToChange
-        print(d)
-        timePicker.setDate(d, animated: true)
+        if defaults.value(forKey: "cellId") != nil {
+            let g = defaults.value(forKey: "cellId") as! Int
+            print(g)
+            let newDate = fh.timeObject[g].value(forKey: "date") as! Date
+            let uploadText = fh.timeObject[g].value(forKey: "name") as! String
+            reminderDiscription.text = uploadText
+            reminderDiscription.reloadInputViews()
+            timePicker.setDate(newDate, animated: true)
+            timePicker.reloadInputViews()
+        }
         tableView.reloadData()
     }
     override func viewDidDisappear(_ animated: Bool) {

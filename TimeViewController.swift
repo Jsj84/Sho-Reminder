@@ -20,7 +20,6 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var c:[NSManagedObject] = []
     let calendaer = Calendar.current
     var cellImage:UIImage?
-    var dateToChange = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,13 +120,10 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         fh.getData()
         let cellID = indexPath.row
         let idInt = fh.timeObject[cellID].value(forKey: "id") as! Int
-        dateToChange = fh.timeObject[cellID].value(forKey: "date") as! Date
-        print(dateToChange)
         let newId = idInt as NSNumber
         let id = newId.stringValue
         let moreRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: " Edit ", handler:{action, indexpath in
-            let nvc = TimeAddViewController()
-            nvc.editID = cellID
+             self.userDefaults.set(cellID, forKey: "cellId")
             self.performSegue(withIdentifier: "addSegue", sender: nil)
         })
         moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0);
