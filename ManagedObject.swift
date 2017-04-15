@@ -16,7 +16,7 @@ class ManagedObject: NSObject {
     
     var timeObject: [NSManagedObject] = []
     var locationObject:[NSManagedObject] = []
-  
+    
     override init() {
         
         // This resource is the same name as your xcdatamodeld contained in your project.
@@ -43,9 +43,8 @@ class ManagedObject: NSObject {
             }
         }
     }
-    
     func save(name: String, dateString: String, date: Date, repeatOption: String, id: Int) {
-    
+        
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
         
@@ -68,20 +67,19 @@ class ManagedObject: NSObject {
             print("Could not save. \(error), \(error.userInfo)")
         }
     }
-        func getData() {
+    func getData() {
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Items")
+        
+        do {
+            timeObject = try managedContext.fetch(fetchRequest)
             
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-            let managedContext = appDelegate.persistentContainer.viewContext
-            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Items")
-            
-            do {
-                timeObject = try managedContext.fetch(fetchRequest)
-                
-            } catch let error as NSError {
-                print("Could not fetch. \(error), \(error.userInfo)")
-            }
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
         }
-    
+    }
     func writeLocationData (latitude: Double, longitude: Double, mKtitle: String, mKSubTitle: String, reminderInput: String, id: Int) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }

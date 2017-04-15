@@ -75,11 +75,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         case "Daily":
             components = calendar.dateComponents([.hour, .minute, .second], from: date) ; break
         case "Weekly":
-            components = calendar.dateComponents([.weekday, .hour, .minute, .second], from: date) ; break
+            components = calendar.dateComponents([.weekday, .day, .hour, .minute, .second], from: date) ; break
         case "Monthly":
-            components = calendar.dateComponents([.day, .hour, .second, .weekday], from: date) ; break
+            components = calendar.dateComponents([.day, .hour, .minute, .second, .weekday], from: date) ; break
         case "Yearly":
-            components = calendar.dateComponents([.month, .day, .hour, .second], from: date) ; break
+            components = calendar.dateComponents([.month, .weekday, .weekOfYear, .weekOfMonth, .day, .hour, .minute, .second], from: date) ; break
         default: break
         }
         

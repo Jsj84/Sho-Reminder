@@ -16,6 +16,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     let fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
     let defaults = UserDefaults()
+    let indexPath = Int()
     
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!
@@ -27,20 +28,36 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func SaveB(_ sender: Any) {
+        var tempInterval = String()
+        var id = Int()
         if reminderDiscription.text?.isEmpty == true {
             let alert = UIAlertController(title: "Alert", message: "You cannot save this reminder without a description", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
         else {
+            if defaults.bool(forKey: "bool") == true {
+                let i = defaults.value(forKey: "cellId") as! Int
+                
+                let idInt = fh.timeObject[i].value(forKey: "id") as! Int
+                let newId = idInt as NSNumber
+                let id1 = newId.stringValue
+                
+                guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+                let managedContext = appDelegate.persistentContainer.viewContext
+                appDelegate.deleteNotification(identifier: id1)
+                managedContext.delete(self.fh.timeObject[i] as NSManagedObject)
+                do {
+                    try managedContext.save()
+                }
+                catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
+            }
             self.view.endEditing(true)
             let dateFormatter = DateFormatter()
-            let dateOnPicker = timePicker.date 
+            let dateOnPicker = timePicker.date
             dateFormatter.dateStyle = .short
             dateFormatter.timeStyle = .short
             let dateAsString = dateFormatter.string(from: dateOnPicker)
-            var tempInterval = String()
-            var id = Int()
             if defaults.value(forKey: "id") == nil {
                 id = 0
             }
