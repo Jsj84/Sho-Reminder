@@ -71,15 +71,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         case "Never":
             YesOrNo = false; components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date); break
         case "Hourly":
-            components = calendar.dateComponents([.minute, .second], from: date); break
+           YesOrNo = true; components = calendar.dateComponents([.hour, .minute, .second], from: date); break
         case "Daily":
-            components = calendar.dateComponents([.hour, .minute, .second], from: date) ; break
+            YesOrNo = true; components = calendar.dateComponents([.day, .hour, .minute, .second], from: date) ; break
         case "Weekly":
-            components = calendar.dateComponents([.weekday, .day, .hour, .minute, .second], from: date) ; break
+            YesOrNo = true; components = calendar.dateComponents([.weekday, .hour, .minute, .second], from: date) ; break
         case "Monthly":
-            components = calendar.dateComponents([.day, .hour, .minute, .second, .weekday], from: date) ; break
+            YesOrNo = true; components = calendar.dateComponents([.month, .hour, .minute, .second], from: date) ; break
         case "Yearly":
-            components = calendar.dateComponents([.month, .weekday, .weekOfYear, .weekOfMonth, .day, .hour, .minute, .second], from: date) ; break
+            YesOrNo = true; components = calendar.dateComponents([.year, .hour, .minute, .second], from: date) ; break
         default: break
         }
         

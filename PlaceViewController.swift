@@ -15,18 +15,36 @@ import CoreData
 protocol HandleMapSearch {
     func dropPinZoomIn(placemark:MKPlacemark)
 }
+
 class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch {
+    
     
     var selectedPin:MKPlacemark? = nil
     let locationManager = CLLocationManager()
     var resultSearchController:UISearchController? = nil
     var fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
+    var smallView: LocationAlertView!
+    let blurFx = UIBlurEffect(style: UIBlurEffectStyle.dark)
+    var blurFxView = UIVisualEffectView()
+    var lastAnnotation = MKPointAnnotation()
+    var locationSearchTable: LocationSearchTable!
+    let defaults = UserDefaults()
+    var selectedItem:MKPlacemark!
     
     @IBOutlet weak var mapView: MKMapView!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        blurFxView = UIVisualEffectView(effect: blurFx)
+        blurFxView.frame = view.bounds
+        blurFxView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        
+        smallView = LocationAlertView(frame: CGRect(x: (view.bounds.width / 2) - (UIScreen.main.bounds.width - 70) / 2, y: 100, width: UIScreen.main.bounds.width - 70, height: UIScreen.main.bounds.height - 380))
+        smallView.isHidden = true
         
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
@@ -36,7 +54,9 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
-        resultSearchController?.searchResultsUpdater = locationSearchTable
+        resultSearchController?.searchResultsUpdater = locationSearchTable as UISearchResultsUpdating
+        
+        
         
         let searchBar = resultSearchController!.searchBar
         searchBar.sizeToFit()
@@ -47,11 +67,53 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         definesPresentationContext = true
         
         locationSearchTable.mapView = mapView
+        locationSearchTable.mapView = smallView.mapView
         locationSearchTable.handleMapSearchDelegate = self
         
         self.hideKeyboardWhenTappedAround()
         self.dismissKeyboard()
+        
+        smallView.cancel.addTarget(self, action: #selector(actionForbutton), for: .touchUpInside)
+        smallView.enter.addTarget(self, action: #selector(onEntry), for: .touchUpInside)
+        
     }
+    func onEntry(sender:UIButton) {
+        var id = 0
+        let text = smallView.textField.text
+        if defaults.value(forKey: "locationId") != nil {
+        id = defaults.value(forKey: "locationId") as! Int
+        }
+        else {
+            id = -1
+        }
+                  let NsId = id as NSNumber
+        let identifier = NsId.stringValue
+        
+        let center = CLLocationCoordinate2D(latitude: (selectedItem?.coordinate.latitude)!, longitude: (selectedItem?.coordinate.longitude)!)
+        let radius = 15 as CLLocationDistance
+        let region = CLCircularRegion(center: center, radius: radius, identifier: identifier)
+        
+        // save to coreData
+        self.fh.writeLocationData(latitude: selectedItem!.coordinate.latitude, longitude: selectedItem!.coordinate.longitude, mKtitle: selectedItem!.name!, mKSubTitle: selectedItem!.title!, reminderInput: (text)!, id: id)
+        self.locationManager.startMonitoring(for: region)
+        let changedValue = id - 1
+        self.defaults.set(changedValue, forKey: "locationId")
+        print(id)
+        dismissKeyboard()
+        smallView.isHidden = true
+        blurFxView.removeFromSuperview()
+        mapView.removeAnnotation(lastAnnotation)
+        smallView.mapView.removeAnnotation(lastAnnotation)
+        
+    }
+    func actionForbutton(sender:UIButton!) {
+        dismissKeyboard()
+        smallView.isHidden = true
+        blurFxView.removeFromSuperview()
+        mapView.removeAnnotation(lastAnnotation)
+        smallView.mapView.removeAnnotation(lastAnnotation)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fh.getLocationData()
@@ -67,7 +129,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
             let annotation = MKPointAnnotation()
             annotation.coordinate = (selectedPin?.coordinate)!
             annotation.title = fh.locationObject[i].value(forKey: "mKtitle") as! String?
-
+            
             
             if let city = selectedPin?.locality,
                 let state = selectedPin?.administrativeArea {
@@ -97,45 +159,29 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     }
     func dropPinZoomIn(placemark:MKPlacemark) {
         
-        selectedPin = placemark
+        smallView.isHidden = false
+        view.addSubview(blurFxView)
+        view.addSubview(smallView)
         
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = placemark.coordinate
-        annotation.title = placemark.name
+        selectedPin = placemark
+        selectedItem = placemark
+        
+        let lastAnnotation = MKPointAnnotation()
+        lastAnnotation.coordinate = placemark.coordinate
+        lastAnnotation.title = placemark.name
         if let city = placemark.locality,
             let state = placemark.administrativeArea {
-            annotation.subtitle = "\(city) \(state)"
+            lastAnnotation.subtitle = "\(city) \(state)"
         }
-        self.mapView.addAnnotation(annotation)
+        self.mapView.addAnnotation(lastAnnotation)
+        smallView.mapView.addAnnotation(lastAnnotation)
         let span = MKCoordinateSpanMake(0.05, 0.05)
+        let smallSpan = MKCoordinateSpanMake(0.011, 0.011)
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
+        let smallRegion = MKCoordinateRegionMake(placemark.coordinate, smallSpan)
         mapView.setRegion(region, animated: true)
+        smallView.mapView.setRegion(smallRegion, animated: true)
     }
-    func presentAlert() {
-        let alertController = UIAlertController(title: "Reminder", message: "Please enter the description of this reminder you will receive upon entering this location", preferredStyle: .alert)
-        
-        let confirmAction = UIAlertAction(title: "Save", style: .default) { (_) in
-            if let field = alertController.textFields?[0] {
-                // store your data
-                print(field)
-            } else {
-                // user did not fill field
-            }
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
-        
-        alertController.addTextField { (textField) in
-            textField.placeholder = "reminder description"
-        }
-        alertController.addAction(confirmAction)
-        alertController.addAction(cancelAction)
-        
-        self.present(alertController, animated: true, completion: nil)
-    }
-    func popUpBox(){
-        print("test for popup box")
-    }
-    
 }
 extension PlaceViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
@@ -151,7 +197,7 @@ extension PlaceViewController: MKMapViewDelegate {
         let button = UIButton(frame: CGRect(origin: .zero, size: smallSquare))
         button.setBackgroundImage(#imageLiteral(resourceName: "checkList"), for: .normal)
         
-        button.addTarget(self, action: #selector(popUpBox), for: .touchUpInside)
+        // button.addTarget(self, action: #selector(popUpBox), for: .touchUpInside)
         pinView?.leftCalloutAccessoryView = button
         return pinView
     }
