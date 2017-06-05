@@ -107,6 +107,8 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         timePicker.backgroundColor = UIColor.clear
         timePicker.setValue(UIColor.black, forKeyPath: "textColor")
+        
+        reminderDiscription.keyboardAppearance = .dark
     }
     override func viewWillAppear(_ animated: Bool) {
         fh.getData()

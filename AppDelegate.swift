@@ -60,27 +60,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         var components = DateComponents()
         let calendar = Calendar.current
-        
-        var YesOrNo:Bool = true
+        var YesOrNo = Bool()
         
         content.title = title
         content.body = body
         content.sound = UNNotificationSound.default()
         
         switch theInterval {
-        case "Never":
-            YesOrNo = false; components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date); break
         case "Hourly":
-           YesOrNo = true; components = calendar.dateComponents([.hour, .minute, .second], from: date); break
+            YesOrNo = true; components = calendar.dateComponents([.minute, .second], from: date)
         case "Daily":
-            YesOrNo = true; components = calendar.dateComponents([.day, .hour, .minute, .second], from: date) ; break
+            YesOrNo = true; components = calendar.dateComponents([.hour, .minute, .second], from: date)
         case "Weekly":
-            YesOrNo = true; components = calendar.dateComponents([.weekday, .hour, .minute, .second], from: date) ; break
+            YesOrNo = true; components = calendar.dateComponents([.weekday, .hour, .minute, .second] , from: date)
         case "Monthly":
-            YesOrNo = true; components = calendar.dateComponents([.month, .hour, .minute, .second], from: date) ; break
+            YesOrNo = true; components = calendar.dateComponents([.day, .hour, .minute, .second], from: date)
         case "Yearly":
-            YesOrNo = true; components = calendar.dateComponents([.year, .hour, .minute, .second], from: date) ; break
-        default: break
+            YesOrNo = true; components = calendar.dateComponents([.month, .day, .hour, .minute, .second], from: date)
+        default:
+            YesOrNo = false; components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+            break
         }
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: YesOrNo)
@@ -97,27 +96,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let title = fh.locationObject[i].value(forKey: "mKtitle") as! String
         let body = fh.locationObject[i].value(forKey: "reminderInput") as! String
         let idInt = fh.locationObject[i].value(forKey: "id") as! Int
+        let entranceType = fh.locationObject[i].value(forKey: "entrance") as! String
         let idNs = idInt as NSNumber
         let id = idNs.stringValue
-        if UIApplication.shared.applicationState == .active {
-            let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
-            let okay = UIAlertAction(title: "Okay", style: .cancel) { (_) in }
-            alertController.addAction(okay)
-            self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
-        }
-        else {
-            content.title = "You just Entered: " + title
-            content.body = body
-            content.sound = UNNotificationSound.default()
-            
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-            let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
-            
-            UNUserNotificationCenter.current().add(request) {(error) in
-                if let error = error {
-                    print("error: \(error)")
+        if entranceType == "onEnter" {
+            if UIApplication.shared.applicationState == .active {
+                let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
+                let okay = UIAlertAction(title: "Okay", style: .cancel) { (_) in }
+                alertController.addAction(okay)
+                self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+            }
+            else {
+                content.title = "You just Entered: " + title
+                content.body = body
+                content.sound = UNNotificationSound.default()
+                
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+                
+                UNUserNotificationCenter.current().add(request) {(error) in
+                    if let error = error {
+                        print("error: \(error)")
+                    }
                 }
             }
+        }
+        else {
+            print("On exit notifcation only")
         }
     }
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
@@ -125,27 +130,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let title = fh.locationObject[i].value(forKey: "mKtitle") as! String
         let body = fh.locationObject[i].value(forKey: "reminderInput") as! String
         let idInt = fh.locationObject[i].value(forKey: "id") as! Int
+        let entranceType = fh.locationObject[i].value(forKey: "entrance") as! String
         let idNs = idInt as NSNumber
         let id = idNs.stringValue
-        if UIApplication.shared.applicationState == .active {
-            let alertController = UIAlertController(title: "You just Exited: " + title, message: body, preferredStyle: .alert)
-            let okay = UIAlertAction(title: "Okay", style: .cancel) { (_) in }
-            alertController.addAction(okay)
-            self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
-        }
-        else {
-            content.title = "You just Exited: " + title
-            content.body = body
-            content.sound = UNNotificationSound.default()
-            
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-            let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
-            
-            UNUserNotificationCenter.current().add(request) {(error) in
-                if let error = error {
-                    print("error: \(error)")
+        if entranceType == "onExit" {
+            if UIApplication.shared.applicationState == .active {
+                let alertController = UIAlertController(title: "You just Exited: " + title, message: body, preferredStyle: .alert)
+                let okay = UIAlertAction(title: "Okay", style: .cancel) { (_) in }
+                alertController.addAction(okay)
+                self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+            }
+            else {
+                content.title = "You just Exited: " + title
+                content.body = body
+                content.sound = UNNotificationSound.default()
+                
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+                
+                UNUserNotificationCenter.current().add(request) {(error) in
+                    if let error = error {
+                        print("error: \(error)")
+                    }
                 }
             }
+        }
+        else {
+            print("On Enter Only")
         }
     }
     func getObjectPath(region: CLRegion) -> Int {

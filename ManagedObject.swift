@@ -80,7 +80,7 @@ class ManagedObject: NSObject {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
     }
-    func writeLocationData (latitude: Double, longitude: Double, mKtitle: String, mKSubTitle: String, reminderInput: String, id: Int) {
+    func writeLocationData (latitude: Double, longitude: Double, mKtitle: String, mKSubTitle: String, reminderInput: String, id: Int, entrance: String) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -96,6 +96,7 @@ class ManagedObject: NSObject {
         object.setValue(mKSubTitle, forKey: "mKSubTitle")
         object.setValue(reminderInput, forKey: "reminderInput")
         object.setValue(id, forKey: "id")
+        object.setValue(entrance, forKey: "entrance")
         
         do {
             try managedContext.save()

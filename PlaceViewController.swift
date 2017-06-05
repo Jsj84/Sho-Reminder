@@ -24,7 +24,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     var resultSearchController:UISearchController? = nil
     var fh = ManagedObject()
     var color = UIColor(netHex:0x90F7A3)
-    var smallView: LocationAlertView!
+    var smallView = LocationAlertView()
     let blurFx = UIBlurEffect(style: UIBlurEffectStyle.dark)
     var blurFxView = UIVisualEffectView()
     var lastAnnotation = MKPointAnnotation()
@@ -42,8 +42,6 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         blurFxView.frame = view.bounds
         blurFxView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        
-        smallView = LocationAlertView(frame: CGRect(x: (view.bounds.width / 2) - (UIScreen.main.bounds.width - 70) / 2, y: 100, width: UIScreen.main.bounds.width - 70, height: UIScreen.main.bounds.height - 380))
         smallView.isHidden = true
         
         locationManager.requestAlwaysAuthorization()
@@ -75,10 +73,12 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         
         smallView.cancel.addTarget(self, action: #selector(actionForbutton), for: .touchUpInside)
         smallView.enter.addTarget(self, action: #selector(onEntry), for: .touchUpInside)
+        smallView.exit.addTarget(self, action: #selector(onExit), for: .touchUpInside)
         
     }
     func onEntry(sender:UIButton) {
         var id = 0
+        let enterType = "onEnter"
         let text = smallView.textField.text
         if defaults.value(forKey: "locationId") != nil {
         id = defaults.value(forKey: "locationId") as! Int
@@ -94,7 +94,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         let region = CLCircularRegion(center: center, radius: radius, identifier: identifier)
         
         // save to coreData
-        self.fh.writeLocationData(latitude: selectedItem!.coordinate.latitude, longitude: selectedItem!.coordinate.longitude, mKtitle: selectedItem!.name!, mKSubTitle: selectedItem!.title!, reminderInput: (text)!, id: id)
+        self.fh.writeLocationData(latitude: selectedItem!.coordinate.latitude, longitude: selectedItem!.coordinate.longitude, mKtitle: selectedItem!.name!, mKSubTitle: selectedItem!.title!, reminderInput: (text)!, id: id, entrance: enterType)
         self.locationManager.startMonitoring(for: region)
         let changedValue = id - 1
         self.defaults.set(changedValue, forKey: "locationId")
@@ -106,12 +106,44 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         smallView.mapView.removeAnnotation(lastAnnotation)
         
     }
+    func onExit(sender:UIButton) {
+        var id = 0
+        let text = smallView.textField.text
+        if defaults.value(forKey: "locationId") != nil {
+            id = defaults.value(forKey: "locationId") as! Int
+        }
+        else {
+            id = -1
+        }
+        let NsId = id as NSNumber
+        let identifier = NsId.stringValue
+        
+        let center = CLLocationCoordinate2D(latitude: (selectedItem?.coordinate.latitude)!, longitude: (selectedItem?.coordinate.longitude)!)
+        let radius = 15 as CLLocationDistance
+        let region = CLCircularRegion(center: center, radius: radius, identifier: identifier)
+        
+        // save to coreData
+        self.fh.writeLocationData(latitude: selectedItem!.coordinate.latitude, longitude: selectedItem!.coordinate.longitude, mKtitle: selectedItem!.name!, mKSubTitle: selectedItem!.title!, reminderInput: (text)!, id: id, entrance: "onExit")
+        self.locationManager.startMonitoring(for: region)
+        let changedValue = id - 1
+        self.defaults.set(changedValue, forKey: "locationId")
+        print(id)
+        dismissKeyboard()
+        smallView.isHidden = true
+        blurFxView.removeFromSuperview()
+        mapView.removeAnnotation(lastAnnotation)
+        smallView.mapView.removeAnnotation(lastAnnotation)
+        
+    }
+
     func actionForbutton(sender:UIButton!) {
         dismissKeyboard()
         smallView.isHidden = true
         blurFxView.removeFromSuperview()
         mapView.removeAnnotation(lastAnnotation)
         smallView.mapView.removeAnnotation(lastAnnotation)
+        mapView.reloadInputViews()
+        smallView.mapView.reloadInputViews()
     }
     
     override func viewWillAppear(_ animated: Bool) {

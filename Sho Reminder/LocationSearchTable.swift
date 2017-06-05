@@ -138,20 +138,20 @@ extension LocationSearchTable {
         //    }
         //}
     }
-    func actionForbutton(sender:UIButton!) {
-        locationAlertView.isHidden = true
-        placeViewController.blurFxView.removeFromSuperview()
-        placeViewController.mapView.removeAnnotation(placeViewController.lastAnnotation)
-        locationAlertView.mapView.removeAnnotation(placeViewController.lastAnnotation)
-        
-    }
-    func okayButton(sender:UIButton) {
-        let textField = locationAlertView.textField!
-        self.fh.writeLocationData(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude, mKtitle: selectedItem.name!, mKSubTitle: selectedItem.title!, reminderInput: (textField.text!), id: id)
-        self.locationManager.startMonitoring(for: region)
-        let changedValue = id - 1
-        self.defaults.set(changedValue, forKey: "locationId")
-        
-        
-    }
+//    func actionForbutton(sender:UIButton!) {
+//        locationAlertView.isHidden = true
+//        placeViewController.blurFxView.removeFromSuperview()
+//        placeViewController.mapView.removeAnnotation(placeViewController.lastAnnotation)
+//        locationAlertView.mapView.removeAnnotation(placeViewController.lastAnnotation)
+//        
+//    }
+//    func okayButton(sender:UIButton) {
+//        let textField = locationAlertView.textField!
+//        self.fh.writeLocationData(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude, mKtitle: selectedItem.name!, mKSubTitle: selectedItem.title!, reminderInput: (textField.text!), id: id)
+//        self.locationManager.startMonitoring(for: region)
+//        let changedValue = id - 1
+//        self.defaults.set(changedValue, forKey: "locationId")
+//        
+//        
+//    }
 }
