@@ -64,12 +64,12 @@ class LocationAlertView: UIView {
         
         textField = UITextField(frame: CGRect(x: 5, y: mapView.frame.maxY + 5, width: self.bounds.width - 10, height: mapView.frame.maxY.distance(to: exit.frame.origin.y) - 10))
         textField.autocorrectionType = .default
-        textField.placeholder = "Enter reminder here"
+        textField.placeholder = "Enter your reminder for this location here!reminder here"
         textField.keyboardType = .default
         textField.keyboardAppearance = .dark
         textField.layer.cornerRadius = 5
         textField.backgroundColor = UIColor.white
-        
+    
         
         self.addSubview(mapView)
         self.addSubview(cancel)

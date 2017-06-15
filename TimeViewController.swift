@@ -99,7 +99,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if fh.timeObject.isEmpty == true {
-            return "You Do Not Have Anything Scheduled"
+            return "No reminders are scheduled"
         } else {
             return "Scheduled Reminders"
         }

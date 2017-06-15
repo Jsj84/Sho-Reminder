@@ -31,6 +31,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     var locationSearchTable: LocationSearchTable!
     let defaults = UserDefaults()
     var selectedItem:MKPlacemark!
+    var searchBar = UISearchBar()
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -56,7 +57,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         
         
         
-        let searchBar = resultSearchController!.searchBar
+        searchBar = resultSearchController!.searchBar
         searchBar.sizeToFit()
         searchBar.placeholder = "Search for places"
         navigationItem.titleView = resultSearchController?.searchBar
@@ -100,10 +101,10 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         self.defaults.set(changedValue, forKey: "locationId")
         print(id)
         dismissKeyboard()
+        smallView.textField.text?.removeAll()
+        searchBar.text?.removeAll()
         smallView.isHidden = true
         blurFxView.removeFromSuperview()
-        mapView.removeAnnotation(lastAnnotation)
-        smallView.mapView.removeAnnotation(lastAnnotation)
         
     }
     func onExit(sender:UIButton) {
@@ -130,14 +131,15 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         print(id)
         dismissKeyboard()
         smallView.isHidden = true
+        smallView.textField.text?.removeAll()
+        searchBar.text?.removeAll()
         blurFxView.removeFromSuperview()
-        mapView.removeAnnotation(lastAnnotation)
-        smallView.mapView.removeAnnotation(lastAnnotation)
-        
     }
 
     func actionForbutton(sender:UIButton!) {
         dismissKeyboard()
+        searchBar.text?.removeAll()
+        smallView.textField.text?.removeAll()
         smallView.isHidden = true
         blurFxView.removeFromSuperview()
         mapView.removeAnnotation(lastAnnotation)

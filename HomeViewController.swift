@@ -93,22 +93,23 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if section == 0 {
             switch fh.timeObject.count {
             case 0:
-                stringToReturn = "You do not have any upcoming reminders"; break
+                stringToReturn = "No reminders shceduled"
             case 1 :
-                stringToReturn = "You have 1 reminder scheduled"; break
+                stringToReturn = "1 reminder scheduled"
             default:
-                stringToReturn = "You have " + "\(fh.timeObject.count)" + " reminders scheduled"; break
+                stringToReturn = "\(fh.timeObject.count)" + " reminders scheduled"; break
             }
             return stringToReturn
         }
         if section == 1 {
             switch fh.locationObject.count {
             case 0:
-                locationString = "no location reminders scheduled"; break
+                locationString = "no location reminders scheduled"
             case 1 :
-                locationString = "1 location reminder Scheduled"; break
+                locationString = "1 location reminder Scheduled"
             default:
-                locationString = "\(fh.locationObject.count)" + " Location reminders scheduled"; break
+                locationString = "\(fh.locationObject.count)" + " Location reminders scheduled"
+                break
             }
         }
         return locationString
