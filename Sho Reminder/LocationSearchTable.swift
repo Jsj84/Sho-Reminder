@@ -112,46 +112,6 @@ extension LocationSearchTable {
         // drop pin and dismiss table view controller
         handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
         
-        //        show aleart to gather informatio/n
-        //                 alertViewController = self.storyboard?.instantiateViewController(withIdentifier: "customAlert") as? LocationAlertController
-        //
-        //                  present(alertViewController!, animated: true, completion: nil)
-        
-        //                let alert = UIAlertController(title: "Location Reminder", message: "Enter the reminder for this location", preferredStyle: .alert)
-        //                //2. Add the text field
-        //                alert.addTextField { (textField) in
-        //                    textField.text = ""
-        //                    textField.autocorrectionType = .default
-        //                    textField.keyboardAppearance = .dark
-        //                }
-        // 3. Grab the value from the text field, and print it when the user clicks OK.
-        // alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
-        //    let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
-        
-        //   }))
-        // alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in }))
-        // 4. Present the alert.
-        // self.present(alert, animated: true, completion: nil)
-        
         dismiss(animated: true, completion: nil)
-        
-        //    }
-        //}
     }
-//    func actionForbutton(sender:UIButton!) {
-//        locationAlertView.isHidden = true
-//        placeViewController.blurFxView.removeFromSuperview()
-//        placeViewController.mapView.removeAnnotation(placeViewController.lastAnnotation)
-//        locationAlertView.mapView.removeAnnotation(placeViewController.lastAnnotation)
-//        
-//    }
-//    func okayButton(sender:UIButton) {
-//        let textField = locationAlertView.textField!
-//        self.fh.writeLocationData(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude, mKtitle: selectedItem.name!, mKSubTitle: selectedItem.title!, reminderInput: (textField.text!), id: id)
-//        self.locationManager.startMonitoring(for: region)
-//        let changedValue = id - 1
-//        self.defaults.set(changedValue, forKey: "locationId")
-//        
-//        
-//    }
 }
