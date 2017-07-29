@@ -92,7 +92,7 @@ extension LocationSearchTable {
         if indexPath.row == 0 {
             cell.textLabel?.preferredMaxLayoutWidth = cell.bounds.width
             cell.textLabel?.adjustsFontSizeToFitWidth = true
-            cell.textLabel?.font = UIFont(name: "HelveticaNeue", size: 60)!
+            cell.textLabel?.font = UIFont(name: "HelveticaNeue", size: 45)!
             cell.textLabel?.textColor = UIColor.blue
             cell.textLabel?.text = "Current Location"
             cell.detailTextLabel?.isHidden = true

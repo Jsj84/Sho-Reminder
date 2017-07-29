@@ -30,8 +30,22 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBAction func SaveB(_ sender: Any) {
         var tempInterval = String()
         var id = Int()
+        let now = Date()
+      let olderDate = NSCalendar.current.compare(now as Date, to: timePicker.date, toGranularity: .minute)
+        switch olderDate {
+        case .orderedDescending:
+            print("DESCENDING")
+        case .orderedAscending:
+            print("ASCENDING")
+        default: break
+        }
         if reminderDiscription.text?.isEmpty == true {
             let alert = UIAlertController(title: "Alert", message: "You cannot save this reminder without a description", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        else if olderDate == .orderedDescending && defaults.value(forKey: "repeat") == nil {
+            let alert = UIAlertController(title: "Alert", message: "Looks like the date you are trying to save has already passed. Choose a later date or add the option to repeat", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }

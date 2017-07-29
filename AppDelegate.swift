@@ -22,12 +22,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     let content = UNMutableNotificationContent()
     let defaults = UserDefaults()
     var myCoordinates2D = CLLocationCoordinate2D()
-    
+    let notificationDelegate = NotifcationsDelegate()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        center.delegate = notificationDelegate
         locationManager.delegate = self
+        locationManager.startUpdatingLocation()
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in }
-        
         if defaults.value(forKey: "hasBeenOpen") == nil {
             center.removeAllDeliveredNotifications()
             center.removeAllPendingNotificationRequests()
@@ -44,10 +45,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        if fh.locationObject.count < 1 {
+            locationManager.stopUpdatingLocation()
+        }
+        else {
+            locationManager.startUpdatingLocation()
+        }
     }
-    
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
@@ -100,7 +104,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let myLat = myCoordinates!.coordinate.latitude
         let myLong = myCoordinates!.coordinate.longitude
         myCoordinates2D = CLLocationCoordinate2DMake(myLat, myLong)
-        print(myCoordinates2D)
+        locationManager.stopUpdatingLocation()
+
     }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         let i = getObjectPath(region: region)
@@ -111,24 +116,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let idNs = idInt as NSNumber
         let id = idNs.stringValue
         if entranceType == "onEnter" {
-            if UIApplication.shared.applicationState == .active {
-                let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
-                let okay = UIAlertAction(title: "Okay", style: .cancel) { (_) in }
-                alertController.addAction(okay)
-                self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
-            }
-            else {
-                content.title = "You just Entered: " + title
-                content.body = body
-                content.sound = UNNotificationSound.default()
-                
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-                let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
-                
-                UNUserNotificationCenter.current().add(request) {(error) in
-                    if let error = error {
-                        print("error: \(error)")
-                    }
+            content.title = "Entered: " + title
+            content.body = body
+            content.sound = UNNotificationSound.default()
+            
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+            let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request) {(error) in
+                if let error = error {
+                    print("error: \(error)")
                 }
             }
         }
@@ -145,24 +142,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let idNs = idInt as NSNumber
         let id = idNs.stringValue
         if entranceType == "onExit" {
-            if UIApplication.shared.applicationState == .active {
-                let alertController = UIAlertController(title: "You just Exited: " + title, message: body, preferredStyle: .alert)
-                let okay = UIAlertAction(title: "Okay", style: .cancel) { (_) in }
-                alertController.addAction(okay)
-                self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
-            }
-            else {
-                content.title = "You just Exited: " + title
-                content.body = body
-                content.sound = UNNotificationSound.default()
-                
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-                let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
-                
-                UNUserNotificationCenter.current().add(request) {(error) in
-                    if let error = error {
-                        print("error: \(error)")
-                    }
+            content.title = "Exited: " + title
+            content.body = body
+            content.sound = UNNotificationSound.default()
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+            let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request) {(error) in
+                if let error = error {
+                    print("error: \(error)")
                 }
             }
         }

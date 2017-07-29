@@ -65,6 +65,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         resultSearchController?.dimsBackgroundDuringPresentation = true
         definesPresentationContext = true
         
+        mapView.showsUserLocation = true
         locationSearchTable.mapView = mapView
         locationSearchTable.mapView = smallView.mapView
         locationSearchTable.handleMapSearchDelegate = self

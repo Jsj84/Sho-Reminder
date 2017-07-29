@@ -22,6 +22,7 @@
 		77BD25B41E17718200B81389 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77BD25B31E17718200B81389 /* CoreData.framework */; };
 		77FB8BD81E172F24005316B5 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FB8BD71E172F24005316B5 /* LocationSearchTable.swift */; };
 		8847E7E11E566090001B2E0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8847E7E01E566090001B2E0E /* Main.storyboard */; };
+		884A59A51F2D23A500116F8F /* NotifcationsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884A59A41F2D23A500116F8F /* NotifcationsDelegate.swift */; };
 		889FB29A1ED9CB0F009ED450 /* LocationAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889FB2991ED9CB0F009ED450 /* LocationAlertView.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,7 @@
 		77FB8BD71E172F24005316B5 /* LocationSearchTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
 		77FB8BDE1E175E9A005316B5 /* Sho Reminder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Sho Reminder.entitlements"; sourceTree = "<group>"; };
 		8847E7E01E566090001B2E0E /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		884A59A41F2D23A500116F8F /* NotifcationsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotifcationsDelegate.swift; sourceTree = "<group>"; };
 		889FB2991ED9CB0F009ED450 /* LocationAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationAlertView.swift; sourceTree = "<group>"; };
 		88D6F9341E624FC700B9620C /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -132,6 +134,7 @@
 				7753BBF01E1335D900B78D49 /* ManagedObject.swift */,
 				7753BBD51E13345400B78D49 /* Info.plist */,
 				7753BBCD1E13345400B78D49 /* Sho_Reminder.xcdatamodeld */,
+				884A59A41F2D23A500116F8F /* NotifcationsDelegate.swift */,
 			);
 			name = "Core Files";
 			sourceTree = "<group>";
@@ -230,6 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7753BBE71E1334B900B78D49 /* HomeViewController.swift in Sources */,
+				884A59A51F2D23A500116F8F /* NotifcationsDelegate.swift in Sources */,
 				7741EDCB1E3C0F0800765A19 /* IntervalViewController.swift in Sources */,
 				7753BBDC1E13349B00B78D49 /* AppDelegate.swift in Sources */,
 				889FB29A1ED9CB0F009ED450 /* LocationAlertView.swift in Sources */,

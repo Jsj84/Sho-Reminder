@@ -83,6 +83,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewWillAppear(animated)
         fh.getData()
         fh.getLocationData()
+        tableView.reloadData()
         if fh.timeObject.isEmpty == true && fh.locationObject.isEmpty == true {
             editButton.title = ""
             editButton.isEnabled = false
@@ -91,7 +92,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             editButton.title = "Edit"
             editButton.isEnabled = true
         }
-        tableView.reloadData()
         let now = Date()
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
