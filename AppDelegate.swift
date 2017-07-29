@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     let locationManager = CLLocationManager()
     let content = UNMutableNotificationContent()
     let defaults = UserDefaults()
+    var myCoordinates2D = CLLocationCoordinate2D()
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -30,6 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if defaults.value(forKey: "hasBeenOpen") == nil {
             center.removeAllDeliveredNotifications()
             center.removeAllPendingNotificationRequests()
+            for monitored in locationManager.monitoredRegions {
+                locationManager.stopMonitoring(for: monitored)
+            }
             defaults.setValue("hasHad", forKey: "hasBeenOpen")
         }
         return true
@@ -90,6 +94,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 print("error: \(error)")
             }
         }
+    }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let myCoordinates = locations.last
+        let myLat = myCoordinates!.coordinate.latitude
+        let myLong = myCoordinates!.coordinate.longitude
+        myCoordinates2D = CLLocationCoordinate2DMake(myLat, myLong)
+        print(myCoordinates2D)
     }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         let i = getObjectPath(region: region)

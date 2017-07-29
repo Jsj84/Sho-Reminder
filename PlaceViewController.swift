@@ -82,12 +82,12 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         let enterType = "onEnter"
         let text = smallView.textField.text
         if defaults.value(forKey: "locationId") != nil {
-        id = defaults.value(forKey: "locationId") as! Int
+            id = defaults.value(forKey: "locationId") as! Int
         }
         else {
             id = -1
         }
-                  let NsId = id as NSNumber
+        let NsId = id as NSNumber
         let identifier = NsId.stringValue
         
         let center = CLLocationCoordinate2D(latitude: (selectedItem?.coordinate.latitude)!, longitude: (selectedItem?.coordinate.longitude)!)
@@ -135,7 +135,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         searchBar.text?.removeAll()
         blurFxView.removeFromSuperview()
     }
-
+    
     func actionForbutton(sender:UIButton!) {
         dismissKeyboard()
         searchBar.text?.removeAll()

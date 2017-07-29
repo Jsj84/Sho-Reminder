@@ -111,8 +111,7 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if let headerView = view as? UITableViewHeaderFooterView {
             headerView.textLabel?.textColor = UIColor.black
             headerView.backgroundView?.backgroundColor = color
-            headerView.textLabel?.font = UIFont (name: "HelveticaNeue-Bold", size: 14)!
-        }
+            headerView.textLabel?.font = UIFont (name: "HelveticaNeue-Bold", size: 14)!}
     }
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
@@ -129,7 +128,6 @@ class TimeViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.performSegue(withIdentifier: "addSegue", sender: nil)
         })
         moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0);
-        
         let deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler:{action, indexpath in
             let alert = UIAlertController(title: "Confirm", message: "Delete this Reminder?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (_) in

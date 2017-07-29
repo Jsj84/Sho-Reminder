@@ -23,6 +23,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var place: UIButton!
     @IBOutlet weak var time: UIButton!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var editButton: UIBarButtonItem!
     
     @IBAction func timeAction(_ sender: Any) {
         performSegue(withIdentifier: "timeSegue", sender: self)
@@ -30,12 +31,31 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBAction func placeAction(_ sender: Any) {
         performSegue(withIdentifier: "placeSegue", sender: self)
     }
+    @IBAction func editButton(_ sender: Any) {
+        if tableView.isEditing == false {
+            editButton.title = "Done"
+            tableView.isEditing = true
+        }
+        else {
+            tableView.isEditing = false
+            editButton.title = "Edit"
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    self.navigationController?.navigationBar.backgroundColor = UIColor.green
-        
-       self.view.addBackground()
+        fh.getData()
+        fh.getLocationData()
+        if fh.timeObject.isEmpty == true && fh.locationObject.isEmpty == true {
+            editButton.isEnabled = false
+            editButton.title = ""
+        }
+        else {
+            editButton.title = "Edit"
+            editButton.isEnabled = true
+        }
+        self.navigationController?.navigationBar.backgroundColor = UIColor.green
+        self.view.addBackground()
         
         way.font = UIFont (name: "HelveticaNeue-Bold", size: 22)!
         way.textColor = UIColor.black
@@ -63,6 +83,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewWillAppear(animated)
         fh.getData()
         fh.getLocationData()
+        if fh.timeObject.isEmpty == true && fh.locationObject.isEmpty == true {
+            editButton.title = ""
+            editButton.isEnabled = false
+        }
+        else {
+            editButton.title = "Edit"
+            editButton.isEnabled = true
+        }
         tableView.reloadData()
         let now = Date()
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
@@ -93,7 +121,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if section == 0 {
             switch fh.timeObject.count {
             case 0:
-                stringToReturn = "No reminders shceduled"
+                stringToReturn = "No reminders scheduled"
             case 1 :
                 stringToReturn = "1 reminder scheduled"
             default:
@@ -147,6 +175,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.nameLable.text = titleOne
             cell.backgroundColor = UIColor.clear
             cell.imageIcon.image = #imageLiteral(resourceName: "Clock_Icon")
+            cell.entranceOrExit.isHidden = true
             
             let formatter = DateFormatter()
             let dayFormatter = DateFormatter()
@@ -186,6 +215,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell
             cell.nameLable.text = fh.locationObject[indexPath.row].value(forKey: "mKtitle") as! String?
             cell.subtitleLable.text = fh.locationObject[indexPath.row].value(forKey: "mKSubTitle") as! String?
+            let tempVal = fh.locationObject[indexPath.row].value(forKey: "entrance") as! String?
+            if tempVal == "onEnter" {
+                cell.entranceOrExit.text = "On Enter"
+            }
+            else {
+                cell.entranceOrExit.text = "On Exit"
+            }
             cell.imageIcon.image = #imageLiteral(resourceName: "Location_Icon")
             cell.backgroundColor = UIColor.clear
             return cell
@@ -212,7 +248,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 let id = fh.locationObject[indexPath.row].value(forKey: "id") as! Int
                 let nsNum = id as NSNumber
                 let numString = nsNum.stringValue
-                    
+                
                 let latitude = fh.locationObject[indexPath.row].value(forKey: "latitude") as! Double
                 let longitude = fh.locationObject[indexPath.row].value(forKey: "longitude") as! Double
                 let radius:CLLocationDistance = 25
