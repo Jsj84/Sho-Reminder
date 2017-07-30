@@ -31,13 +31,6 @@ class LocationSearchTable: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let geoCoder = CLGeocoder()
-        let location = CLLocation(latitude: (locationManager.location?.coordinate.latitude)!, longitude: (locationManager.location?.coordinate.longitude)!)
-        geoCoder.reverseGeocodeLocation(location, completionHandler:{ (placemarks, error) -> Void in
-            self.placeMark = (placemarks?[0])
-         self.mKI = MKMapItem(placemark:MKPlacemark(coordinate: self.placeMark.location!.coordinate, addressDictionary: self.placeMark.addressDictionary as! [String: Any]?))
-            self.p = self.mKI.placemark
-        })
     }
     func parseAddress(selectedItem:MKPlacemark) -> String {
         // put a space between "4" and "Melrose Place"
@@ -65,6 +58,13 @@ class LocationSearchTable: UITableViewController {
 }
 extension LocationSearchTable : UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
+        let geoCoder = CLGeocoder()
+        let location = CLLocation(latitude: (locationManager.location?.coordinate.latitude)!, longitude: (locationManager.location?.coordinate.longitude)!)
+        print("my location cordinates are: \(location)")
+        geoCoder.reverseGeocodeLocation(location, completionHandler:{ (placemarks, error) -> Void in
+            self.placeMark = (placemarks?[0])
+            self.mKI = MKMapItem(placemark:MKPlacemark(coordinate: self.placeMark.location!.coordinate, addressDictionary: self.placeMark.addressDictionary as! [String: Any]?))
+        })
         self.tableView.dataSource = self
         guard let mapView = mapView,
             let searchBarText = searchController.searchBar.text  else { return }
@@ -90,11 +90,14 @@ extension LocationSearchTable {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MapSearchCell", for: indexPath)
         if indexPath.row == 0 {
-            cell.textLabel?.preferredMaxLayoutWidth = cell.bounds.width
-            cell.textLabel?.adjustsFontSizeToFitWidth = true
-            cell.textLabel?.font = UIFont(name: "HelveticaNeue", size: 45)!
-            cell.textLabel?.textColor = UIColor.blue
-            cell.textLabel?.text = "Current Location"
+            self.p = self.mKI.placemark
+            let rect = UILabel(frame: CGRect(x: 0, y: 0, width: cell.bounds.width, height: cell.bounds.height))
+            cell.addSubview(rect)
+            rect.text = "Current Location"
+            rect.textColor = UIColor.blue
+            rect.textAlignment = .center
+            rect.font = UIFont(name: "HelveticaNeue", size: 25)!
+            cell.textLabel?.isHidden = true
             cell.detailTextLabel?.isHidden = true
         }
         else {
@@ -106,7 +109,6 @@ extension LocationSearchTable {
     }
 }
 extension LocationSearchTable {
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if defaults.value(forKey: "locationId") == nil {
             id = -1
@@ -122,7 +124,7 @@ extension LocationSearchTable {
             center = CLLocationCoordinate2D(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude)
             let radius = 15 as CLLocationDistance
             region = CLCircularRegion(center: center, radius: radius, identifier: identifier)
-           selectedItem = p
+            selectedItem = p
         }
         else {
             selectedItem = matchingItems[indexPath.row - 1].placemark
@@ -133,6 +135,6 @@ extension LocationSearchTable {
         // drop pin and dismiss table view controller
         handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
         dismiss(animated: true, completion: nil)
-
+        
     }
 }

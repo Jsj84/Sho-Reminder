@@ -213,7 +213,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell
-            cell.nameLable.text = fh.locationObject[indexPath.row].value(forKey: "mKtitle") as! String?
+            let n = fh.locationObject[indexPath.row].value(forKey: "mKtitle") as! String
+            let n2 = fh.locationObject[indexPath.row].value(forKey: "reminderInput") as! String
+            let appendedString =  n + "\r" + n2
+            
+            let attributedString = NSMutableAttributedString(string: appendedString, attributes: [NSFontAttributeName : UIFont(name: "HelveticaNeue-Bold", size: 14)!])
+            let stringRange = (appendedString as NSString).range(of: n2)
+            attributedString.setAttributes([NSFontAttributeName : UIFont(name: "HelveticaNeue", size: 13)!, NSForegroundColorAttributeName : UIColor.black], range: stringRange)
+            cell.nameLable.attributedText = attributedString
             cell.subtitleLable.text = fh.locationObject[indexPath.row].value(forKey: "mKSubTitle") as! String?
             let tempVal = fh.locationObject[indexPath.row].value(forKey: "entrance") as! String?
             if tempVal == "onEnter" {

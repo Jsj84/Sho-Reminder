@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     let locationManager = CLLocationManager()
     let content = UNMutableNotificationContent()
     let defaults = UserDefaults()
-    var myCoordinates2D = CLLocationCoordinate2D()
     let notificationDelegate = NotifcationsDelegate()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -98,14 +97,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 print("error: \(error)")
             }
         }
-    }
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let myCoordinates = locations.last
-        let myLat = myCoordinates!.coordinate.latitude
-        let myLong = myCoordinates!.coordinate.longitude
-        myCoordinates2D = CLLocationCoordinate2DMake(myLat, myLong)
-        locationManager.stopUpdatingLocation()
-
     }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         let i = getObjectPath(region: region)

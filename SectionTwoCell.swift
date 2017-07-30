@@ -15,27 +15,25 @@ class SectionTwoCell: UITableViewCell {
     @IBOutlet weak var subtitleLable: UILabel!
     @IBOutlet weak var imageIcon: UIImageView!
     @IBOutlet weak var entranceOrExit: UILabel!
+    
     var color = UIColor(netHex:0x90F7A3)
     
     override func awakeFromNib() {
         super.awakeFromNib()
         nameLable.adjustsFontSizeToFitWidth = true
-        nameLable.numberOfLines = 10
-        nameLable.preferredMaxLayoutWidth = nameLable.bounds.width
-        nameLable.font = UIFont (name: "HelveticaNeue-Bold", size: 14)!
+        nameLable.numberOfLines = 4
         
         subtitleLable.font = UIFont (name: "HelveticaNeue-Bold", size: 13)!
         subtitleLable.textColor = UIColor.white
         subtitleLable.adjustsFontSizeToFitWidth = true
-
 
         entranceOrExit.font = UIFont (name: "HelveticaNeue", size: 13)!
         entranceOrExit.textColor = UIColor.black
         entranceOrExit.backgroundColor = color
         entranceOrExit.layer.masksToBounds = true
         entranceOrExit.layer.cornerRadius = 5
+        entranceOrExit.heightAnchor.constraint(equalToConstant: 27).isActive = true
         entranceOrExit.textAlignment = .center
 
     }
-    
 }
