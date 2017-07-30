@@ -59,12 +59,11 @@ class LocationSearchTable: UITableViewController {
 extension LocationSearchTable : UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let geoCoder = CLGeocoder()
-        let location = CLLocation(latitude: (locationManager.location?.coordinate.latitude)!, longitude: (locationManager.location?.coordinate.longitude)!)
+        let location = CLLocation(latitude: locationManager.location!.coordinate.latitude, longitude: locationManager.location!.coordinate.longitude)
         print("my location cordinates are: \(location)")
         geoCoder.reverseGeocodeLocation(location, completionHandler:{ (placemarks, error) -> Void in
             self.placeMark = (placemarks?[0])
-            self.mKI = MKMapItem(placemark:MKPlacemark(coordinate: self.placeMark.location!.coordinate, addressDictionary: self.placeMark.addressDictionary as! [String: Any]?))
-        })
+            self.p = MKPlacemark(placemark: self.placeMark) })
         self.tableView.dataSource = self
         guard let mapView = mapView,
             let searchBarText = searchController.searchBar.text  else { return }
@@ -90,7 +89,6 @@ extension LocationSearchTable {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MapSearchCell", for: indexPath)
         if indexPath.row == 0 {
-            self.p = self.mKI.placemark
             let rect = UILabel(frame: CGRect(x: 0, y: 0, width: cell.bounds.width, height: cell.bounds.height))
             cell.addSubview(rect)
             rect.text = "Current Location"
@@ -121,20 +119,17 @@ extension LocationSearchTable {
         let identifier = NsId.stringValue
         var center = CLLocationCoordinate2D()
         if indexPath.row == 0 {
-            center = CLLocationCoordinate2D(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude)
-            let radius = 15 as CLLocationDistance
-            region = CLCircularRegion(center: center, radius: radius, identifier: identifier)
             selectedItem = p
         }
         else {
             selectedItem = matchingItems[indexPath.row - 1].placemark
-            center = CLLocationCoordinate2D(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude)
-            let radius = 15 as CLLocationDistance
-            region = CLCircularRegion(center: center, radius: radius, identifier: identifier)
         }
+        center = CLLocationCoordinate2D(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude)
+        let radius = 15 as CLLocationDistance
+        region = CLCircularRegion(center: center, radius: radius, identifier: identifier)
+        
         // drop pin and dismiss table view controller
         handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
         dismiss(animated: true, completion: nil)
-        
     }
 }

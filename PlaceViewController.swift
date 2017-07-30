@@ -56,7 +56,6 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         resultSearchController?.searchResultsUpdater = locationSearchTable as UISearchResultsUpdating
         
         
-        
         searchBar = resultSearchController!.searchBar
         searchBar.sizeToFit()
         searchBar.placeholder = "Search for places"
@@ -78,7 +77,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         smallView.exit.addTarget(self, action: #selector(onExit), for: .touchUpInside)
         
     }
-    func onEntry(sender:UIButton) {
+    @objc func onEntry(sender:UIButton) {
         var id = 0
         let enterType = "onEnter"
         let text = smallView.textField.text
@@ -91,7 +90,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         let NsId = id as NSNumber
         let identifier = NsId.stringValue
         
-        let center = CLLocationCoordinate2D(latitude: (selectedItem?.coordinate.latitude)!, longitude: (selectedItem?.coordinate.longitude)!)
+        let center = CLLocationCoordinate2D(latitude: selectedItem!.coordinate.latitude, longitude: selectedItem!.coordinate.longitude)
         let radius = 15 as CLLocationDistance
         let region = CLCircularRegion(center: center, radius: radius, identifier: identifier)
         
@@ -108,7 +107,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         blurFxView.removeFromSuperview()
         
     }
-    func onExit(sender:UIButton) {
+    @objc func onExit(sender:UIButton) {
         var id = 0
         let text = smallView.textField.text
         if defaults.value(forKey: "locationId") != nil {
@@ -137,7 +136,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         blurFxView.removeFromSuperview()
     }
     
-    func actionForbutton(sender:UIButton!) {
+    @objc func actionForbutton(sender:UIButton!) {
         dismissKeyboard()
         searchBar.text?.removeAll()
         smallView.textField.text?.removeAll()

@@ -30,6 +30,8 @@
 	<string>Sho Reminder needs your permission to provide you with location based services</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Sho Reminder needs your location to send you location based notifications</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Sho Reminder needs to always update your location in order to notify you for location based reminders</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

@@ -27,7 +27,7 @@ class LocationAlertView: UIView {
         self.backgroundColor = UIColor.groupTableViewBackground
         self.layer.cornerRadius = 10
         
-        self.frame =  CGRect(x: (UIScreen.main.bounds.width / 2) - (UIScreen.main.bounds.width - 70) / 2, y: 75, width: UIScreen.main.bounds.width - 70, height: UIScreen.main.bounds.height / 2 - 50)
+        self.frame =  CGRect(x: (UIScreen.main.bounds.width / 2) - (UIScreen.main.bounds.width - 70) / 2, y: 85, width: UIScreen.main.bounds.width - 70, height: UIScreen.main.bounds.height / 2 - 50)
         
         mapView = MKMapView(frame: CGRect(x: 5, y: 5, width: self.bounds.width - 10 , height: self.bounds.height / 2))
         mapView.layer.cornerRadius = 5
