@@ -142,9 +142,9 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         smallView.textField.text?.removeAll()
         smallView.isHidden = true
         blurFxView.removeFromSuperview()
-        mapView.removeAnnotation(lastAnnotation)
+        self.mapView.removeAnnotation(lastAnnotation)
         smallView.mapView.removeAnnotation(lastAnnotation)
-        mapView.reloadInputViews()
+        self.mapView.reloadInputViews()
         smallView.mapView.reloadInputViews()
     }
     
@@ -194,18 +194,18 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     func dropPinZoomIn(placemark:MKPlacemark) {
         
         smallView.isHidden = false
-        view.addSubview(blurFxView)
-        view.addSubview(smallView)
+        self.view.addSubview(blurFxView)
+        self.view.addSubview(smallView)
         
         selectedPin = placemark
         selectedItem = placemark
         
-        let lastAnnotation = MKPointAnnotation()
-        lastAnnotation.coordinate = placemark.coordinate
-        lastAnnotation.title = placemark.name
+        self.lastAnnotation = MKPointAnnotation()
+        self.lastAnnotation.coordinate = placemark.coordinate
+        self.lastAnnotation.title = placemark.name
         if let city = placemark.locality,
             let state = placemark.administrativeArea {
-            lastAnnotation.subtitle = "\(city) \(state)"
+            self.lastAnnotation.subtitle = "\(city) \(state)"
         }
         self.mapView.addAnnotation(lastAnnotation)
         smallView.mapView.addAnnotation(lastAnnotation)
@@ -213,7 +213,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         let smallSpan = MKCoordinateSpanMake(0.011, 0.011)
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         let smallRegion = MKCoordinateRegionMake(placemark.coordinate, smallSpan)
-        mapView.setRegion(region, animated: true)
+        self.mapView.setRegion(region, animated: true)
         smallView.mapView.setRegion(smallRegion, animated: true)
     }
 }

@@ -26,11 +26,23 @@ class LocationSearchTable: UITableViewController {
     var id = Int()
     var region:CLCircularRegion!
     var placeMark:CLPlacemark!
-    var p:MKPlacemark!
+    var p:MKPlacemark?
     var mKI = MKMapItem()
+    var location = CLLocation()
+    let geoCoder = CLGeocoder()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.location = CLLocation(latitude: locationManager.location!.coordinate.latitude, longitude: locationManager.location!.coordinate.longitude)
+        geoCoder.reverseGeocodeLocation(location, completionHandler:{ (placemarks, error) -> Void in
+            self.placeMark = (placemarks?[0])
+            self.p = MKPlacemark(placemark: self.placeMark)})
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        self.location = CLLocation(latitude: locationManager.location!.coordinate.latitude, longitude: locationManager.location!.coordinate.longitude)
+        geoCoder.reverseGeocodeLocation(location, completionHandler:{ (placemarks, error) -> Void in
+            self.placeMark = (placemarks?[0])
+            self.p = MKPlacemark(placemark: self.placeMark)})
     }
     func parseAddress(selectedItem:MKPlacemark) -> String {
         // put a space between "4" and "Melrose Place"
@@ -58,12 +70,6 @@ class LocationSearchTable: UITableViewController {
 }
 extension LocationSearchTable : UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        let geoCoder = CLGeocoder()
-        let location = CLLocation(latitude: locationManager.location!.coordinate.latitude, longitude: locationManager.location!.coordinate.longitude)
-        print("my location cordinates are: \(location)")
-        geoCoder.reverseGeocodeLocation(location, completionHandler:{ (placemarks, error) -> Void in
-            self.placeMark = (placemarks?[0])
-            self.p = MKPlacemark(placemark: self.placeMark) })
         self.tableView.dataSource = self
         guard let mapView = mapView,
             let searchBarText = searchController.searchBar.text  else { return }
