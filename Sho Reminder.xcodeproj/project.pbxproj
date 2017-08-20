@@ -15,8 +15,6 @@
 		7753BBDC1E13349B00B78D49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBDB1E13349B00B78D49 /* AppDelegate.swift */; };
 		7753BBE71E1334B900B78D49 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBDF1E1334B900B78D49 /* HomeViewController.swift */; };
 		7753BBE91E1334B900B78D49 /* PlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBE21E1334B900B78D49 /* PlaceViewController.swift */; };
-		7753BBEA1E1334B900B78D49 /* TimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBE31E1334B900B78D49 /* TimeTableViewCell.swift */; };
-		7753BBEB1E1334B900B78D49 /* TimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBE41E1334B900B78D49 /* TimeViewController.swift */; };
 		7753BBF11E1335D900B78D49 /* ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7753BBF01E1335D900B78D49 /* ManagedObject.swift */; };
 		77B980321E22E0D000BF5947 /* SectionTwoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B980311E22E0D000BF5947 /* SectionTwoCell.swift */; };
 		77BD25B41E17718200B81389 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77BD25B31E17718200B81389 /* CoreData.framework */; };
@@ -37,8 +35,6 @@
 		7753BBDB1E13349B00B78D49 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../AppDelegate.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		7753BBDF1E1334B900B78D49 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		7753BBE21E1334B900B78D49 /* PlaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlaceViewController.swift; path = ../PlaceViewController.swift; sourceTree = "<group>"; };
-		7753BBE31E1334B900B78D49 /* TimeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTableViewCell.swift; sourceTree = "<group>"; };
-		7753BBE41E1334B900B78D49 /* TimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeViewController.swift; sourceTree = "<group>"; };
 		7753BBF01E1335D900B78D49 /* ManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ManagedObject.swift; path = ../ManagedObject.swift; sourceTree = "<group>"; };
 		77B980311E22E0D000BF5947 /* SectionTwoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionTwoCell.swift; sourceTree = "<group>"; };
 		77BD25B31E17718200B81389 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -47,7 +43,6 @@
 		8847E7E01E566090001B2E0E /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		884A59A41F2D23A500116F8F /* NotifcationsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotifcationsDelegate.swift; sourceTree = "<group>"; };
 		889FB2991ED9CB0F009ED450 /* LocationAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationAlertView.swift; sourceTree = "<group>"; };
-		88D6F9341E624FC700B9620C /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,8 +99,6 @@
 		7753BBEF1E13355100B78D49 /* Time */ = {
 			isa = PBXGroup;
 			children = (
-				7753BBE41E1334B900B78D49 /* TimeViewController.swift */,
-				7753BBE31E1334B900B78D49 /* TimeTableViewCell.swift */,
 				771B0EA71E1C41C800C01B4D /* TimeAddViewController.swift */,
 				7741EDCA1E3C0F0800765A19 /* IntervalViewController.swift */,
 			);
@@ -118,7 +111,6 @@
 			children = (
 				7753BBE21E1334B900B78D49 /* PlaceViewController.swift */,
 				77FB8BD71E172F24005316B5 /* LocationSearchTable.swift */,
-				88D6F9341E624FC700B9620C /* Location.gpx */,
 				889FB2991ED9CB0F009ED450 /* LocationAlertView.swift */,
 			);
 			name = Locations;
@@ -241,9 +233,7 @@
 				77FB8BD81E172F24005316B5 /* LocationSearchTable.swift in Sources */,
 				77B980321E22E0D000BF5947 /* SectionTwoCell.swift in Sources */,
 				7753BBE91E1334B900B78D49 /* PlaceViewController.swift in Sources */,
-				7753BBEA1E1334B900B78D49 /* TimeTableViewCell.swift in Sources */,
 				7753BBCF1E13345400B78D49 /* Sho_Reminder.xcdatamodeld in Sources */,
-				7753BBEB1E1334B900B78D49 /* TimeViewController.swift in Sources */,
 				771B0EA81E1C41C800C01B4D /* TimeAddViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

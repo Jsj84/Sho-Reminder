@@ -23,11 +23,11 @@ class SectionTwoCell: UITableViewCell {
         nameLable.adjustsFontSizeToFitWidth = true
         nameLable.numberOfLines = 4
         
-        subtitleLable.font = UIFont (name: "HelveticaNeue-Bold", size: 13)!
-        subtitleLable.textColor = UIColor.white
+        subtitleLable.font = UIFont (name: "EuphemiaUCAS-Italic", size: 13)!
+        subtitleLable.textColor = UIColor.black
         subtitleLable.adjustsFontSizeToFitWidth = true
 
-        entranceOrExit.font = UIFont (name: "HelveticaNeue", size: 13)!
+        entranceOrExit.font = UIFont (name: "EuphemiaUCAS-Italic", size: 13)!
         entranceOrExit.textColor = UIColor.black
         entranceOrExit.backgroundColor = color
         entranceOrExit.layer.masksToBounds = true

@@ -24,9 +24,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var time: UIButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var editButton: UIBarButtonItem!
+    let userDefaults = UserDefaults()
+    
     
     @IBAction func timeAction(_ sender: Any) {
-        performSegue(withIdentifier: "timeSegue", sender: self)
+        self.userDefaults.set(nil, forKey: "cellId")
+        self.userDefaults.set(false, forKey: "bool")
+        performSegue(withIdentifier: "backSegue", sender: self)
     }
     @IBAction func placeAction(_ sender: Any) {
         performSegue(withIdentifier: "placeSegue", sender: self)
@@ -55,7 +59,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             editButton.isEnabled = true
         }
         self.navigationController?.navigationBar.backgroundColor = UIColor.green
-        self.view.addBackground()
+        // self.view.addBackground()
+        self.view.backgroundColor = UIColor.groupTableViewBackground
         
         way.font = UIFont (name: "HelveticaNeue-Bold", size: 22)!
         way.textColor = UIColor.black
@@ -78,6 +83,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.allowsSelection = false
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 200
+        tableView.separatorColor = UIColor.green
+        
+        self.hideKeyboardWhenTappedAround()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -174,8 +182,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SectionTwoCell
             cell.nameLable.text = titleOne
             cell.backgroundColor = UIColor.clear
-            cell.imageIcon.image = #imageLiteral(resourceName: "Clock_Icon")
             cell.entranceOrExit.isHidden = true
+            
             
             let formatter = DateFormatter()
             let dayFormatter = DateFormatter()
@@ -196,16 +204,22 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             switch repeatLable {
             case "Never":
+                cell.imageIcon.image = #imageLiteral(resourceName: "Red_Sticky")
                 cell.subtitleLable.text = "Notify me at: " + "\(dateAsString)"
             case "Hourly":
+                cell.imageIcon.image = #imageLiteral(resourceName: "Yellow_Sticky")
                 cell.subtitleLable.text = "Repeat " + "\(repeatLable)" + " at " + "\(hourStr)" + " minutes after the hour"
             case "Daily":
+                cell.imageIcon.image = #imageLiteral(resourceName: "Green_Sticky")
                 cell.subtitleLable.text = "Repeat " + "\(repeatLable)" + " at " + "\(timeStr)"
             case "Weekly":
+                cell.imageIcon.image = #imageLiteral(resourceName: "Blue_sticky")
                 cell.subtitleLable.text = "Repeat" + " every " + "\(dateString)" + " at " + "\(timeStr)"
             case "Monthly":
+                cell.imageIcon.image = #imageLiteral(resourceName: "Red_Sticky")
                 cell.subtitleLable.text = "Repeat " + "\(repeatLable)" + " on the " + "\(monthStr)" + "TH" + " at" + " \(timeStr)"
             case "Yearly":
+                cell.imageIcon.image = #imageLiteral(resourceName: "Green_Sticky")
                 cell.subtitleLable.text = "Repeat " + "\(repeatLable)" + " on " + "\(monthYear)" + " at " + "\(timeStr)"
             default: break
             }
@@ -275,6 +289,46 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
             tableView.reloadData()
         }
+    }
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        if indexPath.section == 0 {
+            fh.getData()
+            let cellID = indexPath.row
+            let idInt = fh.timeObject[cellID].value(forKey: "id") as! Int
+            let newId = idInt as NSNumber
+            let id = newId.stringValue
+            let moreRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: " Edit ", handler:{action, indexpath in
+                self.userDefaults.set(cellID, forKey: "cellId")
+                self.userDefaults.set(true, forKey: "bool")
+                let myVC = self.storyboard?.instantiateViewController(withIdentifier: "timeAddViewController") as! TimeAddViewController
+                self.navigationController?.pushViewController(myVC, animated: true)
+            })
+            moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0);
+            let deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler:{action, indexpath in
+                let alert = UIAlertController(title: "Confirm", message: "Delete this Reminder?", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (_) in
+                    guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+                    let managedContext = appDelegate.persistentContainer.viewContext
+                    appDelegate.deleteNotification(identifier: id)
+                    managedContext.delete(self.fh.timeObject[cellID] as NSManagedObject)
+                    self.fh.timeObject.remove(at: indexPath.row)
+                    do {
+                        try managedContext.save()
+                    }
+                    catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
+                    tableView.reloadData()
+                }))
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
+                }))
+                self.present(alert, animated: true, completion: nil)
+            })
+            return [deleteRowAction, moreRowAction]
+            
+        }
+        else {
+            return nil
+        }
+        
     }
 }
 extension UIColor {

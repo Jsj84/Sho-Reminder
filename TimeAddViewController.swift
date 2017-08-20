@@ -25,7 +25,8 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var SaveBRef: UIButton!
     
     @IBAction func cancelB(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        let v = storyboard?.instantiateViewController(withIdentifier: "nav")
+        self.present(v!, animated: true, completion: nil)
     }
     @IBAction func SaveB(_ sender: Any) {
         var tempInterval = String()
@@ -101,13 +102,15 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             // clear text field
             reminderDiscription.text?.removeAll()
-            self.dismiss(animated: true, completion: nil)
+            let v = storyboard?.instantiateViewController(withIdentifier: "nav")
+            self.present(v!, animated: true, completion: nil)
+
         }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.addBackground()
+       self.view.backgroundColor = UIColor.groupTableViewBackground
         
         CancelBFef.backgroundColor = color
         CancelBFef.layer.cornerRadius = 8
@@ -123,6 +126,9 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         timePicker.setValue(UIColor.black, forKeyPath: "textColor")
         
         reminderDiscription.keyboardAppearance = .dark
+        
+         self.hideKeyboardWhenTappedAround()
+
     }
     override func viewWillAppear(_ animated: Bool) {
         fh.getData()
@@ -142,7 +148,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         defaults.removeObject(forKey: "repeat")
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 1
+        return 0
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -168,7 +174,8 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "intervalSegue", sender: AnyObject.self)
+        let myVC = storyboard?.instantiateViewController(withIdentifier: "Intervalviewcontroler") as! IntervalViewController
+       self.present(myVC, animated: true, completion: nil)
         
     }
 }

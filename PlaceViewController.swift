@@ -53,7 +53,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
-        resultSearchController?.searchResultsUpdater = locationSearchTable as UISearchResultsUpdating
+        resultSearchController?.searchResultsUpdater = locationSearchTable as UISearchResultsUpdating!
         
         
         searchBar = resultSearchController!.searchBar
@@ -68,9 +68,6 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         locationSearchTable.mapView = mapView
         locationSearchTable.mapView = smallView.mapView
         locationSearchTable.handleMapSearchDelegate = self
-        
-        self.hideKeyboardWhenTappedAround()
-        self.dismissKeyboard()
         
         smallView.cancel.addTarget(self, action: #selector(actionForbutton), for: .touchUpInside)
         smallView.enter.addTarget(self, action: #selector(onEntry), for: .touchUpInside)
@@ -100,7 +97,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         let changedValue = id - 1
         self.defaults.set(changedValue, forKey: "locationId")
         print(id)
-        dismissKeyboard()
+ //       dismissKeyboard()
         smallView.textField.text?.removeAll()
         searchBar.text?.removeAll()
         smallView.isHidden = true
@@ -129,7 +126,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         let changedValue = id - 1
         self.defaults.set(changedValue, forKey: "locationId")
         print(id)
-        dismissKeyboard()
+  //      dismissKeyboard()
         smallView.isHidden = true
         smallView.textField.text?.removeAll()
         searchBar.text?.removeAll()
@@ -137,7 +134,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     }
     
     @objc func actionForbutton(sender:UIButton!) {
-        dismissKeyboard()
+//        dismissKeyboard()
         searchBar.text?.removeAll()
         smallView.textField.text?.removeAll()
         smallView.isHidden = true
@@ -235,5 +232,5 @@ extension PlaceViewController: MKMapViewDelegate {
         pinView?.leftCalloutAccessoryView = button
         return pinView
     }
-    
+
 }

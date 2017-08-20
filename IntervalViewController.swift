@@ -21,12 +21,13 @@ class IntervalViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-           self.view.addBackground()
+         self.view.backgroundColor = UIColor.groupTableViewBackground
         
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.clear
         tableView.allowsSelection = true
+        tableView.separatorColor = UIColor.green
         
     }
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -54,6 +55,7 @@ class IntervalViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         let cellText = tableView.cellForRow(at: indexPath)?.textLabel?.text
         defaults.set(cellText!, forKey: "repeat")
-        self.dismiss(animated: true, completion: nil)
+        let myVC = storyboard?.instantiateViewController(withIdentifier: "timeAddViewController") as! TimeAddViewController
+        self.present(myVC, animated: true, completion: nil)
     }
 }

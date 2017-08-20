@@ -11,6 +11,7 @@ import UIKit
 import MapKit
 import CoreData
 import CoreLocation
+import SystemConfiguration
 
 class LocationSearchTable: UITableViewController {
     
@@ -33,16 +34,48 @@ class LocationSearchTable: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if isInternetAvailable() {
         self.location = CLLocation(latitude: locationManager.location!.coordinate.latitude, longitude: locationManager.location!.coordinate.longitude)
         geoCoder.reverseGeocodeLocation(location, completionHandler:{ (placemarks, error) -> Void in
             self.placeMark = (placemarks?[0])
             self.p = MKPlacemark(placemark: self.placeMark)})
+        }
+        else {
+                   let myVC = storyboard?.instantiateViewController(withIdentifier: "homeViewController") as! HomeViewController
+            let alert = UIAlertController(title: "Warning", message: "You do not have an internet connection right now. Therefore, we can not search for locations. Please connect to the internet and try again!", preferredStyle: .alert)
+            
+            let alertAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
+                self.dismiss(animated: true, completion: nil)
+                self.navigationController?.pushViewController(myVC, animated: true)
+
+            })
+            alert.addAction(alertAction)
+            self.present(alert, animated: true)
+
+        }
     }
     override func viewWillAppear(_ animated: Bool) {
+               if isInternetAvailable() {
         self.location = CLLocation(latitude: locationManager.location!.coordinate.latitude, longitude: locationManager.location!.coordinate.longitude)
         geoCoder.reverseGeocodeLocation(location, completionHandler:{ (placemarks, error) -> Void in
             self.placeMark = (placemarks?[0])
             self.p = MKPlacemark(placemark: self.placeMark)})
+        }
+               else {
+                let myVC = storyboard?.instantiateViewController(withIdentifier: "homeViewController") as! HomeViewController
+                let alert = UIAlertController(title: "Warning", message: "You do not have an internet connection right now. Therefore, we can not search for locations. Please connect to the internet and try again!", preferredStyle: .alert)
+                
+                let alertAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
+                    self.dismiss(animated: true, completion: nil)
+                    self.navigationController?.pushViewController(myVC, animated: true)
+                    
+                })
+                alert.addAction(alertAction)
+                self.present(alert, animated: true)
+                
+        }
+
     }
     func parseAddress(selectedItem:MKPlacemark) -> String {
         // put a space between "4" and "Melrose Place"
@@ -98,13 +131,16 @@ extension LocationSearchTable {
             let rect = UILabel(frame: CGRect(x: 0, y: 0, width: cell.bounds.width, height: cell.bounds.height))
             cell.addSubview(rect)
             rect.text = "Current Location"
-            rect.textColor = UIColor.blue
+            rect.textColor = UIColor.green
+            cell.backgroundColor = UIColor.black
             rect.textAlignment = .center
-            rect.font = UIFont(name: "HelveticaNeue", size: 25)!
+            rect.font = UIFont(name: "EuphemiaUCAS-Italic", size: 35)!
             cell.textLabel?.isHidden = true
             cell.detailTextLabel?.isHidden = true
         }
         else {
+            cell.textLabel?.font = UIFont(name: "EuphemiaUCAS-Italic", size: 15)!
+            cell.textLabel?.textColor = UIColor.blue
             let selectedItem = self.matchingItems[indexPath.row - 1].placemark
             cell.textLabel?.text = selectedItem.name
             cell.detailTextLabel?.text = parseAddress(selectedItem: selectedItem)
@@ -137,5 +173,25 @@ extension LocationSearchTable {
         // drop pin and dismiss table view controller
         handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
         dismiss(animated: true, completion: nil)
+    }
+    func isInternetAvailable() -> Bool
+    {
+        var zeroAddress = sockaddr_in()
+        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+        
+        let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
+                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+            }
+        }
+        
+        var flags = SCNetworkReachabilityFlags()
+        if !SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) {
+            return false
+        }
+        let isReachable = flags.contains(.reachable)
+        let needsConnection = flags.contains(.connectionRequired)
+        return (isReachable && !needsConnection)
     }
 }

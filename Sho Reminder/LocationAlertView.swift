@@ -102,3 +102,18 @@ extension LocationAlertView: MKMapViewDelegate {
         return pinView
     }
 }
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        let swipe: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        swipe.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+        view.addGestureRecognizer(swipe)
+
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}

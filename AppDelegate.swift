@@ -175,17 +175,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         return container
     }()
 }
-extension UIView {
-    func addBackground() {
-        let width = UIScreen.main.bounds.size.width
-        let height = UIScreen.main.bounds.size.height
-        
-        let imageViewBackground = UIImageView.init(frame: CGRect(x: 0, y: 0, width: width, height: height))
-        
-        imageViewBackground.image = #imageLiteral(resourceName: "br")
-        
-        imageViewBackground.contentMode = UIViewContentMode.redraw
-        
-        self.addSubview(imageViewBackground)
-        self.sendSubview(toBack: imageViewBackground)
-    }}
