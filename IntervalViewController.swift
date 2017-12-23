@@ -55,7 +55,6 @@ class IntervalViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         let cellText = tableView.cellForRow(at: indexPath)?.textLabel?.text
         defaults.set(cellText!, forKey: "repeat")
-        let myVC = storyboard?.instantiateViewController(withIdentifier: "timeAddViewController") as! TimeAddViewController
-        self.present(myVC, animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }

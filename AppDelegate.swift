@@ -146,7 +146,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
         else {
-            print("On Enter Only")
+          // print("On Enter Only")
         }
     }
     func getObjectPath(region: CLRegion) -> Int {

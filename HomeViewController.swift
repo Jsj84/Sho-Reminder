@@ -16,68 +16,43 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     let locationManager = CLLocationManager()
     var fh = ManagedObject()
-    
+    var barHeight = CGFloat()
     var color = UIColor(netHex:0x90F7A3)
     
-    @IBOutlet weak var way: UILabel!
-    @IBOutlet weak var place: UIButton!
-    @IBOutlet weak var time: UIButton!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var editButton: UIBarButtonItem!
+     @IBOutlet weak var editButton: UIBarButtonItem!
     let userDefaults = UserDefaults()
     
-    
-    @IBAction func timeAction(_ sender: Any) {
-        self.userDefaults.set(nil, forKey: "cellId")
-        self.userDefaults.set(false, forKey: "bool")
-        performSegue(withIdentifier: "backSegue", sender: self)
-    }
-    @IBAction func placeAction(_ sender: Any) {
-        performSegue(withIdentifier: "placeSegue", sender: self)
-    }
-    @IBAction func editButton(_ sender: Any) {
-        if tableView.isEditing == false {
-            editButton.title = "Done"
-            tableView.isEditing = true
+        @IBAction func editButton(_ sender: Any) {
+            if tableView.isEditing == false {
+                editButton.title = "Done"
+                tableView.isEditing = true
+            }
+            else {
+                tableView.isEditing = false
+                editButton.title = "Edit"
+            }
         }
-        else {
-            tableView.isEditing = false
-            editButton.title = "Edit"
-        }
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
         fh.getData()
         fh.getLocationData()
         if fh.timeObject.isEmpty == true && fh.locationObject.isEmpty == true {
-            editButton.isEnabled = false
-            editButton.title = ""
+             editButton.isEnabled = false
+              editButton.title = ""
         }
         else {
-            editButton.title = "Edit"
-            editButton.isEnabled = true
+                        editButton.title = "Edit"
+                        editButton.isEnabled = true
         }
-        self.navigationController?.navigationBar.backgroundColor = UIColor.green
-        // self.view.addBackground()
-        self.view.backgroundColor = UIColor.groupTableViewBackground
+        self.view.backgroundColor = color
+        barHeight = UIApplication.shared.statusBarFrame.size.height
         
-        way.font = UIFont (name: "HelveticaNeue-Bold", size: 22)!
-        way.textColor = UIColor.black
-        
-        place.layer.cornerRadius = 8
-        place.backgroundColor = color
-        place.titleLabel?.font = UIFont (name: "HelveticaNeue-Bold", size: 18)!
-        place.setTitle("Place", for: .normal)
-        
-        time.layer.cornerRadius = 8
-        time.backgroundColor = color
-        time.titleLabel?.font = UIFont (name: "HelveticaNeue-Bold", size: 18)!
-        time.setTitle("Time", for: .normal)
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = UIColor.clear
+        tableView.backgroundColor = UIColor.groupTableViewBackground
         tableView.separatorColor = UIColor.black
         tableView.backgroundView?.isOpaque = true
         tableView.allowsSelection = false
@@ -93,12 +68,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         fh.getLocationData()
         tableView.reloadData()
         if fh.timeObject.isEmpty == true && fh.locationObject.isEmpty == true {
-            editButton.title = ""
-            editButton.isEnabled = false
+                        editButton.title = ""
+                        editButton.isEnabled = false
         }
         else {
-            editButton.title = "Edit"
-            editButton.isEnabled = true
+                        editButton.title = "Edit"
+                      editButton.isEnabled = true
         }
         let now = Date()
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
@@ -121,6 +96,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         fh.getData()
         tableView.reloadData()
     }
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         var stringToReturn: String?
@@ -140,7 +116,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if section == 1 {
             switch fh.locationObject.count {
             case 0:
-                locationString = "no location reminders scheduled"
+                locationString = ""
             case 1 :
                 locationString = "1 location reminder Scheduled"
             default:
@@ -150,12 +126,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         return locationString
     }
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 30
-    }
+        func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+            return 30
+        }
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerVew = view as? UITableViewHeaderFooterView {
-            headerVew.backgroundView?.backgroundColor = color
+           headerVew.backgroundView?.backgroundColor = UIColor.clear
             headerVew.textLabel?.textColor = UIColor.black
             headerVew.textLabel?.textAlignment = .left
             headerVew.textLabel?.font = UIFont (name: "HelveticaNeue-Bold", size: 14)!
@@ -231,9 +207,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             let n2 = fh.locationObject[indexPath.row].value(forKey: "reminderInput") as! String
             let appendedString =  n + "\r" + n2
             
-            let attributedString = NSMutableAttributedString(string: appendedString, attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: 14)!])
+            let attributedString = NSMutableAttributedString(string: appendedString, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Bold", size: 14)!])
             let stringRange = (appendedString as NSString).range(of: n2)
-            attributedString.setAttributes([NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 13)!], range: stringRange)
+            attributedString.setAttributes([NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 13)!], range: stringRange)
             cell.nameLable.attributedText = attributedString
             cell.subtitleLable.text = fh.locationObject[indexPath.row].value(forKey: "mKSubTitle") as! String?
             let tempVal = fh.locationObject[indexPath.row].value(forKey: "entrance") as! String?

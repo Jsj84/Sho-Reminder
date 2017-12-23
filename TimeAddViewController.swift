@@ -21,13 +21,8 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var CancelBFef: UIButton!
-    @IBOutlet weak var SaveBRef: UIButton!
+    @IBOutlet weak var SaveBRef: UIBarButtonItem!
     
-    @IBAction func cancelB(_ sender: Any) {
-        let v = storyboard?.instantiateViewController(withIdentifier: "nav")
-        self.present(v!, animated: true, completion: nil)
-    }
     @IBAction func SaveB(_ sender: Any) {
         var tempInterval = String()
         var id = Int()
@@ -110,19 +105,13 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       self.view.backgroundColor = UIColor.groupTableViewBackground
-        
-        CancelBFef.backgroundColor = color
-        CancelBFef.layer.cornerRadius = 8
-        SaveBRef.backgroundColor = color
-        SaveBRef.layer.cornerRadius = 8
-        
+       self.view.backgroundColor = color
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = UIColor.clear
+        tableView.backgroundColor = UIColor.groupTableViewBackground
         tableView.separatorColor = color
         
-        timePicker.backgroundColor = UIColor.clear
+        timePicker.backgroundColor = UIColor.groupTableViewBackground
         timePicker.setValue(UIColor.black, forKeyPath: "textColor")
         
         reminderDiscription.keyboardAppearance = .dark
@@ -147,6 +136,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidDisappear(_ animated: Bool) {
         defaults.removeObject(forKey: "repeat")
     }
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
     }

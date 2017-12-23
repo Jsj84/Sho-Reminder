@@ -18,7 +18,6 @@ protocol HandleMapSearch {
 
 class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleMapSearch {
     
-    
     var selectedPin:MKPlacemark? = nil
     let locationManager = CLLocationManager()
     var resultSearchController:UISearchController? = nil
@@ -39,6 +38,8 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = color
+        
         blurFxView = UIVisualEffectView(effect: blurFx)
         blurFxView.frame = view.bounds
         blurFxView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -52,7 +53,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         locationManager.startUpdatingLocation()
         
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
-        resultSearchController = UISearchController(searchResultsController: locationSearchTable)
+        resultSearchController =  UISearchController(searchResultsController: locationSearchTable)
         resultSearchController?.searchResultsUpdater = locationSearchTable as UISearchResultsUpdating!
         
         
