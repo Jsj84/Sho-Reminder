@@ -71,13 +71,18 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         locationSearchTable.handleMapSearchDelegate = self
         
         smallView.cancel.addTarget(self, action: #selector(actionForbutton), for: .touchUpInside)
-        smallView.enter.addTarget(self, action: #selector(onEntry), for: .touchUpInside)
-        smallView.exit.addTarget(self, action: #selector(onExit), for: .touchUpInside)
+        smallView.save.addTarget(self, action: #selector(save), for: .touchUpInside)
         
     }
-    @objc func onEntry(sender:UIButton) {
+    @objc func save(sender:UIButton) {
         var id = 0
-        let enterType = "onEnter"
+        var enterType = ""
+        if smallView.segmant.selectedSegmentIndex == 0 {
+            enterType = "onEnter"
+        }
+        else {
+             enterType = "onExit"
+        }
         let text = smallView.textField.text
         if defaults.value(forKey: "locationId") != nil {
             id = defaults.value(forKey: "locationId") as! Int
@@ -97,45 +102,14 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         self.locationManager.startMonitoring(for: region)
         let changedValue = id - 1
         self.defaults.set(changedValue, forKey: "locationId")
-        print(id)
- //       dismissKeyboard()
         smallView.textField.text?.removeAll()
         searchBar.text?.removeAll()
         smallView.isHidden = true
         blurFxView.removeFromSuperview()
         
     }
-    @objc func onExit(sender:UIButton) {
-        var id = 0
-        let text = smallView.textField.text
-        if defaults.value(forKey: "locationId") != nil {
-            id = defaults.value(forKey: "locationId") as! Int
-        }
-        else {
-            id = -1
-        }
-        let NsId = id as NSNumber
-        let identifier = NsId.stringValue
-        
-        let center = CLLocationCoordinate2D(latitude: (selectedItem?.coordinate.latitude)!, longitude: (selectedItem?.coordinate.longitude)!)
-        let radius = 15 as CLLocationDistance
-        let region = CLCircularRegion(center: center, radius: radius, identifier: identifier)
-        
-        // save to coreData
-        self.fh.writeLocationData(latitude: selectedItem!.coordinate.latitude, longitude: selectedItem!.coordinate.longitude, mKtitle: selectedItem!.name!, mKSubTitle: selectedItem!.title!, reminderInput: (text)!, id: id, entrance: "onExit")
-        self.locationManager.startMonitoring(for: region)
-        let changedValue = id - 1
-        self.defaults.set(changedValue, forKey: "locationId")
-        print(id)
-  //      dismissKeyboard()
-        smallView.isHidden = true
-        smallView.textField.text?.removeAll()
-        searchBar.text?.removeAll()
-        blurFxView.removeFromSuperview()
-    }
-    
+ 
     @objc func actionForbutton(sender:UIButton!) {
-//        dismissKeyboard()
         searchBar.text?.removeAll()
         smallView.textField.text?.removeAll()
         smallView.isHidden = true

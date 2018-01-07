@@ -16,11 +16,11 @@ class LocationAlertView: UIView {
     var textField: UITextField!
     var cancel: UIButton!
     var enter: UIButton!
-    var exit: UIButton!
+    var save: UIButton!
     var color = UIColor(netHex:0x90F7A3)
     var selectedPin:MKPlacemark? = nil
     var locationT: LocationSearchTable!
- var k = CGFloat()
+     var segmant = UISegmentedControl()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,7 +35,7 @@ class LocationAlertView: UIView {
         mapView.layer.cornerRadius = 5
         
         
-        cancel = UIButton(frame: CGRect(x: 5, y: self.bounds.maxY - 40, width: self.bounds.width - 10, height: 35))
+        cancel = UIButton(frame: CGRect(x: 5, y: self.bounds.maxY - 40, width: self.bounds.width / 2 - 5, height: 35))
         cancel.titleLabel?.text = "Cancel"
         cancel.setTitle("Cancel", for: .normal)
         cancel.setTitleColor(UIColor.red, for: .normal)
@@ -45,26 +45,21 @@ class LocationAlertView: UIView {
         
         
         
-        exit = UIButton(frame: CGRect(x: 5, y: (cancel.frame.minY) - 40, width: self.bounds.width  / 2 - 5, height: 35))
-        exit.titleLabel?.text = "On Exit"
-        exit.setTitle("On Exit", for: .normal)
-        exit.setTitleColor(UIColor.black, for: .normal)
-        exit.titleLabel?.textAlignment = .center
-        exit.backgroundColor = color
-        exit.layer.cornerRadius = 5
-        exit.setTitleColor(UIColor.blue, for: .normal)
+        save = UIButton(frame: CGRect(x: 5, y: self.bounds.maxY - 40, width: self.bounds.width - 10, height: 35))
+        save.titleLabel?.text = "Save"
+        save.setTitle("Save", for: .normal)
+        save.setTitleColor(UIColor.black, for: .normal)
+        save.titleLabel?.textAlignment = .center
+        save.backgroundColor = color
+        save.layer.cornerRadius = 5
+        save.setTitleColor(UIColor.blue, for: .normal)
         
-        enter = UIButton(frame: CGRect(x: exit.bounds.width + 10, y: exit.frame.minY, width: exit.bounds.width - 5, height: 35))
-        enter.titleLabel?.text = "On Enter"
-        enter.setTitle("On Enter", for: .normal)
-        enter.setTitleColor(UIColor.black, for: .normal)
-        enter.titleLabel?.textAlignment = .center
-        enter.backgroundColor = color
-        enter.layer.cornerRadius = 5
-        enter.setTitleColor(UIColor.blue, for: .normal)
+        segmant = UISegmentedControl(frame: CGRect(x: 5, y: cancel.frame.minY - 30, width: self.bounds.width - 10, height: 25))
+        segmant.insertSegment(withTitle: "On Enter", at: 0, animated: true)
+        segmant.insertSegment(withTitle: "On Exit", at: 1, animated: true)
         
         
-        textField = UITextField(frame: CGRect(x: 5, y: mapView.frame.maxY + 5, width: self.bounds.width - 10, height: mapView.frame.maxY.distance(to: exit.frame.origin.y) - 10))
+        textField = UITextField(frame: CGRect(x: 5, y: mapView.frame.maxY + 5, width: self.bounds.width - 10, height: mapView.frame.maxY.distance(to: segmant.frame.origin.y) - 10))
         textField.autocorrectionType = .default
         textField.placeholder = "Enter your reminder for this location here!reminder here"
         textField.keyboardType = .default
@@ -75,8 +70,8 @@ class LocationAlertView: UIView {
         
         self.addSubview(mapView)
         self.addSubview(cancel)
-        self.addSubview(exit)
-        self.addSubview(enter)
+        self.addSubview(save)
+        self.addSubview(segmant)
         self.addSubview(textField)
         
     }
@@ -99,7 +94,6 @@ extension LocationAlertView: MKMapViewDelegate {
         let button = UIButton(frame: CGRect(origin: .zero, size: smallSquare))
         button.setBackgroundImage(#imageLiteral(resourceName: "checkList"), for: .normal)
         
-        // button.addTarget(self, action: #selector(popUpBox), for: .touchUpInside)
         pinView?.leftCalloutAccessoryView = button
         return pinView
     }

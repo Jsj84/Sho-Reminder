@@ -17,6 +17,9 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     var color = UIColor(netHex:0x90F7A3)
     let defaults = UserDefaults()
     let indexPath = Int()
+    var tempText = ""
+    var tempData = Date()
+    var newBackButton = UIBarButtonItem()
     
     @IBOutlet weak var reminderDiscription: UITextField!
     @IBOutlet weak var timePicker: UIDatePicker!
@@ -102,8 +105,13 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         fh.getData()
-        fh.getLocationData()
         self.navigationItem.hidesBackButton = true
+        newBackButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(self.back(sender:)))
+        self.navigationItem.leftBarButtonItem = newBackButton
+        newBackButton.tintColor = UIColor.red
+        newBackButton.isEnabled = false
+        newBackButton.title = ""
+        
         if (reminderDiscription.text?.isEmpty)!{
             SaveBRef.isEnabled = false
             SaveBRef.title = ""
@@ -127,26 +135,25 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     @objc func textFieldDidChange(_ textField: UITextField) {
         if reminderDiscription.text?.isEmpty == false {
             SaveBRef.isEnabled = true
-            
             SaveBRef.title = "Save"
+            
+            newBackButton.isEnabled = true
+            newBackButton.title = "Cancel"
         }
         else {
             SaveBRef.isEnabled = false
             SaveBRef.title = ""
+            newBackButton.isEnabled = false
+            newBackButton.title = ""
         }
-    }
-    override func viewDidDisappear(_ animated: Bool) {
-         defaults.removeObject(forKey: "repeat")
     }
     override func viewWillAppear(_ animated: Bool) {
         fh.getData()
-        fh.getLocationData()
         if defaults.value(forKey: "cellId") != nil && defaults.bool(forKey: "bool") != false {
             SaveBRef.isEnabled = true
             SaveBRef.title = "Save"
-                let newBackButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(self.back(sender:)))
-                self.navigationItem.leftBarButtonItem = newBackButton
-                newBackButton.tintColor = UIColor.red
+           newBackButton.isEnabled = true
+            newBackButton.title = "Cancel"
             let g = defaults.value(forKey: "cellId") as! Int
             let newDate = fh.timeObject[g].value(forKey: "date") as! Date
             let uploadText = fh.timeObject[g].value(forKey: "name") as! String
@@ -154,16 +161,20 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             reminderDiscription.reloadInputViews()
             timePicker.setDate(newDate, animated: true)
             timePicker.reloadInputViews()
-        }
-        else {
-            SaveBRef.isEnabled = false
-            SaveBRef.title = ""
-            self.navigationItem.leftBarButtonItem = nil
-            timePicker.setDate(Date(), animated: true)
-            timePicker.reloadInputViews()
-            reminderDiscription.text = nil
-            self.reloadInputViews()
             
+        }
+    
+        else if defaults.value(forKey: "temp") != nil {
+            reminderDiscription.text = tempText
+            timePicker.date = tempData
+       }
+        else {
+            timePicker.setDate(Date(), animated: true)
+            reminderDiscription.text = nil
+            SaveBRef.isEnabled = false
+            newBackButton.isEnabled = false
+            SaveBRef.title = ""
+            newBackButton.title = ""
         }
         tableView.reloadData()
     }
@@ -195,6 +206,10 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tempText = reminderDiscription.text!
+        tempData = timePicker.date
+        defaults.set(true, forKey: "temp")
+        
         let myVC = storyboard?.instantiateViewController(withIdentifier: "Intervalviewcontroler") as! IntervalViewController
         self.present(myVC, animated: true, completion: nil)
         

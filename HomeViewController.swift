@@ -13,22 +13,52 @@ import UserNotifications
 import CoreLocation
 import MapKit
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+protocol HandleMapSearch2 {
+    func dropPinZoomIn(placemark:MKPlacemark)
+}
+
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, HandleMapSearch2 {
     
+      var selectedPin:MKPlacemark? = nil
+    var lastAnnotation = MKPointAnnotation()
+     var selectedItem:MKPlacemark!
     let locationManager = CLLocationManager()
     var fh = ManagedObject()
     var barHeight = CGFloat()
     var color = UIColor(netHex:0x90F7A3)
     var testColor = UIColor(netHex: 0x90F7A3)
-    var smallView = LocationAlertView()
-    let blurFx = UIBlurEffect(style: UIBlurEffectStyle.dark)
+    var smallView = LocationEditAlert()
+    let blurFx = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
     var blurFxView = UIVisualEffectView()
     var holder = 0
     let p = PlaceViewController()
+    var resultSearchController:UISearchController? = nil
+    var locationSearchTable: LocationSearchTable2!
+    var searchbar = UISearchBar()
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var editButton: UIBarButtonItem!
     let userDefaults = UserDefaults()
+    
+    func dropPinZoomIn(placemark: MKPlacemark) {
+        
+        selectedPin = placemark
+        selectedItem = placemark
+        
+        self.lastAnnotation = MKPointAnnotation()
+        self.lastAnnotation.coordinate = placemark.coordinate
+        self.lastAnnotation.title = placemark.name
+        if let city = placemark.locality,
+            let state = placemark.administrativeArea {
+            self.lastAnnotation.subtitle = "\(city) \(state)"
+        }
+        smallView.mapView.addAnnotation(lastAnnotation)
+        let smallSpan = MKCoordinateSpanMake(0.011, 0.011)
+        let smallRegion = MKCoordinateRegionMake(placemark.coordinate, smallSpan)
+        smallView.mapView.setRegion(smallRegion, animated: true)
+        self.smallView.lable.text = "\(selectedItem!.name!)" + " : " + "\(selectedItem!.title!)"
+        self.smallView.reloadInputViews()
+    }
     
     @IBAction func editButton(_ sender: Any) {
         if tableView.isEditing == false {
@@ -44,7 +74,22 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        userDefaults.set(self.navigationController?.navigationBar.frame.size.height, forKey: "y")
+        
+        let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable2") as! LocationSearchTable2
+        resultSearchController =  UISearchController(searchResultsController: locationSearchTable)
+        resultSearchController?.searchResultsUpdater = locationSearchTable as UISearchResultsUpdating!
+        
+        searchbar = resultSearchController!.searchBar
+        navigationItem.titleView = resultSearchController?.searchBar
+        resultSearchController?.hidesNavigationBarDuringPresentation = false
+        resultSearchController?.dimsBackgroundDuringPresentation = true
+        definesPresentationContext = true
+        
+        searchbar.isHidden = true
+        searchbar.placeholder = "Search to edit location"
+        locationSearchTable.mapView = smallView.mapView
+        locationSearchTable.handleMapSearchDelegate = self
+        
         userDefaults.set(false, forKey: "bool")
         fh.getData()
         fh.getLocationData()
@@ -71,8 +116,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         blurFxView.isHidden = true
         
         smallView.cancel.addTarget(self, action: #selector(actionForbutton), for: .touchUpInside)
-        smallView.enter.addTarget(self, action: #selector(onEntry), for: .touchUpInside)
-        smallView.exit.addTarget(self, action: #selector(onExit), for: .touchUpInside)
+        smallView.update.addTarget(self, action: #selector(update), for: .touchUpInside)
+
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -86,14 +131,34 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.hideKeyboardWhenTappedAround()
     }
-    @objc func onExit(sender:UIButton) {
-        
+ 
+    @objc func update(sender:UIButton) {
         let id = self.fh.locationObject[holder].value(forKey: "id") as! Int
-        let tit = self.fh.locationObject[holder].value(forKey: "mKtitle") as! String
-       let subtit = self.fh.locationObject[holder].value(forKey: "mKSubTitle") as! String
-        let lat = self.fh.locationObject[holder].value(forKey: "latitude") as! Double
-        let lng = self.fh.locationObject[holder].value(forKey: "longitude") as! Double
-        
+         var entance =  ""
+        var tit = ""
+        var subtit = ""
+        var lat = 0.0
+        var lng = 0.0
+        if selectedItem == nil {
+            tit = self.fh.locationObject[holder].value(forKey: "mKtitle") as! String
+            subtit = self.fh.locationObject[holder].value(forKey: "mKSubTitle") as! String
+            lat = self.fh.locationObject[holder].value(forKey: "latitude") as! Double
+            lng = self.fh.locationObject[holder].value(forKey: "longitude") as! Double
+            entance = self.fh.locationObject[holder].value(forKey: "entrance") as! String
+        }
+        else {
+            tit = selectedItem.name!
+            subtit = selectedItem.title!
+            lat = selectedItem.coordinate.latitude
+            lng = selectedItem.coordinate.longitude
+        }
+
+        if smallView.segmant.selectedSegmentIndex == 0 {
+            entance = "onEntry"
+        }
+        else if smallView.segmant.selectedSegmentIndex == 1 {
+            entance = "onExit"
+        }
         let nsNum = id as NSNumber
         let numString = nsNum.stringValue
         
@@ -101,45 +166,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let region = CLCircularRegion(center: center, radius: 25, identifier: numString)
         p.locationManager.stopMonitoring(for: region)
         
-        fh.updateLocation(entrance: "onExit", lat: lat, lng: lng, title: tit, subtitle: subtit, id: id, reminderInput: smallView.textField.text!, index: holder)
+        fh.updateLocation(entrance: "\(entance)", lat: lat, lng: lng, title: tit, subtitle: subtit, id: id, reminderInput: smallView.textField.text!, index: holder)
         
         p.locationManager.startMonitoring(for: region)
+        selectedItem = nil
+        searchbar.text = nil 
         
         smallView.textField.text?.removeAll()
         smallView.isHidden = true
         blurFxView.isHidden = true
         editButton.title = "Edit"
         editButton.isEnabled = true
-        smallView.mapView.reloadInputViews()
-        
-           tableView.reloadData()
-    }
-    
-    @objc func onEntry(sender:UIButton) {
-        
-        let id = self.fh.locationObject[holder].value(forKey: "id") as! Int
-        let tit = self.fh.locationObject[holder].value(forKey: "mKtitle") as! String
-        let subtit = self.fh.locationObject[holder].value(forKey: "mKSubTitle") as! String
-        let lat = self.fh.locationObject[holder].value(forKey: "latitude") as! Double
-        let lng = self.fh.locationObject[holder].value(forKey: "longitude") as! Double
-        
-        let nsNum = id as NSNumber
-        let numString = nsNum.stringValue
-        
-        let center = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-        let region = CLCircularRegion(center: center, radius: 25, identifier: numString)
-        p.locationManager.stopMonitoring(for: region)
-        
-        fh.updateLocation(entrance: "onEnter", lat: lat, lng: lng, title: tit, subtitle: subtit, id: id, reminderInput: smallView.textField.text!, index: holder)
-        
-        p.locationManager.startMonitoring(for: region)
-        
-        
-        smallView.textField.text?.removeAll()
-        smallView.isHidden = true
-        blurFxView.isHidden = true
-        editButton.title = "Edit"
-        editButton.isEnabled = true
+        searchbar.isHidden = true
         smallView.mapView.reloadInputViews()
         
         tableView.reloadData()
@@ -150,10 +188,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         blurFxView.isHidden = true
         editButton.title = "Edit"
         editButton.isEnabled = true
+          searchbar.isHidden = true
         smallView.mapView.reloadInputViews()
+        selectedItem = nil
+        searchbar.text = nil
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        userDefaults.removeObject(forKey: "repeat")
+        userDefaults.removeObject(forKey: "temp")
         userDefaults.set(false, forKey: "bool")
         fh.getData()
         fh.getLocationData()
@@ -401,14 +444,29 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.editButton.isEnabled = false
                 self.editButton.title = ""
                 
-                self.smallView.textField.text = self.fh.locationObject[cellID].value(forKey: "reminderInput") as? String
-                let lat = self.fh.locationObject[cellID].value(forKey: "latitude") as? Double
-                let lng = self.fh.locationObject[cellID].value(forKey: "longitude") as? Double
+                let reminder = self.fh.locationObject[cellID].value(forKey: "reminderInput") as! String
+                let lat = self.fh.locationObject[cellID].value(forKey: "latitude") as! Double
+                let lng = self.fh.locationObject[cellID].value(forKey: "longitude") as! Double
+                let tit = self.fh.locationObject[cellID].value(forKey: "mKtitle") as! String
+                let subTit = self.fh.locationObject[cellID].value(forKey: "mKSubTitle") as! String
+                let ent = self.fh.locationObject[cellID].value(forKey: "entrance") as! String
+                
+                if ent == "onEnter" {
+                      self.smallView.segmant.selectedSegmentIndex = 0
+                }
+                if ent == "onExit" {
+                    self.smallView.segmant.selectedSegmentIndex = 1
+                }
+                self.smallView.textField.text = reminder
                 
                 let tempPoint = MKPointAnnotation()
-                tempPoint.coordinate = CLLocationCoordinate2D(latitude: lat!, longitude: lng!)
-                tempPoint.title = self.fh.locationObject[cellID].value(forKey: "mKtitle") as? String
-                tempPoint.subtitle = self.fh.locationObject[cellID].value(forKey: "mKSubTitle") as? String
+                tempPoint.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+                tempPoint.title = tit
+                tempPoint.subtitle = subTit
+                
+               self.smallView.lable.text = "\(tit)" + " : " + "\(subTit)"
+               self.smallView.lable.adjustsFontForContentSizeCategory = true
+               self.smallView.reloadInputViews()
                 
                 self.smallView.mapView.addAnnotation(tempPoint)
                 let smallSpan = MKCoordinateSpanMake(0.011, 0.011)
@@ -417,6 +475,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 
                 self.smallView.isHidden = false
                 self.blurFxView.isHidden = false
+                self.searchbar.isHidden = false
                 
             })
             moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0);

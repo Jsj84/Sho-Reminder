@@ -126,7 +126,6 @@ class ManagedObject: NSObject {
             let test = try managedContext.fetch(fetchRequest)
             if test.count == 1
             {
-                timeObject.remove(at: index)
                 let objectUpdate = test[0] as! NSManagedObject
                 print(objectUpdate)
                 objectUpdate.setValue(name, forKey: "name")
@@ -135,8 +134,6 @@ class ManagedObject: NSObject {
                  objectUpdate.setValue(repeatOption, forKey: "repeatOption")
                 objectUpdate.setValue(id, forKey: "id")
                 do{
-                    print("Item updated")
-                    timeObject.append(objectUpdate)
                     try managedContext.save()
                 }
                 catch
@@ -160,19 +157,16 @@ class ManagedObject: NSObject {
             let test = try managedContext.fetch(fetchRequest)
             if test.count == 1
             {
-                locationObject.remove(at: index)
                 let objectUpdate = test[0] as! NSManagedObject
                 print(objectUpdate)
                 objectUpdate.setValue(entrance, forKey: "entrance")
                 objectUpdate.setValue(lat, forKey: "latitude")
                 objectUpdate.setValue(lng, forKey: "longitude")
-                   objectUpdate.setValue(title, forKey: "mKtitle")
+                objectUpdate.setValue(title, forKey: "mKtitle")
                 objectUpdate.setValue(subtitle, forKey: "mKSubTitle")
                 objectUpdate.setValue(id, forKey: "id")
                 objectUpdate.setValue(reminderInput, forKey: "reminderInput")
                 do{
-                    print("Item updated")
-                    locationObject.append(objectUpdate)
                     try managedContext.save()
                 }
                 catch

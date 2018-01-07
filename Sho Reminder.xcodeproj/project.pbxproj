@@ -22,6 +22,8 @@
 		884A59A51F2D23A500116F8F /* NotifcationsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884A59A41F2D23A500116F8F /* NotifcationsDelegate.swift */; };
 		8858D83B1FEF008E00048995 /* Sho_Reminder.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8858D8391FEF008E00048995 /* Sho_Reminder.xcdatamodeld */; };
 		889FB29A1ED9CB0F009ED450 /* LocationAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889FB2991ED9CB0F009ED450 /* LocationAlertView.swift */; };
+		88CDB14D2001E02E00900C2A /* LocationEditAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CDB14C2001E02E00900C2A /* LocationEditAlert.swift */; };
+		88CDB14F2001ECB900900C2A /* LocationSearchTable2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CDB14E2001ECB900900C2A /* LocationSearchTable2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,8 @@
 		8858D83A1FEF008E00048995 /* Sho_Reminder.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Sho_Reminder.xcdatamodel; sourceTree = "<group>"; };
 		889FB2991ED9CB0F009ED450 /* LocationAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationAlertView.swift; sourceTree = "<group>"; };
 		88CDB14B2001980000900C2A /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
+		88CDB14C2001E02E00900C2A /* LocationEditAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationEditAlert.swift; sourceTree = "<group>"; };
+		88CDB14E2001ECB900900C2A /* LocationSearchTable2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTable2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +82,6 @@
 		7753BBC51E13345400B78D49 /* Sho Reminder */ = {
 			isa = PBXGroup;
 			children = (
-				88CDB14B2001980000900C2A /* Location.gpx */,
 				8858D8441FEF03EE00048995 /* Core Data */,
 				77FB8BD61E16EC65005316B5 /* Core Files */,
 				77FB8BD41E16EC38005316B5 /* Locations */,
@@ -112,9 +115,12 @@
 		77FB8BD41E16EC38005316B5 /* Locations */ = {
 			isa = PBXGroup;
 			children = (
+				88CDB14B2001980000900C2A /* Location.gpx */,
 				7753BBE21E1334B900B78D49 /* PlaceViewController.swift */,
 				77FB8BD71E172F24005316B5 /* LocationSearchTable.swift */,
 				889FB2991ED9CB0F009ED450 /* LocationAlertView.swift */,
+				88CDB14C2001E02E00900C2A /* LocationEditAlert.swift */,
+				88CDB14E2001ECB900900C2A /* LocationSearchTable2.swift */,
 			);
 			name = Locations;
 			sourceTree = "<group>";
@@ -243,8 +249,10 @@
 				7753BBF11E1335D900B78D49 /* ManagedObject.swift in Sources */,
 				77FB8BD81E172F24005316B5 /* LocationSearchTable.swift in Sources */,
 				77B980321E22E0D000BF5947 /* SectionTwoCell.swift in Sources */,
+				88CDB14D2001E02E00900C2A /* LocationEditAlert.swift in Sources */,
 				7753BBE91E1334B900B78D49 /* PlaceViewController.swift in Sources */,
 				771B0EA81E1C41C800C01B4D /* TimeAddViewController.swift in Sources */,
+				88CDB14F2001ECB900900C2A /* LocationSearchTable2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
