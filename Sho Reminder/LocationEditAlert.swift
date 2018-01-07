@@ -31,18 +31,15 @@ class LocationEditAlert: UIView {
         
         let g = UIApplication.shared.statusBarFrame.size.height + 65
         
-        self.frame =  CGRect(x: (UIScreen.main.bounds.width / 2) - (UIScreen.main.bounds.width - 70) / 2, y: g, width: UIScreen.main.bounds.width - 70, height: UIScreen.main.bounds.height / 2 - 50)
+        self.frame =  CGRect(x: (UIScreen.main.bounds.width / 2) - (UIScreen.main.bounds.width - 70) / 2, y: g, width: UIScreen.main.bounds.width - 70, height: UIScreen.main.bounds.height / 2 - 65)
         
-        lable = UILabel(frame: CGRect(x: 5, y: 5, width: self.bounds.width - 10, height: 50))
+        lable = UILabel(frame: CGRect(x: 5, y: 5, width: self.bounds.width - 10, height: 35))
         lable.adjustsFontSizeToFitWidth = true
         lable.numberOfLines = 2
         lable.backgroundColor = color
         
-        mapView = MKMapView(frame: CGRect(x: 5, y: 60, width: self.bounds.width - 10 , height: self.bounds.height / 2))
-        mapView.layer.cornerRadius = 5
         
-        
-        cancel = UIButton(frame: CGRect(x: 5, y: self.bounds.maxY - 40, width: self.bounds.width / 2 - 10, height: 35))
+        cancel = UIButton(frame: CGRect(x: 5, y: self.bounds.maxY - 35, width: self.bounds.width / 2 - 10, height: 30))
         cancel.titleLabel?.text = "Cancel"
         cancel.setTitle("Cancel", for: .normal)
         cancel.setTitleColor(UIColor.red, for: .normal)
@@ -50,7 +47,7 @@ class LocationEditAlert: UIView {
         cancel.backgroundColor = color
         cancel.layer.cornerRadius = 5
         
-        update = UIButton(frame: CGRect(x: self.bounds.width / 2 + 5, y: self.bounds.maxY - 40, width: self.bounds.width / 2 - 10, height: 35))
+        update = UIButton(frame: CGRect(x: self.bounds.width / 2 + 5, y: self.bounds.maxY - 35, width: self.bounds.width / 2 - 10, height: 30))
         update.titleLabel?.text = "Update"
         update.setTitle("Update", for: .normal)
         update.setTitleColor(UIColor.blue, for: .normal)
@@ -62,13 +59,16 @@ class LocationEditAlert: UIView {
         segmant.insertSegment(withTitle: "On Enter", at: 0, animated: true)
         segmant.insertSegment(withTitle: "On Exit", at: 1, animated: true)
         
-        textField = UITextField(frame: CGRect(x: 5, y: mapView.frame.maxY + 5, width: self.bounds.width - 10, height: mapView.frame.maxY.distance(to: segmant.frame.origin.y) - 10))
+        textField = UITextField(frame: CGRect(x: 5, y: segmant.frame.origin.y - 40, width: self.bounds.width - 10, height: 35))
         textField.autocorrectionType = .default
         textField.placeholder = "Enter your reminder for this location here!reminder here"
         textField.keyboardType = .default
         textField.keyboardAppearance = .dark
         textField.layer.cornerRadius = 5
         textField.backgroundColor = UIColor.white
+        
+        mapView = MKMapView(frame: CGRect(x: 5, y: lable.frame.maxY + 5, width: self.bounds.width - 10 , height: lable.frame.maxY.distance(to: textField.frame.origin.y) - 10))
+        mapView.layer.cornerRadius = 5
         
         self.addSubview(lable)
         self.addSubview(mapView)

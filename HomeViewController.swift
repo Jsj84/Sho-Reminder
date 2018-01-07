@@ -56,7 +56,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let smallSpan = MKCoordinateSpanMake(0.011, 0.011)
         let smallRegion = MKCoordinateRegionMake(placemark.coordinate, smallSpan)
         smallView.mapView.setRegion(smallRegion, animated: true)
-        self.smallView.lable.text = "\(selectedItem!.name!)" + " : " + "\(selectedItem!.title!)"
+         let appendedString =  selectedItem!.name! + "\r" + selectedItem!.title!
+        let attributedString = NSMutableAttributedString(string:appendedString, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Bold", size: 14)!])
+        let stringRange = (appendedString as NSString).range(of: selectedItem!.title!)
+        attributedString.setAttributes([NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 13)!], range: stringRange)
+        self.smallView.lable.attributedText = attributedString
         self.smallView.reloadInputViews()
     }
     
@@ -221,13 +225,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             if c <= now as Date && r == "Never" {
                 appDelegate.deleteNotification(identifier: id)
                 managedContext.delete(fh.timeObject[i] as NSManagedObject)
+                fh.timeObject.remove(at: i)
                 do {
                     try managedContext.save()
                 }
                 catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
             }
         }
-        fh.getData()
         tableView.reloadData()
     }
     
@@ -238,8 +242,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         if section == 0 {
             switch fh.timeObject.count {
-            case 0:
-                stringToReturn = "No reminders scheduled"
+            case 0: if fh.locationObject.count == 0 {stringToReturn = "No reminders scheduled"}
+            else { stringToReturn = ""}
             case 1 :
                 stringToReturn = "1 reminder scheduled"
             default:
@@ -464,7 +468,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 tempPoint.title = tit
                 tempPoint.subtitle = subTit
                 
-               self.smallView.lable.text = "\(tit)" + " : " + "\(subTit)"
+                let appendedString = tit + "\r" + subTit
+                let attributedString = NSMutableAttributedString(string:appendedString, attributes: [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Bold", size: 14)!])
+                let stringRange = (appendedString as NSString).range(of: subTit)
+                attributedString.setAttributes([NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 13)!], range: stringRange)
+                
+               self.smallView.lable.attributedText = attributedString
                self.smallView.lable.adjustsFontForContentSizeCategory = true
                self.smallView.reloadInputViews()
                 

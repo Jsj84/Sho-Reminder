@@ -73,6 +73,8 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         smallView.cancel.addTarget(self, action: #selector(actionForbutton), for: .touchUpInside)
         smallView.save.addTarget(self, action: #selector(save), for: .touchUpInside)
         
+        self.hideKeyboardWhenTappedAround()
+        
     }
     @objc func save(sender:UIButton) {
         var id = 0
@@ -118,6 +120,7 @@ class PlaceViewController : UIViewController, CLLocationManagerDelegate, HandleM
         smallView.mapView.removeAnnotation(lastAnnotation)
         self.mapView.reloadInputViews()
         smallView.mapView.reloadInputViews()
+        self.dismissKeyboard()
     }
     
     override func viewWillAppear(_ animated: Bool) {

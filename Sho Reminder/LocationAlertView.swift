@@ -29,10 +29,7 @@ class LocationAlertView: UIView {
  
         let g = UIApplication.shared.statusBarFrame.size.height + 65
         
-        self.frame =  CGRect(x: (UIScreen.main.bounds.width / 2) - (UIScreen.main.bounds.width - 70) / 2, y: g, width: UIScreen.main.bounds.width - 70, height: UIScreen.main.bounds.height / 2 - 50)
-        
-        mapView = MKMapView(frame: CGRect(x: 5, y: 5, width: self.bounds.width - 10 , height: self.bounds.height / 2))
-        mapView.layer.cornerRadius = 5
+        self.frame =  CGRect(x: (UIScreen.main.bounds.width / 2) - (UIScreen.main.bounds.width - 70) / 2, y: g, width: UIScreen.main.bounds.width - 70, height: UIScreen.main.bounds.height / 2 - 65)
         
         
         cancel = UIButton(frame: CGRect(x: 5, y: self.bounds.maxY - 40, width: self.bounds.width / 2 - 5, height: 35))
@@ -45,7 +42,7 @@ class LocationAlertView: UIView {
         
         
         
-        save = UIButton(frame: CGRect(x: 5, y: self.bounds.maxY - 40, width: self.bounds.width - 10, height: 35))
+        save = UIButton(frame: CGRect(x: cancel.frame.maxX + 5, y: self.bounds.maxY - 40, width: self.bounds.width / 2 - 5, height: 35))
         save.titleLabel?.text = "Save"
         save.setTitle("Save", for: .normal)
         save.setTitleColor(UIColor.black, for: .normal)
@@ -54,18 +51,21 @@ class LocationAlertView: UIView {
         save.layer.cornerRadius = 5
         save.setTitleColor(UIColor.blue, for: .normal)
         
-        segmant = UISegmentedControl(frame: CGRect(x: 5, y: cancel.frame.minY - 30, width: self.bounds.width - 10, height: 25))
+        segmant = UISegmentedControl(frame: CGRect(x: 5, y: cancel.frame.origin.y - 30, width: self.bounds.width - 10, height: 25))
         segmant.insertSegment(withTitle: "On Enter", at: 0, animated: true)
         segmant.insertSegment(withTitle: "On Exit", at: 1, animated: true)
         
         
-        textField = UITextField(frame: CGRect(x: 5, y: mapView.frame.maxY + 5, width: self.bounds.width - 10, height: mapView.frame.maxY.distance(to: segmant.frame.origin.y) - 10))
+        textField = UITextField(frame: CGRect(x: 5, y: segmant.frame.origin.y - 35, width: self.bounds.width - 10, height: 30))
         textField.autocorrectionType = .default
         textField.placeholder = "Enter your reminder for this location here!reminder here"
         textField.keyboardType = .default
         textField.keyboardAppearance = .dark
         textField.layer.cornerRadius = 5
         textField.backgroundColor = UIColor.white
+        
+        mapView = MKMapView(frame: CGRect(x: 5, y: 5, width: self.bounds.width - 10 , height: self.bounds.minY.distance(to: textField.frame.origin.y) - 10))
+        mapView.layer.cornerRadius = 5
     
         
         self.addSubview(mapView)
