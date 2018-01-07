@@ -20,14 +20,16 @@ class LocationAlertView: UIView {
     var color = UIColor(netHex:0x90F7A3)
     var selectedPin:MKPlacemark? = nil
     var locationT: LocationSearchTable!
-
+ var k = CGFloat()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.groupTableViewBackground
         self.layer.cornerRadius = 10
+ 
+        let g = UIApplication.shared.statusBarFrame.size.height + 80
         
-        self.frame =  CGRect(x: (UIScreen.main.bounds.width / 2) - (UIScreen.main.bounds.width - 70) / 2, y: 85, width: UIScreen.main.bounds.width - 70, height: UIScreen.main.bounds.height / 2 - 50)
+        self.frame =  CGRect(x: (UIScreen.main.bounds.width / 2) - (UIScreen.main.bounds.width - 70) / 2, y: g, width: UIScreen.main.bounds.width - 70, height: UIScreen.main.bounds.height / 2 - 50)
         
         mapView = MKMapView(frame: CGRect(x: 5, y: 5, width: self.bounds.width - 10 , height: self.bounds.height / 2))
         mapView.layer.cornerRadius = 5
@@ -110,7 +112,6 @@ extension UIViewController {
         swipe.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         view.addGestureRecognizer(swipe)
-
     }
     
     @objc func dismissKeyboard() {

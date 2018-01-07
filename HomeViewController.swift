@@ -11,6 +11,7 @@ import Foundation
 import CoreData
 import UserNotifications
 import CoreLocation
+import MapKit
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -18,37 +19,60 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     var fh = ManagedObject()
     var barHeight = CGFloat()
     var color = UIColor(netHex:0x90F7A3)
+    var testColor = UIColor(netHex: 0x90F7A3)
+    var smallView = LocationAlertView()
+    let blurFx = UIBlurEffect(style: UIBlurEffectStyle.dark)
+    var blurFxView = UIVisualEffectView()
+    var holder = 0
+    let p = PlaceViewController()
     
     @IBOutlet weak var tableView: UITableView!
-     @IBOutlet weak var editButton: UIBarButtonItem!
+    @IBOutlet weak var editButton: UIBarButtonItem!
     let userDefaults = UserDefaults()
     
-        @IBAction func editButton(_ sender: Any) {
-            if tableView.isEditing == false {
-                editButton.title = "Done"
-                tableView.isEditing = true
-            }
-            else {
-                tableView.isEditing = false
-                editButton.title = "Edit"
-            }
+    @IBAction func editButton(_ sender: Any) {
+        if tableView.isEditing == false {
+            editButton.title = "Cancel"
+            editButton.tintColor = UIColor.red
+            tableView.isEditing = true
         }
+        else {
+            tableView.isEditing = false
+            editButton.tintColor = UIColor.blue
+            editButton.title = "Edit"
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        userDefaults.set(self.navigationController?.navigationBar.frame.size.height, forKey: "y")
+        userDefaults.set(false, forKey: "bool")
         fh.getData()
         fh.getLocationData()
         if fh.timeObject.isEmpty == true && fh.locationObject.isEmpty == true {
-             editButton.isEnabled = false
-              editButton.title = ""
+            editButton.isEnabled = false
+            editButton.title = ""
         }
         else {
-                        editButton.title = "Edit"
-                        editButton.isEnabled = true
+            editButton.title = "Edit"
+            editButton.isEnabled = true
         }
         self.view.backgroundColor = color
         barHeight = UIApplication.shared.statusBarFrame.size.height
         
+        blurFxView = UIVisualEffectView(effect: blurFx)
+        blurFxView.frame = view.bounds
+        blurFxView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+
+        self.view.addSubview(blurFxView)
+        self.view.addSubview(self.smallView)
+        
+        smallView.isHidden = true
+        blurFxView.isHidden = true
+        
+        smallView.cancel.addTarget(self, action: #selector(actionForbutton), for: .touchUpInside)
+        smallView.enter.addTarget(self, action: #selector(onEntry), for: .touchUpInside)
+        smallView.exit.addTarget(self, action: #selector(onExit), for: .touchUpInside)
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -62,18 +86,85 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.hideKeyboardWhenTappedAround()
     }
+    @objc func onExit(sender:UIButton) {
+        
+        let id = self.fh.locationObject[holder].value(forKey: "id") as! Int
+        let tit = self.fh.locationObject[holder].value(forKey: "mKtitle") as! String
+       let subtit = self.fh.locationObject[holder].value(forKey: "mKSubTitle") as! String
+        let lat = self.fh.locationObject[holder].value(forKey: "latitude") as! Double
+        let lng = self.fh.locationObject[holder].value(forKey: "longitude") as! Double
+        
+        let nsNum = id as NSNumber
+        let numString = nsNum.stringValue
+        
+        let center = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+        let region = CLCircularRegion(center: center, radius: 25, identifier: numString)
+        p.locationManager.stopMonitoring(for: region)
+        
+        fh.updateLocation(entrance: "onExit", lat: lat, lng: lng, title: tit, subtitle: subtit, id: id, reminderInput: smallView.textField.text!, index: holder)
+        
+        p.locationManager.startMonitoring(for: region)
+        
+        smallView.textField.text?.removeAll()
+        smallView.isHidden = true
+        blurFxView.isHidden = true
+        editButton.title = "Edit"
+        editButton.isEnabled = true
+        smallView.mapView.reloadInputViews()
+        
+           tableView.reloadData()
+    }
+    
+    @objc func onEntry(sender:UIButton) {
+        
+        let id = self.fh.locationObject[holder].value(forKey: "id") as! Int
+        let tit = self.fh.locationObject[holder].value(forKey: "mKtitle") as! String
+        let subtit = self.fh.locationObject[holder].value(forKey: "mKSubTitle") as! String
+        let lat = self.fh.locationObject[holder].value(forKey: "latitude") as! Double
+        let lng = self.fh.locationObject[holder].value(forKey: "longitude") as! Double
+        
+        let nsNum = id as NSNumber
+        let numString = nsNum.stringValue
+        
+        let center = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+        let region = CLCircularRegion(center: center, radius: 25, identifier: numString)
+        p.locationManager.stopMonitoring(for: region)
+        
+        fh.updateLocation(entrance: "onEnter", lat: lat, lng: lng, title: tit, subtitle: subtit, id: id, reminderInput: smallView.textField.text!, index: holder)
+        
+        p.locationManager.startMonitoring(for: region)
+        
+        
+        smallView.textField.text?.removeAll()
+        smallView.isHidden = true
+        blurFxView.isHidden = true
+        editButton.title = "Edit"
+        editButton.isEnabled = true
+        smallView.mapView.reloadInputViews()
+        
+        tableView.reloadData()
+    }
+    @objc func actionForbutton(sender:UIButton!) {
+        smallView.textField.text?.removeAll()
+        smallView.isHidden = true
+        blurFxView.isHidden = true
+        editButton.title = "Edit"
+        editButton.isEnabled = true
+        smallView.mapView.reloadInputViews()
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        userDefaults.set(false, forKey: "bool")
         fh.getData()
         fh.getLocationData()
         tableView.reloadData()
         if fh.timeObject.isEmpty == true && fh.locationObject.isEmpty == true {
-                        editButton.title = ""
-                        editButton.isEnabled = false
+            editButton.title = ""
+            editButton.isEnabled = false
         }
         else {
-                        editButton.title = "Edit"
-                      editButton.isEnabled = true
+            editButton.title = "Edit"
+            editButton.isEnabled = true
         }
         let now = Date()
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
@@ -126,12 +217,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         return locationString
     }
-        func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-            return 30
-        }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerVew = view as? UITableViewHeaderFooterView {
-           headerVew.backgroundView?.backgroundColor = UIColor.clear
+            headerVew.backgroundView?.backgroundColor = UIColor.clear
             headerVew.textLabel?.textColor = UIColor.black
             headerVew.textLabel?.textAlignment = .left
             headerVew.textLabel?.font = UIFont (name: "HelveticaNeue-Bold", size: 14)!
@@ -270,15 +361,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if indexPath.section == 0 {
             fh.getData()
             let cellID = indexPath.row
-            let idInt = fh.timeObject[cellID].value(forKey: "id") as! Int
+            let idInt = fh.timeObject[cellID].value(forKey: "id") as! Int64
             let newId = idInt as NSNumber
             let id = newId.stringValue
             let moreRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: " Edit ", handler:{action, indexpath in
                 self.userDefaults.set(cellID, forKey: "cellId")
                 self.userDefaults.set(true, forKey: "bool")
-                let myVC = self.storyboard?.instantiateViewController(withIdentifier: "timeAddViewController") as! TimeAddViewController
-                self.navigationController?.pushViewController(myVC, animated: true)
+                self.tabBarController?.selectedIndex = 2
             })
+            
             moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0);
             let deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler:{action, indexpath in
                 let alert = UIAlertController(title: "Confirm", message: "Delete this Reminder?", preferredStyle: .alert)
@@ -302,7 +393,52 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         }
         else {
-            return nil
+            fh.getLocationData()
+            let cellID = indexPath.row
+            holder = cellID
+            let moreRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: " Edit ", handler:{action, indexpath in
+                
+                self.editButton.isEnabled = false
+                self.editButton.title = ""
+                
+                self.smallView.textField.text = self.fh.locationObject[cellID].value(forKey: "reminderInput") as? String
+                let lat = self.fh.locationObject[cellID].value(forKey: "latitude") as? Double
+                let lng = self.fh.locationObject[cellID].value(forKey: "longitude") as? Double
+                
+                let tempPoint = MKPointAnnotation()
+                tempPoint.coordinate = CLLocationCoordinate2D(latitude: lat!, longitude: lng!)
+                tempPoint.title = self.fh.locationObject[cellID].value(forKey: "mKtitle") as? String
+                tempPoint.subtitle = self.fh.locationObject[cellID].value(forKey: "mKSubTitle") as? String
+                
+                self.smallView.mapView.addAnnotation(tempPoint)
+                let smallSpan = MKCoordinateSpanMake(0.011, 0.011)
+                let smallRegion = MKCoordinateRegionMake(tempPoint.coordinate, smallSpan)
+                self.smallView.mapView.setRegion(smallRegion, animated: true)
+                
+                self.smallView.isHidden = false
+                self.blurFxView.isHidden = false
+                
+            })
+            moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0);
+            
+            let deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler:{action, indexpath in
+                let alert = UIAlertController(title: "Confirm", message: "Delete this Reminder?", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (_) in
+                    guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+                    let managedContext = appDelegate.persistentContainer.viewContext
+                    managedContext.delete(self.fh.locationObject[cellID] as NSManagedObject)
+                    self.fh.locationObject.remove(at: indexPath.row)
+                    do {
+                        try managedContext.save()
+                    }
+                    catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
+                    tableView.reloadData()
+                }))
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
+                }))
+                self.present(alert, animated: true, completion: nil)
+            })
+            return [deleteRowAction, moreRowAction]
         }
         
     }

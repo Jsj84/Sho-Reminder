@@ -22,8 +22,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     let content = UNMutableNotificationContent()
     let defaults = UserDefaults()
     let notificationDelegate = NotifcationsDelegate()
+    var color = UIColor(netHex:0x90F7A3)
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        UINavigationBar.appearance().barTintColor = color
+        UINavigationBar.appearance().tintColor = UIColor.blue
+        UITabBar.appearance().barTintColor = color
+    
+
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.blue], for: .selected)
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.black], for: .normal)
+        
         center.delegate = notificationDelegate
         locationManager.delegate = self
         locationManager.startUpdatingLocation()

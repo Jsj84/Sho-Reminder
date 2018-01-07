@@ -12,12 +12,13 @@ import Foundation
 
 class ManagedObject: NSObject {
     
-    var context: NSManagedObjectContext
-    
     var timeObject: [NSManagedObject] = []
     var locationObject:[NSManagedObject] = []
+   // var test:[NSManagedObject] = []
     
     override init() {
+        
+        var context:NSManagedObjectContext
         
         // This resource is the same name as your xcdatamodeld contained in your project.
         guard let modelURL = Bundle.main.url(forResource: "Sho_Reminder", withExtension:"momd") else {
@@ -69,8 +70,7 @@ class ManagedObject: NSObject {
     }
     func getData() {
         
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        let managedContext = appDelegate.persistentContainer.viewContext
+        let managedContext = getContext()
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Items")
         
         do {
@@ -82,13 +82,9 @@ class ManagedObject: NSObject {
     }
     func writeLocationData (latitude: Double, longitude: Double, mKtitle: String, mKSubTitle: String, reminderInput: String, id: Int, entrance: String) {
         
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
+        let managedContext = getContext()
         let entity = NSEntityDescription.entity(forEntityName: "Locations", in: managedContext)!
-        
         let object = NSManagedObject(entity: entity, insertInto: managedContext)
-        
         
         object.setValue(latitude, forKeyPath: "latitude")
         object.setValue(longitude, forKey: "longitude")
@@ -119,9 +115,84 @@ class ManagedObject: NSObject {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
     }
+
+    func updateTimeData(name: String, dateString: String, date: Date, repeatOption: String, id: Int, index: Int) {
+        let managedContext = getContext()
+        let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest.init(entityName: "Items")
+        let predicate = NSPredicate(format: "id = '\(id)'")
+        fetchRequest.predicate = predicate
+        do
+        {
+            let test = try managedContext.fetch(fetchRequest)
+            if test.count == 1
+            {
+                timeObject.remove(at: index)
+                let objectUpdate = test[0] as! NSManagedObject
+                print(objectUpdate)
+                objectUpdate.setValue(name, forKey: "name")
+                objectUpdate.setValue(dateString, forKey: "dateString")
+                objectUpdate.setValue(date, forKey: "date")
+                 objectUpdate.setValue(repeatOption, forKey: "repeatOption")
+                objectUpdate.setValue(id, forKey: "id")
+                do{
+                    print("Item updated")
+                    timeObject.append(objectUpdate)
+                    try managedContext.save()
+                }
+                catch
+                {
+                    print(error)
+                }
+            }
+        }
+        catch
+        {
+            print(error)
+    }
 }
-// MARK: Get Context
-func getContext () -> NSManagedObjectContext {
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    return appDelegate.persistentContainer.viewContext
+    func updateLocation(entrance: String, lat: Double, lng: Double, title: String, subtitle: String, id: Int, reminderInput: String, index: Int) {
+        let managedContext = getContext()
+        let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest.init(entityName: "Locations")
+        let predicate = NSPredicate(format: "id = '\(id)'")
+        fetchRequest.predicate = predicate
+        do
+        {
+            let test = try managedContext.fetch(fetchRequest)
+            if test.count == 1
+            {
+                locationObject.remove(at: index)
+                let objectUpdate = test[0] as! NSManagedObject
+                print(objectUpdate)
+                objectUpdate.setValue(entrance, forKey: "entrance")
+                objectUpdate.setValue(lat, forKey: "latitude")
+                objectUpdate.setValue(lng, forKey: "longitude")
+                   objectUpdate.setValue(title, forKey: "mKtitle")
+                objectUpdate.setValue(subtitle, forKey: "mKSubTitle")
+                objectUpdate.setValue(id, forKey: "id")
+                objectUpdate.setValue(reminderInput, forKey: "reminderInput")
+                do{
+                    print("Item updated")
+                    locationObject.append(objectUpdate)
+                    try managedContext.save()
+                }
+                catch
+                {
+                    print(error)
+                }
+            }
+        }
+        catch
+        {
+            print(error)
+        }
+    }
+    func getById(id: NSManagedObjectID) -> Items? {
+        let context = getContext()
+        return context.object(with: id) as? Items
+    }
+    // MARK: Get Context
+    func getContext () -> NSManagedObjectContext {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.persistentContainer.viewContext
+    }
 }

@@ -23,18 +23,18 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var SaveBRef: UIBarButtonItem!
     
-    @IBAction func SaveB(_ sender: Any) {
+    @IBAction func SaveB(_ sender: Any)  {
+        let delegate = UIApplication.shared.delegate as? AppDelegate
         var tempInterval = String()
         var id = Int()
         let now = Date()
-      let olderDate = NSCalendar.current.compare(now as Date, to: timePicker.date, toGranularity: .minute)
-        switch olderDate {
-        case .orderedDescending:
-            print("DESCENDING")
-        case .orderedAscending:
-            print("ASCENDING")
-        default: break
-        }
+        let olderDate = NSCalendar.current.compare(now as Date, to: timePicker.date, toGranularity: .minute)
+        let dateFormatter = DateFormatter()
+        let dateOnPicker = timePicker.date
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        let dateAsString = dateFormatter.string(from: dateOnPicker)
+        
         if reminderDiscription.text?.isEmpty == true {
             let alert = UIAlertController(title: "Alert", message: "You cannot save this reminder without a description", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK, Got it!", style: UIAlertActionStyle.default, handler: nil))
@@ -46,28 +46,8 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.present(alert, animated: true, completion: nil)
         }
         else {
-            if defaults.bool(forKey: "bool") == true {
-                let i = defaults.value(forKey: "cellId") as! Int
-                
-                let idInt = fh.timeObject[i].value(forKey: "id") as! Int
-                let newId = idInt as NSNumber
-                let id1 = newId.stringValue
-                
-                guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-                let managedContext = appDelegate.persistentContainer.viewContext
-                appDelegate.deleteNotification(identifier: id1)
-                managedContext.delete(self.fh.timeObject[i] as NSManagedObject)
-                do {
-                    try managedContext.save()
-                }
-                catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
-            }
+            
             self.view.endEditing(true)
-            let dateFormatter = DateFormatter()
-            let dateOnPicker = timePicker.date
-            dateFormatter.dateStyle = .short
-            dateFormatter.timeStyle = .short
-            let dateAsString = dateFormatter.string(from: dateOnPicker)
             if defaults.value(forKey: "id") == nil {
                 id = 0
             }
@@ -84,44 +64,88 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             else {
                 tempInterval = defaults.value(forKey: "repeat") as! String
             }
-            
-            // create push notifications
-            let delegate = UIApplication.shared.delegate as? AppDelegate
-            delegate?.intervalNotification(date: dateOnPicker, title: "It's Time!", body: reminderDiscription.text!, identifier: identifier, theInterval: tempInterval)
-            
-            // save as NSObject
-            fh.save(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker, repeatOption: tempInterval, id: id)
-            
-            let changedValue = id + 1
-            defaults.setValue(changedValue, forKeyPath: "id")
-            
+            if defaults.bool(forKey: "bool") == true {
+                
+                let i = defaults.value(forKey: "cellId") as! Int
+                let temp = fh.timeObject[i].value(forKey: "id") as! Int
+                let tempIdentifier = temp as NSNumber
+                let tempiString = tempIdentifier.stringValue
+                
+                fh.updateTimeData(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker, repeatOption: tempInterval, id: temp, index: i)
+                
+                delegate?.deleteNotification(identifier: tempiString)
+                delegate?.intervalNotification(date: dateOnPicker, title: "It's Time!", body: reminderDiscription.text!, identifier: tempiString, theInterval: tempInterval)
+                
+            }
+            if defaults.bool(forKey: "bool") == false {
+                // create push notifications
+                delegate?.intervalNotification(date: dateOnPicker, title: "It's Time!", body: reminderDiscription.text!, identifier: identifier, theInterval: tempInterval)
+                
+                // save as NSObject
+                fh.save(name: reminderDiscription.text!, dateString: dateAsString, date: dateOnPicker, repeatOption: tempInterval, id: id)
+                
+                let changedValue = id + 1
+                defaults.setValue(changedValue, forKeyPath: "id")
+            }
             // clear text field
             reminderDiscription.text?.removeAll()
             let v = storyboard?.instantiateViewController(withIdentifier: "nav")
             self.present(v!, animated: true, completion: nil)
-
+            
         }
+    }
+    @objc func back(sender: UIBarButtonItem) {
+        defaults.set(false, forKey: "bool")
+        defaults.removeObject(forKey: "repeat")
+        self.tabBarController?.selectedIndex = 0
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        fh.getData()
+        fh.getLocationData()
+        self.navigationItem.hidesBackButton = true
+        if (reminderDiscription.text?.isEmpty)!{
+            SaveBRef.isEnabled = false
+            SaveBRef.title = ""
+        }
+        reminderDiscription.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: UIControlEvents.editingChanged)
         
-       self.view.backgroundColor = color
+        self.view.backgroundColor = color
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.groupTableViewBackground
         tableView.separatorColor = color
         
-        timePicker.backgroundColor = UIColor.groupTableViewBackground
+        timePicker.backgroundColor = UIColor.clear
         timePicker.setValue(UIColor.black, forKeyPath: "textColor")
         
         reminderDiscription.keyboardAppearance = .dark
         
-         self.hideKeyboardWhenTappedAround()
-
+        self.hideKeyboardWhenTappedAround()
+        
+    }
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        if reminderDiscription.text?.isEmpty == false {
+            SaveBRef.isEnabled = true
+            SaveBRef.title = "Save"
+        }
+        else {
+            SaveBRef.isEnabled = false
+            SaveBRef.title = ""
+        }
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+         defaults.removeObject(forKey: "repeat")
     }
     override func viewWillAppear(_ animated: Bool) {
         fh.getData()
+        fh.getLocationData()
         if defaults.value(forKey: "cellId") != nil && defaults.bool(forKey: "bool") != false {
+            SaveBRef.isEnabled = true
+            SaveBRef.title = "Save"
+                let newBackButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(self.back(sender:)))
+                self.navigationItem.leftBarButtonItem = newBackButton
+                newBackButton.tintColor = UIColor.red
             let g = defaults.value(forKey: "cellId") as! Int
             let newDate = fh.timeObject[g].value(forKey: "date") as! Date
             let uploadText = fh.timeObject[g].value(forKey: "name") as! String
@@ -129,14 +153,20 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
             reminderDiscription.reloadInputViews()
             timePicker.setDate(newDate, animated: true)
             timePicker.reloadInputViews()
-            tableView.reloadData()
+        }
+        else {
+            SaveBRef.isEnabled = false
+            SaveBRef.title = ""
+            self.navigationItem.leftBarButtonItem = nil
+            timePicker.setDate(Date(), animated: true)
+            timePicker.reloadInputViews()
+            reminderDiscription.text = nil
+            self.reloadInputViews()
+            
         }
         tableView.reloadData()
     }
-    override func viewDidDisappear(_ animated: Bool) {
-        defaults.removeObject(forKey: "repeat")
-    }
-
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
     }
@@ -165,7 +195,8 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let myVC = storyboard?.instantiateViewController(withIdentifier: "Intervalviewcontroler") as! IntervalViewController
-       self.present(myVC, animated: true, completion: nil)
+        self.present(myVC, animated: true, completion: nil)
         
     }
+    
 }
