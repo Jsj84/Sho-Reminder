@@ -27,7 +27,7 @@ class LocationAlertView: UIView {
         self.backgroundColor = UIColor.groupTableViewBackground
         self.layer.cornerRadius = 10
  
-        let g = UIApplication.shared.statusBarFrame.size.height + 80
+        let g = UIApplication.shared.statusBarFrame.size.height + 65
         
         self.frame =  CGRect(x: (UIScreen.main.bounds.width / 2) - (UIScreen.main.bounds.width - 70) / 2, y: g, width: UIScreen.main.bounds.width - 70, height: UIScreen.main.bounds.height / 2 - 50)
         

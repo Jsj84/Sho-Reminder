@@ -116,7 +116,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.backgroundColor = UIColor.groupTableViewBackground
         tableView.separatorColor = color
         
-        timePicker.backgroundColor = UIColor.clear
+        timePicker.backgroundColor = UIColor.groupTableViewBackground
         timePicker.setValue(UIColor.black, forKeyPath: "textColor")
         
         reminderDiscription.keyboardAppearance = .dark
@@ -127,6 +127,7 @@ class TimeAddViewController: UIViewController, UITableViewDelegate, UITableViewD
     @objc func textFieldDidChange(_ textField: UITextField) {
         if reminderDiscription.text?.isEmpty == false {
             SaveBRef.isEnabled = true
+            
             SaveBRef.title = "Save"
         }
         else {
