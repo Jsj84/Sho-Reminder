@@ -111,7 +111,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         blurFxView = UIVisualEffectView(effect: blurFx)
         blurFxView.frame = view.bounds
         blurFxView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
 
         self.view.addSubview(blurFxView)
         self.view.addSubview(self.smallView)

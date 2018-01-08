@@ -25,6 +25,8 @@
 		8847E7E11E566090001B2E0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8847E7E01E566090001B2E0E /* Main.storyboard */; };
 		884A59A51F2D23A500116F8F /* NotifcationsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884A59A41F2D23A500116F8F /* NotifcationsDelegate.swift */; };
 		8858D83B1FEF008E00048995 /* Sho_Reminder.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8858D8391FEF008E00048995 /* Sho_Reminder.xcdatamodeld */; };
+		8885DC032003F69600C1550C /* CustomTabBarControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8885DC022003F69600C1550C /* CustomTabBarControllerViewController.swift */; };
+		8885DC052003FD0C00C1550C /* NotesCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8885DC042003FD0C00C1550C /* NotesCellTableViewCell.swift */; };
 		889FB29A1ED9CB0F009ED450 /* LocationAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889FB2991ED9CB0F009ED450 /* LocationAlertView.swift */; };
 		88CDB14D2001E02E00900C2A /* LocationEditAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CDB14C2001E02E00900C2A /* LocationEditAlert.swift */; };
 		88CDB14F2001ECB900900C2A /* LocationSearchTable2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CDB14E2001ECB900900C2A /* LocationSearchTable2.swift */; };
@@ -52,6 +54,8 @@
 		8847E7E01E566090001B2E0E /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		884A59A41F2D23A500116F8F /* NotifcationsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotifcationsDelegate.swift; sourceTree = "<group>"; };
 		8858D83A1FEF008E00048995 /* Sho_Reminder.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Sho_Reminder.xcdatamodel; sourceTree = "<group>"; };
+		8885DC022003F69600C1550C /* CustomTabBarControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarControllerViewController.swift; sourceTree = "<group>"; };
+		8885DC042003FD0C00C1550C /* NotesCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesCellTableViewCell.swift; sourceTree = "<group>"; };
 		889FB2991ED9CB0F009ED450 /* LocationAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationAlertView.swift; sourceTree = "<group>"; };
 		88CDB14B2001980000900C2A /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		88CDB14C2001E02E00900C2A /* LocationEditAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationEditAlert.swift; sourceTree = "<group>"; };
@@ -143,6 +147,7 @@
 				8847E7E01E566090001B2E0E /* Main.storyboard */,
 				7753BBD51E13345400B78D49 /* Info.plist */,
 				884A59A41F2D23A500116F8F /* NotifcationsDelegate.swift */,
+				8885DC022003F69600C1550C /* CustomTabBarControllerViewController.swift */,
 			);
 			name = "Core Files";
 			sourceTree = "<group>";
@@ -162,6 +167,7 @@
 				883FF2FC20028CA800B704E9 /* NoteDetailViewController.swift */,
 				883FF2FF20028CA800B704E9 /* NotesFileHandler.swift */,
 				883FF2FE20028CA800B704E9 /* NotesListTableViewController.swift */,
+				8885DC042003FD0C00C1550C /* NotesCellTableViewCell.swift */,
 			);
 			path = Notes;
 			sourceTree = "<group>";
@@ -267,9 +273,11 @@
 				8858D83B1FEF008E00048995 /* Sho_Reminder.xcdatamodeld in Sources */,
 				883FF30120028CA800B704E9 /* Note.swift in Sources */,
 				7753BBDC1E13349B00B78D49 /* AppDelegate.swift in Sources */,
+				8885DC032003F69600C1550C /* CustomTabBarControllerViewController.swift in Sources */,
 				883FF30320028CA800B704E9 /* NotesFileHandler.swift in Sources */,
 				889FB29A1ED9CB0F009ED450 /* LocationAlertView.swift in Sources */,
 				7753BBF11E1335D900B78D49 /* ManagedObject.swift in Sources */,
+				8885DC052003FD0C00C1550C /* NotesCellTableViewCell.swift in Sources */,
 				77FB8BD81E172F24005316B5 /* LocationSearchTable.swift in Sources */,
 				77B980321E22E0D000BF5947 /* SectionTwoCell.swift in Sources */,
 				88CDB14D2001E02E00900C2A /* LocationEditAlert.swift in Sources */,

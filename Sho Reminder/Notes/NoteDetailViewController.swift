@@ -19,8 +19,9 @@ class NoteDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-         self.view.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "notePaper"))
+         self.view.backgroundColor = UIColor.groupTableViewBackground
+         titleTextField.backgroundColor = UIColor.groupTableViewBackground
+         contentTextField.backgroundColor = UIColor.groupTableViewBackground
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,7 +37,10 @@ class NoteDetailViewController: UIViewController {
         note.title = titleTextField.text
         note.content = contentTextField.text
         
+        if titleTextField.text != "" || contentTextField.text != "" {
+            
         fh.saveNotes(data: notes)
+        }
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
          self.view.endEditing(true)
