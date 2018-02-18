@@ -13,15 +13,16 @@ class NoteDetailViewController: UIViewController {
     var note: Note!
     var notes: NSMutableArray!
     let fh = NotesFileHandler()
-    
+    var cancelButtonTitle = ""
     @IBOutlet weak var titleTextField: UITextView!
     @IBOutlet weak var contentTextField: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let backButton = UIBarButtonItem(title: "Save", style: .plain, target: nil, action: nil)
-        self.navigationController?.navigationItem.backBarButtonItem = backButton
+        let canelButton = UIBarButtonItem(title: cancelButtonTitle, style: .plain, target: self, action: #selector(cancelPop))
+        canelButton.tintColor = UIColor.red
+        self.navigationItem.rightBarButtonItem = canelButton
         
         
         self.view.backgroundColor = UIColor.groupTableViewBackground
@@ -45,11 +46,15 @@ class NoteDetailViewController: UIViewController {
         note.content = contentTextField.text
         
         if titleTextField.text != "" || contentTextField.text != "" {
-            
-            fh.saveNotes(data: notes)
+        fh.saveNotes(data: notes)
         }
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+    }
+    @objc func cancelPop() {
+        self.titleTextField.text = ""
+        self.contentTextField.text = ""
+        self.navigationController?.popViewController(animated: true)
     }
 }

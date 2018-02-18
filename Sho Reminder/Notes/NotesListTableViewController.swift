@@ -83,17 +83,24 @@ class NotesListTableViewController: UITableViewController, UISearchResultsUpdati
         return cell
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let noteDetailViewController = segue.destination as! NoteDetailViewController
+        
+        let backItem = UIBarButtonItem()
+        backItem.title = "Save"
+        navigationItem.backBarButtonItem = backItem
+        
         if segue.identifier! == "showNote" {
-            let noteDetailViewController = segue.destination as! NoteDetailViewController
             let selectedIndexPath = tableView.indexPathForSelectedRow
             noteDetailViewController.note = notes.object(at: selectedIndexPath!.row) as! Note
             noteDetailViewController.notes = notes
+            
         } else if segue.identifier! == "addNote" {
             let note = Note()
             notes.add(note)
-            let noteDetailViewController = segue.destination as! NoteDetailViewController
             noteDetailViewController.note = note
             noteDetailViewController.notes = notes
+            noteDetailViewController.cancelButtonTitle = "Cancel"
         }
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
