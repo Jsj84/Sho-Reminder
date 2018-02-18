@@ -102,6 +102,7 @@ class NotesListTableViewController: UITableViewController, UISearchResultsUpdati
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         notes.removeObject(at: indexPath.row)
+        fh.saveNotes(data: notes)
         tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
     }
     

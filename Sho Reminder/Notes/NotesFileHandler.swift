@@ -11,7 +11,7 @@ class NotesFileHandler: NSObject{
     
     func saveNotes(data: NSMutableArray){
         let file = getDocumentsDirectory().appendingPathComponent("notes.txt")
-        if (fileExists(file: file)){
+        if fileExists(file: file){
             deleteFile(file: file)
         }
         

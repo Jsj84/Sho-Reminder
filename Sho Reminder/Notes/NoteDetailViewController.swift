@@ -19,9 +19,16 @@ class NoteDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-         self.view.backgroundColor = UIColor.groupTableViewBackground
-         titleTextField.backgroundColor = UIColor.groupTableViewBackground
-         contentTextField.backgroundColor = UIColor.groupTableViewBackground
+        
+        let backButton = UIBarButtonItem(title: "Save", style: .plain, target: nil, action: nil)
+        self.navigationController?.navigationItem.backBarButtonItem = backButton
+        
+        
+        self.view.backgroundColor = UIColor.groupTableViewBackground
+        titleTextField.backgroundColor = UIColor.white
+        titleTextField.layer.cornerRadius = 8
+        contentTextField.backgroundColor = UIColor.white
+        contentTextField.layer.cornerRadius = 8
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,10 +46,10 @@ class NoteDetailViewController: UIViewController {
         
         if titleTextField.text != "" || contentTextField.text != "" {
             
-        fh.saveNotes(data: notes)
+            fh.saveNotes(data: notes)
         }
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-         self.view.endEditing(true)
+        self.view.endEditing(true)
     }
 }

@@ -79,6 +79,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if fh.locationObject.count < 1 {
+            for _ in 0..<locationManager.monitoredRegions.count {
+                locationManager.stopMonitoring(for: locationManager.monitoredRegions.first!)
+            }
+        }
+        
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable2") as! LocationSearchTable2
         resultSearchController =  UISearchController(searchResultsController: locationSearchTable)
         resultSearchController?.searchResultsUpdater = locationSearchTable as UISearchResultsUpdating!
@@ -137,7 +143,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
  
     @objc func update(sender:UIButton) {
         let id = self.fh.locationObject[holder].value(forKey: "id") as! Int
-         var entance =  ""
+        var entance =  ""
         var tit = ""
         var subtit = ""
         var lat = 0.0
@@ -147,7 +153,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             subtit = self.fh.locationObject[holder].value(forKey: "mKSubTitle") as! String
             lat = self.fh.locationObject[holder].value(forKey: "latitude") as! Double
             lng = self.fh.locationObject[holder].value(forKey: "longitude") as! Double
-            entance = self.fh.locationObject[holder].value(forKey: "entrance") as! String
         }
         else {
             tit = selectedItem.name!
@@ -157,11 +162,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
 
         if smallView.segmant.selectedSegmentIndex == 0 {
-            entance = "onEntry"
+            entance = "onEnter"
         }
-        else if smallView.segmant.selectedSegmentIndex == 1 {
+        if self.smallView.segmant.selectedSegmentIndex == 1 {
             entance = "onExit"
         }
+        
         let nsNum = id as NSNumber
         let numString = nsNum.stringValue
         
@@ -169,7 +175,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let region = CLCircularRegion(center: center, radius: 25, identifier: numString)
         p.locationManager.stopMonitoring(for: region)
         
-        fh.updateLocation(entrance: "\(entance)", lat: lat, lng: lng, title: tit, subtitle: subtit, id: id, reminderInput: smallView.textField.text!, index: holder)
+        fh.updateLocation(entrance: "\(entance)", lat: lat, lng: lng, title: tit, subtitle: subtit, id: id, reminderInput: smallView.textField.text!)
         
         p.locationManager.startMonitoring(for: region)
         selectedItem = nil
@@ -491,12 +497,22 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             let deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler:{action, indexpath in
                 let alert = UIAlertController(title: "Confirm", message: "Delete this Reminder?", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (_) in
-                    guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-                    let managedContext = appDelegate.persistentContainer.viewContext
-                    managedContext.delete(self.fh.locationObject[cellID] as NSManagedObject)
+                    
+                    let id = self.fh.locationObject[indexPath.row].value(forKey: "id") as! Int
+                    let nsNum = id as NSNumber
+                    let numString = nsNum.stringValue
+                    let latitude = self.fh.locationObject[indexPath.row].value(forKey: "latitude") as! Double
+                    let longitude = self.fh.locationObject[indexPath.row].value(forKey: "longitude") as! Double
+                    let radius:CLLocationDistance = 25
+                    let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                    let region = CLCircularRegion(center: center, radius: radius, identifier: numString)
+                    self.locationManager.stopMonitoring(for: region)
+                    
+                    self.fh.getContext().delete(self.fh.locationObject[cellID] as NSManagedObject)
                     self.fh.locationObject.remove(at: indexPath.row)
+                    
                     do {
-                        try managedContext.save()
+                        try self.fh.getContext().save()
                     }
                     catch{print(" Sorry Jesse, had and error saving. The error is: \(error)")}
                     tableView.reloadData()
