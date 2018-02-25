@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class NotesListTableViewController: UITableViewController, UISearchResultsUpdating {
     
@@ -14,23 +15,24 @@ class NotesListTableViewController: UITableViewController, UISearchResultsUpdati
     var resultSearchController:UISearchController!
     
     var filteredData:[String] = []
+    
     var noteTitle:[String] = []
     var noteBody:[String] = []
+    let fh = NotesFileHandler()
+
     
     @IBAction func AddNote(_ sender: Any) {
         performSegue(withIdentifier: "addNote", sender: self)
     }
     
-    var notes = NSMutableArray()
-    let fh = NotesFileHandler()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        fh.getNotes()
         resultSearchController = UISearchController(searchResultsController: nil)
         resultSearchController.searchResultsUpdater = self
         resultSearchController.obscuresBackgroundDuringPresentation = false
         definesPresentationContext = true
-
+        
         if #available(iOS 11.0, *) {
             navigationItem.searchController = resultSearchController
         } else {
@@ -47,16 +49,16 @@ class NotesListTableViewController: UITableViewController, UISearchResultsUpdati
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.notes = fh.getNotes()
-        
+        fh.getNotes()
         noteTitle.removeAll()
         noteBody.removeAll()
         
-        for i in 0..<notes.count {
-            noteTitle.append((notes[i] as! Note).title)
-            noteBody.append((notes[i] as! Note).content)
+        for i in 0..<fh.noteObject.count {
+            noteTitle.append(fh.noteObject[i].value(forKey: "title") as! String)
+            noteBody.append(fh.noteObject[i].value(forKey: "body") as! String)
+    
         }
-        tableView.reloadData()
+              tableView.reloadData()
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -67,7 +69,7 @@ class NotesListTableViewController: UITableViewController, UISearchResultsUpdati
             return filteredData.count
         }
         else {
-            return notes.count
+            return fh.noteObject.count
         }
     }
     
@@ -77,8 +79,15 @@ class NotesListTableViewController: UITableViewController, UISearchResultsUpdati
             cell.titleLabel?.text = filteredData[indexPath.row]
         }
         else {
-            cell.titleLabel.text = (notes[indexPath.row] as! Note).title
-            cell.contentLabel.text = (notes[indexPath.row] as! Note).content
+            let d = (fh.noteObject[indexPath.row].value(forKey: "date") as! Date)
+            let timestamp = DateFormatter.localizedString(from: d, dateStyle: .short, timeStyle: .short)
+            
+            let bod = (fh.noteObject[indexPath.row].value(forKey: "body") as! String)
+            let trimmed = bod.replacingOccurrences(of: "\n", with: " ")
+            
+            cell.titleLabel.text = (fh.noteObject[indexPath.row].value(forKey: "title") as! String)
+            cell.contentLabel.text = trimmed
+            cell.dateModified.text = "Modified: " + timestamp
         }
         return cell
     }
@@ -91,15 +100,16 @@ class NotesListTableViewController: UITableViewController, UISearchResultsUpdati
         navigationItem.backBarButtonItem = backItem
         
         if segue.identifier! == "showNote" {
+            backItem.title = "Update"
             let selectedIndexPath = tableView.indexPathForSelectedRow
-            noteDetailViewController.note = notes.object(at: selectedIndexPath!.row) as! Note
-            noteDetailViewController.notes = notes
+            noteDetailViewController.tempTitle = (fh.noteObject[selectedIndexPath!.row].value(forKey: "title") as! String)
+            noteDetailViewController.tempBody = (fh.noteObject[selectedIndexPath!.row].value(forKey: "body") as! String)
+            noteDetailViewController.IDHolder = (fh.noteObject[selectedIndexPath!.row].value(forKey: "id") as! Int)
+            noteDetailViewController.datePassedThrough = (fh.noteObject[selectedIndexPath!.row].value(forKey: "date") as! Date)
+            noteDetailViewController.newNote = false
             
         } else if segue.identifier! == "addNote" {
-            let note = Note()
-            notes.add(note)
-            noteDetailViewController.note = note
-            noteDetailViewController.notes = notes
+            noteDetailViewController.newNote = true
             noteDetailViewController.cancelButtonTitle = "Cancel"
         }
     }
@@ -108,8 +118,15 @@ class NotesListTableViewController: UITableViewController, UISearchResultsUpdati
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        notes.removeObject(at: indexPath.row)
-        fh.saveNotes(data: notes)
+        let managedContext = fh.getContext()
+        managedContext.delete(self.fh.noteObject[indexPath.row] as NSManagedObject)
+        self.fh.noteObject.remove(at: indexPath.row)
+        do {
+            try managedContext.save()
+        }
+        catch{
+            print(" Sorry Jesse, had and error saving. The error is: \(error)")
+        }
         tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
     }
     
@@ -118,7 +135,7 @@ class NotesListTableViewController: UITableViewController, UISearchResultsUpdati
             return ""
         }
         else {
-        return "Notes"
+            return "Notes"
         }
     }
     
@@ -131,18 +148,23 @@ class NotesListTableViewController: UITableViewController, UISearchResultsUpdati
         }
     }
     func updateSearchResults(for searchController: UISearchController) {
+        
         if searchController.searchBar.text!.count > 0 {
             filteredData.removeAll(keepingCapacity: false)
             let searchPredicate = NSPredicate(format: "SELF CONTAINS %@", searchController.searchBar.text!)
+          //  let k = (fh.noteObject as NSArray).filtered(using: searchPredicate) as NSArray
+            
             let array = (noteTitle as NSArray).filtered(using: searchPredicate)
+         
             filteredData = array as! [String]
-            tableView.reloadData()
             
         }
         else {
             filteredData.removeAll(keepingCapacity: false)
             filteredData = noteTitle
-            tableView.reloadData()
+//            filteredData2.removeAll(keepingCapacity: false)
+//            filteredData2 = noteBody
         }
+        tableView.reloadData()
     }
 }

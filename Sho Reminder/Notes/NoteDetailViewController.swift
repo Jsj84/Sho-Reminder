@@ -7,13 +7,20 @@
 //
 
 import UIKit
+import CoreData
 
-class NoteDetailViewController: UIViewController {
+class NoteDetailViewController: UIViewController, UITextViewDelegate {
     
-    var note: Note!
-    var notes: NSMutableArray!
     let fh = NotesFileHandler()
     var cancelButtonTitle = ""
+    var tempTitle = ""
+    var tempBody = ""
+    var IDHolder = 0
+    let defaults = UserDefaults()
+    var newNote = Bool()
+    var placeholderLabel : UILabel!
+    var datePassedThrough = Date()
+    
     @IBOutlet weak var titleTextField: UITextView!
     @IBOutlet weak var contentTextField: UITextView!
     
@@ -26,8 +33,21 @@ class NoteDetailViewController: UIViewController {
         
         
         self.view.backgroundColor = UIColor.groupTableViewBackground
+        
+        titleTextField.delegate = self
         titleTextField.backgroundColor = UIColor.white
         titleTextField.layer.cornerRadius = 8
+        titleTextField.font = UIFont.boldSystemFont(ofSize: (titleTextField.font?.pointSize)!)
+        
+        placeholderLabel = UILabel()
+        placeholderLabel.text = "Title.."
+        placeholderLabel.font = UIFont.italicSystemFont(ofSize: (titleTextField.font?.pointSize)! + 5)
+        placeholderLabel.sizeToFit()
+        titleTextField.addSubview(placeholderLabel)
+        placeholderLabel.frame.origin = CGPoint(x: 15, y: (titleTextField.font?.pointSize)! / 2)
+        placeholderLabel.layer.cornerRadius = 8
+        placeholderLabel.textColor = UIColor.lightGray
+    
         contentTextField.backgroundColor = UIColor.white
         contentTextField.layer.cornerRadius = 8
     }
@@ -35,26 +55,40 @@ class NoteDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        titleTextField.text = note.title
-        contentTextField.text = note.content
+        titleTextField.text = tempTitle
+        contentTextField.text = tempBody
+        placeholderLabel.isHidden = !tempTitle.isEmpty
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        note.title = titleTextField.text
-        note.content = contentTextField.text
+        var tempId = 0
+        let date = Date()
         
-        if titleTextField.text != "" || contentTextField.text != "" {
-        fh.saveNotes(data: notes)
+        if (defaults.value(forKey: "noteObject") != nil) && (defaults.value(forKey: "noteObject") as! Int) != 0 {
+            tempId = defaults.value(forKey: "noteObject") as! Int
         }
+        if titleTextField.text != "" || contentTextField.text != "" {
+            if newNote == false {
+                fh.updateNotes(title: titleTextField.text, body: contentTextField.text, id: IDHolder, date: date)
+            }
+            else {
+                fh.saveNotes(title: titleTextField.text, body: contentTextField.text, id: tempId, date: date)
+                tempId = tempId + 1
+                defaults.set(tempId, forKey: "noteObject")
+            }
+        }
+}
+    func textViewDidChange(_ textView: UITextView) {
+        placeholderLabel.isHidden = !titleTextField.text.isEmpty
     }
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
-    @objc func cancelPop() {
-        self.titleTextField.text = ""
-        self.contentTextField.text = ""
-        self.navigationController?.popViewController(animated: true)
-    }
+override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    self.view.endEditing(true)
+}
+@objc func cancelPop() {
+    self.titleTextField.text = ""
+    self.contentTextField.text = ""
+    self.navigationController?.popViewController(animated: true)
+}
 }

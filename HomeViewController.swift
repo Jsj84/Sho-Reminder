@@ -427,7 +427,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 let alert = UIAlertController(title: "Confirm", message: "Delete this Reminder?", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (_) in
                     guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-                    let managedContext = appDelegate.persistentContainer.viewContext
+                    let managedContext = self.fh.getContext()
                     appDelegate.deleteNotification(identifier: id)
                     managedContext.delete(self.fh.timeObject[cellID] as NSManagedObject)
                     self.fh.timeObject.remove(at: indexPath.row)

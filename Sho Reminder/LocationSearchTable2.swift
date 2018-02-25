@@ -93,6 +93,8 @@ class LocationSearchTable2: UITableViewController {
             selectedItem.thoroughfare ?? "",
             comma,
             // city
+            selectedItem.subLocality ?? "",
+            comma,
             selectedItem.locality ?? "",
             secondSpace,
             // state

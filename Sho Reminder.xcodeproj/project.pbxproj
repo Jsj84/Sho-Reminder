@@ -19,7 +19,6 @@
 		77BD25B41E17718200B81389 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77BD25B31E17718200B81389 /* CoreData.framework */; };
 		77FB8BD81E172F24005316B5 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FB8BD71E172F24005316B5 /* LocationSearchTable.swift */; };
 		883FF30020028CA800B704E9 /* NoteDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883FF2FC20028CA800B704E9 /* NoteDetailViewController.swift */; };
-		883FF30120028CA800B704E9 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883FF2FD20028CA800B704E9 /* Note.swift */; };
 		883FF30220028CA800B704E9 /* NotesListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883FF2FE20028CA800B704E9 /* NotesListTableViewController.swift */; };
 		883FF30320028CA800B704E9 /* NotesFileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883FF2FF20028CA800B704E9 /* NotesFileHandler.swift */; };
 		8847E7E11E566090001B2E0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8847E7E01E566090001B2E0E /* Main.storyboard */; };
@@ -48,7 +47,6 @@
 		77FB8BD71E172F24005316B5 /* LocationSearchTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
 		77FB8BDE1E175E9A005316B5 /* Sho Reminder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Sho Reminder.entitlements"; sourceTree = "<group>"; };
 		883FF2FC20028CA800B704E9 /* NoteDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteDetailViewController.swift; sourceTree = "<group>"; };
-		883FF2FD20028CA800B704E9 /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		883FF2FE20028CA800B704E9 /* NotesListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesListTableViewController.swift; sourceTree = "<group>"; };
 		883FF2FF20028CA800B704E9 /* NotesFileHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesFileHandler.swift; sourceTree = "<group>"; };
 		8847E7E01E566090001B2E0E /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -163,7 +161,6 @@
 		883FF2FB20028C6700B704E9 /* Notes */ = {
 			isa = PBXGroup;
 			children = (
-				883FF2FD20028CA800B704E9 /* Note.swift */,
 				883FF2FC20028CA800B704E9 /* NoteDetailViewController.swift */,
 				883FF2FF20028CA800B704E9 /* NotesFileHandler.swift */,
 				883FF2FE20028CA800B704E9 /* NotesListTableViewController.swift */,
@@ -271,7 +268,6 @@
 				884A59A51F2D23A500116F8F /* NotifcationsDelegate.swift in Sources */,
 				7741EDCB1E3C0F0800765A19 /* IntervalViewController.swift in Sources */,
 				8858D83B1FEF008E00048995 /* Sho_Reminder.xcdatamodeld in Sources */,
-				883FF30120028CA800B704E9 /* Note.swift in Sources */,
 				7753BBDC1E13349B00B78D49 /* AppDelegate.swift in Sources */,
 				8885DC032003F69600C1550C /* CustomTabBarControllerViewController.swift in Sources */,
 				883FF30320028CA800B704E9 /* NotesFileHandler.swift in Sources */,

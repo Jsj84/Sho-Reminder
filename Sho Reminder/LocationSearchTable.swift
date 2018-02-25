@@ -93,6 +93,9 @@ class LocationSearchTable: UITableViewController {
             selectedItem.thoroughfare ?? "",
             comma,
             // city
+            // sublocality is used for places like NYC where there are bouroughs
+            selectedItem.subLocality ?? "",
+            comma,
             selectedItem.locality ?? "",
             secondSpace,
             // state
